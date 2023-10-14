@@ -101,6 +101,8 @@ return [
     'gesdinet_jwt_refresh_token' => [[], [], [], [['text', '/api/token/refresh']], [], [], []],
     'app_auth_register' => [[], ['_controller' => 'App\\Controller\\AuthController::register'], [], [['text', '/auth/registration']], [], [], []],
     'app_auth_validation' => [[], ['_controller' => 'App\\Controller\\AuthController::validation'], [], [['text', '/auth/validation']], [], [], []],
+    'app_auth_restorePasswordStepOne' => [[], ['_controller' => 'App\\Controller\\AuthController::restorePasswordStepOne'], [], [['text', '/auth/restorePasswordStepOne']], [], [], []],
+    'app_auth_restorePasswordStepTwo' => [[], ['_controller' => 'App\\Controller\\AuthController::restorePasswordStepTwo'], [], [['text', '/auth/restorePasswordStepTwo']], [], [], []],
     'jwt_auth' => [[], [], [], [['text', '/api/auth']], [], [], []],
     'jwt_refresh' => [[], [], [], [['text', '/api/auth/refresh']], [], [], []],
 ];

@@ -571,6 +571,9 @@
     <service id="App\Erp\Priority\PriorityDocuments" class="App\Erp\Priority\PriorityDocuments" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\Erp\Priority\PriorityDocuments&quot;: argument &quot;$url&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
+    <service id="App\EventListener\AuthenticationFailureListener" class="App\EventListener\AuthenticationFailureListener" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_authentication_failure" method="onAuthenticationFailure"/>
+    </service>
     <service id="App\EventListener\LoginResponseListener" class="App\EventListener\LoginResponseListener" autowire="true" autoconfigure="true">
       <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_authentication_success" method="onAuthenticationSuccess"/>
       <argument type="service" id="security.token_storage"/>
@@ -716,6 +719,9 @@
     <service id="App\Validator\IsValidOrder" class="App\Validator\IsValidOrder" autowire="true" autoconfigure="true"/>
     <service id="App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" autoconfigure="true">
       <tag name="validator.constraint_validator"/>
+    </service>
+    <service id="App\helpers\ApiResponse" class="App\helpers\ApiResponse" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\helpers\ApiResponse&quot;: argument &quot;$data&quot; of method &quot;__construct()&quot; has no type-hint, you should configure its value explicitly."/>
     </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
@@ -1733,6 +1739,14 @@
       <argument type="service" id="debug.stopwatch"/>
       <argument type="service" id="logger" on-invalid="null"/>
       <argument type="service" id="request_stack" on-invalid="null"/>
+      <call method="addListener">
+        <argument>lexik_jwt_authentication.on_authentication_failure</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="App\EventListener\AuthenticationFailureListener"/>
+          <argument>onAuthenticationFailure</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
       <call method="addListener">
         <argument>lexik_jwt_authentication.on_authentication_success</argument>
         <argument type="collection">

@@ -20,19 +20,25 @@ class LoginResponseListener
         $token = $this->tokenStorage->getToken();
         if ($token) {
             $user = $token->getUser();
-
             if ($user instanceof UserInterface) {
-                $data['user'] = [
-                    'id' => $user->getId(),
-                    'extId' => $user->getExtId(),
-                    'name' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'phone' => $user->getPhone(),
-                    'createdAt' => $user->getCreatedAt(),
-                    'updatedAt' => $user->getUpdatedAt(),
-                ];
-
-                $event->setData($data);
+                if ($user->getIsBlocked()) {
+                    $data['status'] = 'error';
+                    $data['message'] = 'User is blocked';
+                    $data['token'] = null;
+                    $event->setData($data);
+                } else {
+                    $data['status'] = 'success';
+                    $data['user'] = [
+                        'id' => $user->getId(),
+                        'extId' => $user->getExtId(),
+                        'name' => $user->getName(),
+                        'email' => $user->getEmail(),
+                        'phone' => $user->getPhone(),
+                        'createdAt' => $user->getCreatedAt(),
+                        'updatedAt' => $user->getUpdatedAt(),
+                    ];
+                    $event->setData($data);
+                }
             }
         }
     }

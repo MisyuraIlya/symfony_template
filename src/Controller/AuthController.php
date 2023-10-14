@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\helpers\ApiResponse;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,9 +42,9 @@ class AuthController extends AbstractController
                 $this->repository->createUser($findUser, true);
             }
 
-            return $this->json(["status" => "user created"]);
+            return $this->json((new ApiResponse(null,'user created'))->OnSuccess());
         } catch (\Exception $e) {
-            return $this->json(["error" => "error while create user". $e->getMessage()]);
+            return $this->json((new ApiResponse(null,'שגיאה ' . $e->getMessage()))->OnError());
         }
     }
 
@@ -55,6 +56,7 @@ class AuthController extends AbstractController
             $exId = $data['exId'];
             $phone = $data['phone'];
             $findUser = $this->repository->findOneByExIdAndPhone($exId, $phone);
+            if(!$findUser) throw new \Exception('לא נמצא לקוח');
             if($findUser->getIsBlocked()) throw new \Exception('לקוח חסום');
             if($findUser->getIsRegistered()) throw new \Exception('לקוח רשום');
 
@@ -62,10 +64,50 @@ class AuthController extends AbstractController
                 "exId" => $findUser->getExtId(),
                 "name" => $findUser->getName()
             ];
-
-            return $this->json(["status" => "success", "message" => "נשלח קוד סודי לאימות", "user" => $response]);
+            return $this->json((new ApiResponse($response,"נשלח קוד סודי לאימות"))->OnSuccess());
         } catch (\Exception $e) {
-            return $this->json(["status" => "error", "message" => "שגיאה".$e->getMessage()]);
+            return $this->json((new ApiResponse(null, $e->getMessage()))->OnError());
+        }
+    }
+
+    #[Route('/auth/restorePasswordStepOne', name: 'app_auth_restorePasswordStepOne', methods: ['POST'])]
+    public function restorePasswordStepOne(Request $request): Response
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+            $email = $data['email'];
+            $findUser = $this->repository->findOneByEmail($email);
+            if(!$findUser) throw new \Exception('לא נמצא לקוח');
+            if($findUser->getIsBlocked()) throw new \Exception('לקוח חסום');
+
+            $findUser->setRecovery(random_int(10000,90000));
+            $this->repository->createUser($findUser,true);
+
+            //TODO SERVICE MAIL OR SMS CENTER
+
+            return $this->json((new ApiResponse(null,"נשלח קוד סודי לאימות"))->OnSuccess());
+        } catch (\Exception $e) {
+            return $this->json((new ApiResponse(null, $e->getMessage()))->OnError());
+        }
+    }
+
+    #[Route('/auth/restorePasswordStepTwo', name: 'app_auth_restorePasswordStepTwo', methods: ['POST'])]
+    public function restorePasswordStepTwo(Request $request): Response
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+            $email = $data['email'];
+            $token = $data['token'];
+            $password = $data['password'];
+            $findUser = $this->repository->findOneByEmail($email);
+            if(!$findUser) throw new \Exception('לא נמצא לקוח');
+            if($findUser->getIsBlocked()) throw new \Exception('לקוח חסום');
+            if($findUser->getRecovery() !== $token) throw new \Exception('קוד סודי אינו תקין');
+            $findUser->setPassword($this->hasher->hashPassword($findUser, $password));
+            $this->repository->createUser($findUser,true);
+            return $this->json((new ApiResponse(null,"סיסמא שונתה בהצלחה"))->OnSuccess());
+        } catch (\Exception $e) {
+            return $this->json((new ApiResponse(null, $e->getMessage()))->OnError());
         }
     }
 
