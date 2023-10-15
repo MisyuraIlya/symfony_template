@@ -37,6 +37,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     denormalizationContext: [
         'groups' => ['product:write'],
     ],
+    paginationClientItemsPerPage: true,
     provider: ProductProvider::class,
 )]
 #[ApiFilter(TermFilter::class, properties: ['SubAttributes.id'])] // need to serach attributes
@@ -64,6 +65,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     denormalizationContext: [
         'groups' => ['product:write'],
     ],
+    paginationClientItemsPerPage: true,
     provider: ProductProvider::class,
 
 )]
@@ -83,6 +85,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     denormalizationContext: [
         'groups' => ['product:write'],
     ],
+    paginationClientItemsPerPage: true,
 )]
 #[ApiResource(
     uriTemplate: '/catalog/lvl1/lvl2/{lvl3}',
@@ -99,6 +102,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     denormalizationContext: [
         'groups' => ['product:write'],
     ],
+    paginationClientItemsPerPage: true,
 )]
 
 class Product
