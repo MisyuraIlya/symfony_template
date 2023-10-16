@@ -29,6 +29,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'identifier' => [
                 null,
             ],
+            'default' => [
+                0,
+            ],
             'example' => [
                 null,
             ],

@@ -41,6 +41,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     provider: ProductProvider::class,
 )]
 #[ApiFilter(TermFilter::class, properties: ['SubAttributes.id'])] // need to serach attributes
+#[ApiFilter(OrderFilter::class, properties: ['sku', 'title'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
@@ -172,7 +173,7 @@ class Product
 
     #[Groups(['product:read','category:read'])]
     #[ORM\Column(nullable: true)]
-    private ?int $finalPrice = null;
+    private ?int $finalPrice = 0;
 
     #[Groups(['product:read','category:read'])]
     #[ORM\Column]
@@ -184,6 +185,10 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: SubProduct::class)]
     private Collection $subProducts;
+
+    #[Groups(['product:read','category:read'])]
+    #[ORM\Column(nullable: true)]
+    private ?int $discount = 0;
 
 
 
@@ -515,6 +520,18 @@ class Product
     public function setStock(?int $stock): static
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?int
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?int $discount): static
+    {
+        $this->discount = $discount;
 
         return $this;
     }

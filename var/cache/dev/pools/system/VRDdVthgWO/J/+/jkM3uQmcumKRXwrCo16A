@@ -938,46 +938,57 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'filters' => [
                 2 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 4 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 8 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 13 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 15 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 20 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 22 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 27 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
                 29 => [
                     'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
+                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                 ],
             ],

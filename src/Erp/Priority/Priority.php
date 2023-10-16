@@ -49,8 +49,7 @@ class Priority implements ErpInterface
                 'GET',
                 $this->url.$query,
                 [
-                    'auth_basic' => ['API', 'ap#25!42'],
-                    'timeout' => 60,
+                    'auth_basic' => ['API', 'ap#25!42']
                 ]
             );
 
@@ -413,13 +412,8 @@ class Priority implements ErpInterface
     public function GetPriceList(): PriceListsDto
     {
         $endpoint = "/PRICELIST";
-        $queryExtras = [
-            '$expand' => "PARTPRICE2_SUBFORM"
-        ];
-        $queryString = http_build_query($queryExtras);
-        $urlQuery = $endpoint . '?' . $queryString;
 
-        $response = $this->GetRequest($urlQuery);
+        $response = $this->GetRequest($endpoint);
 
         $dto = new PriceListsDto();
         foreach ($response as $itemRec){
