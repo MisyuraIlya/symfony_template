@@ -156,7 +156,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'paginationItemsPerPage' => [
-                null,
+                10,
             ],
             'paginationMaximumItemsPerPage' => [
                 null,
@@ -210,7 +210,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'operations' => [
                 1 => [
                     [
-                        '_api_/documents?userExId=41104111&from=2023-02-10&to=2023-03-10&documentType=orders&limit=10_get_collection',
+                        '_api_/documents{._format}_get_collection',
                         $o[2],
                     ],
                     [
@@ -238,8 +238,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'paginationItemsPerPage' => [
-                2 => null,
-                null,
+                2 => 10,
+                10,
             ],
             'paginationMaximumItemsPerPage' => [
                 2 => null,
@@ -366,7 +366,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 1,
             ],
             'name' => [
-                2 => '_api_/documents?userExId=41104111&from=2023-02-10&to=2023-03-10&documentType=orders&limit=10_get_collection',
+                2 => '_api_/documents{._format}_get_collection',
                 '_api_/documents/{documentNumber}{._format}_get',
             ],
             'provider' => [
@@ -380,7 +380,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'extraProperties' => [
                 2 => [
                     'standard_put' => true,
-                    'user_defined_uri_template' => true,
                 ],
                 [
                     'standard_put' => true,
@@ -397,7 +396,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'GET',
             ],
             'uriTemplate' => [
-                2 => '/documents?userExId=41104111&from=2023-02-10&to=2023-03-10&documentType=orders&limit=10',
+                2 => '/documents{._format}',
                 '/documents/{documentNumber}{._format}',
             ],
             'types' => [
@@ -450,12 +449,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'html' => [
                         'text/html',
                     ],
-                ],
-            ],
-            'uriVariables' => [
-                2 => [],
-                [
-                    'documentNumber' => $o[4],
                 ],
             ],
             'routePrefix' => [
@@ -541,6 +534,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'queryParameterValidationEnabled' => [
                 2 => null,
                 null,
+            ],
+            'uriVariables' => [
+                3 => [
+                    'documentNumber' => $o[4],
+                ],
             ],
         ],
         'ApiPlatform\\Metadata\\GetCollection' => [

@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isRegistered = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','history:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]

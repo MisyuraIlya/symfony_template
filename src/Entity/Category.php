@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategoryRepository;
@@ -21,6 +22,8 @@ use ApiPlatform\Metadata\Link;
 #[ApiResource(
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:write']],
+    order: ['orden' => 'ASC'],
+    paginationItemsPerPage: 1000,
 )]
 #[ApiFilter(
     SearchFilter::class,
@@ -28,7 +31,7 @@ use ApiPlatform\Metadata\Link;
         'lvlNumber' => 'exact',
     ]
 )]
-
+//#[ApiFilter(OrderFilter::class, properties: ['orden'], arguments: ['orderParameterName' => 'order'])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -42,7 +45,7 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $extId = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','category:write'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -50,7 +53,7 @@ class Category
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['category:read'])]
+    #[Groups(['category:read','category:write'])]
     #[ORM\Column]
     private ?bool $isPublished = null;
 
@@ -58,7 +61,7 @@ class Category
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[Groups(['category:read'])]
+    #[Groups(['category:read','category:write'])]
     #[ORM\Column(nullable: true)]
     private ?int $orden = null;
 
@@ -66,6 +69,7 @@ class Category
     #[ORM\Column(nullable: true)]
     private ?int $lvlNumber = null;
 
+    #[Groups(['category:read'])]
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
     private ?self $parent = null;
 
@@ -82,9 +86,16 @@ class Category
     #[ORM\OneToMany(mappedBy: "categoryLvl3", targetEntity: Product::class)]
     private Collection $productsLvl3;
 
+    #[Groups(['category:read','category:write'])]
+    #[ORM\ManyToOne(inversedBy: 'categories')]
+    private ?MediaObject $MediaObject = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->productsLvl1 = new ArrayCollection();
+        $this->productsLvl2 = new ArrayCollection();
+        $this->productsLvl3 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +275,18 @@ class Category
                 $category->setparent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMediaObject(): ?MediaObject
+    {
+        return $this->MediaObject;
+    }
+
+    public function setMediaObject(?MediaObject $MediaObject): static
+    {
+        $this->MediaObject = $MediaObject;
 
         return $this;
     }

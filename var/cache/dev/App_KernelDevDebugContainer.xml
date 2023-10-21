@@ -289,7 +289,7 @@
       </parameter>
     </parameter>
     <parameter key="api_platform.eager_loading.enabled">true</parameter>
-    <parameter key="api_platform.eager_loading.max_joins">30</parameter>
+    <parameter key="api_platform.eager_loading.max_joins">1000</parameter>
     <parameter key="api_platform.eager_loading.fetch_partial">false</parameter>
     <parameter key="api_platform.eager_loading.force_eager">true</parameter>
     <parameter key="api_platform.collection.exists_parameter_name">exists</parameter>
@@ -449,7 +449,12 @@
       <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\Documents&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
     <service id="App\ApiResource\Dto\CartDto" class="App\ApiResource\Dto\CartDto" autowire="true" autoconfigure="true"/>
+    <service id="App\ApiResource\Dto\XlxDocumentsDto" class="App\ApiResource\Dto\XlxDocumentsDto" autowire="true" autoconfigure="true"/>
+    <service id="App\ApiResource\Dto\XlxDto" class="App\ApiResource\Dto\XlxDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\SendOrder" class="App\ApiResource\SendOrder" autowire="true" autoconfigure="true"/>
+    <service id="App\ApiResource\XlxDocuments" class="App\ApiResource\XlxDocuments" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\XlxDocuments&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
+    </service>
     <service id="App\Command\CronManagerCommand" class="App\Command\CronManagerCommand" autowire="true" autoconfigure="true">
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
@@ -487,6 +492,17 @@
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\CreateMediaObjectAction"/>
       </call>
     </service>
+    <service id="App\Controller\ExcelController" class="App\Controller\ExcelController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\ExcelController"/>
+      </call>
+    </service>
+    <service id="App\Cron\GetBasePrice" class="App\Cron\GetBasePrice" autowire="true" autoconfigure="true">
+      <argument type="service" id="http_client.uri_template"/>
+      <argument type="service" id="App\Repository\ProductRepository"/>
+    </service>
     <service id="App\Cron\GetCategories" class="App\Cron\GetCategories" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
@@ -514,6 +530,10 @@
     <service id="App\Cron\GetProducts" class="App\Cron\GetProducts" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
+      <argument type="service" id="App\Repository\ProductRepository"/>
+    </service>
+    <service id="App\Cron\GetStocks" class="App\Cron\GetStocks" autowire="true" autoconfigure="true">
+      <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
     </service>
     <service id="App\Cron\GetSubAttributes" class="App\Cron\GetSubAttributes" autowire="true" autoconfigure="true">
@@ -623,6 +643,10 @@
     <service id="App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" autoconfigure="true">
       <tag name="foundry.factory"/>
     </service>
+    <service id="App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -700,6 +724,10 @@
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="request_stack"/>
+      <argument type="service" id="api_platform.pagination"/>
+    </service>
+    <service id="App\State\PdfDocumentProcessor" class="App\State\PdfDocumentProcessor" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_processor"/>
     </service>
     <service id="App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
@@ -715,6 +743,9 @@
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
       <argument type="service" id="http_client.uri_template"/>
+    </service>
+    <service id="App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_processor"/>
     </service>
     <service id="App\Validator\IsValidOrder" class="App\Validator\IsValidOrder" autowire="true" autoconfigure="true"/>
     <service id="App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" autoconfigure="true">
@@ -1678,6 +1709,11 @@
         <argument type="service" id="logger" on-invalid="ignore"/>
       </call>
       <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
+    </service>
+    <service id="psr18.http_client" class="Symfony\Component\HttpClient\Psr18Client">
+      <argument type="service" id="http_client.uri_template"/>
+      <argument>null</argument>
+      <argument>null</argument>
     </service>
     <service id="http_client.abstract_retry_strategy" class="Symfony\Component\HttpClient\Retry\GenericRetryStrategy" abstract="true">
       <argument type="abstract">http codes</argument>
@@ -4384,7 +4420,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.sE7V3lj"/>
+      <argument type="service" id=".service_locator.zB2Gk3l"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5048,7 +5084,7 @@
       <argument>%api_platform.graphql.collection.pagination%</argument>
     </service>
     <service id="api_platform.state_processor.locator" class="ApiPlatform\State\CallableProcessor">
-      <argument type="service" id=".service_locator.CouaREF"/>
+      <argument type="service" id=".service_locator.zBXSgam"/>
     </service>
     <service id="api_platform.serializer_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -5084,6 +5120,7 @@
         <argument key="annotated_app_entity_category_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_category_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_order_filter" type="service_closure" id="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_order_filter"/>
         <argument key="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter"/>
         <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter"/>
         <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter" type="service_closure" id="annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter"/>
@@ -5507,7 +5544,7 @@
       <tag name="api_platform.doctrine.orm.query_extension.collection" priority="-18"/>
       <argument type="service" id="api_platform.metadata.property.name_collection_factory.cached"/>
       <argument type="service" id="api_platform.metadata.property.metadata_factory.cached"/>
-      <argument>30</argument>
+      <argument>1000</argument>
       <argument>true</argument>
       <argument>false</argument>
       <argument type="service" id="api_platform.serializer.mapping.class_metadata_factory"/>
@@ -6615,6 +6652,15 @@
       <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
     </service>
+    <service id="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter" class="ApiPlatform\Doctrine\Orm\Filter\BooleanFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument type="collection">
+        <argument key="isPublished">null</argument>
+      </argument>
+      <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
+    </service>
     <service id=".instanceof.Symfony\Component\Console\Command\Command.0.App\Command\CronManagerCommand" class="App\Command\CronManagerCommand" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Command\CronManagerCommand" class="App\Command\CronManagerCommand" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AuthController" class="App\Controller\AuthController" autowire="true" abstract="true"/>
@@ -6624,6 +6670,9 @@
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CreateMediaObjectAction" class="App\Controller\CreateMediaObjectAction" autowire="true" abstract="true"/>
     <service id=".instanceof.App\Controller\CreateMediaObjectAction.0.App\Controller\CreateMediaObjectAction" class="App\Controller\CreateMediaObjectAction" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\CreateMediaObjectAction" class="App\Controller\CreateMediaObjectAction" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ExcelController" class="App\Controller\ExcelController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ExcelController" class="App\Controller\ExcelController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ExcelController" class="App\Controller\ExcelController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\AttributeMainFactory" class="App\Factory\AttributeMainFactory" autowire="true" abstract="true"/>
@@ -6656,6 +6705,8 @@
     <service id=".abstract.instanceof.App\Factory\UserFactory" class="App\Factory\UserFactory" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" abstract="true"/>
@@ -6694,10 +6745,14 @@
     <service id=".abstract.instanceof.App\State\CartessetProvider" class="App\State\CartessetProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\DocumentsProvider" class="App\State\DocumentsProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\DocumentsProvider" class="App\State\DocumentsProvider" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\PdfDocumentProcessor" class="App\State\PdfDocumentProcessor" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\PdfDocumentProcessor" class="App\State\PdfDocumentProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Validator\ConstraintValidatorInterface.0.App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\Api\FilterInterface.0.annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter" class="ApiPlatform\Elasticsearch\Filter\TermFilter" autowire="true" abstract="true"/>
@@ -7270,9 +7325,10 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.sE7V3lj" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.zB2Gk3l" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\AgentRepository" type="service_closure" id="App\Repository\AgentRepository"/>
         <argument key="App\Repository\AttributeMainRepository" type="service_closure" id="App\Repository\AttributeMainRepository"/>
         <argument key="App\Repository\CategoryRepository" type="service_closure" id="App\Repository\CategoryRepository"/>
         <argument key="App\Repository\HistoryDetailedRepository" type="service_closure" id="App\Repository\HistoryDetailedRepository"/>
@@ -7503,6 +7559,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\ExcelController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ExcelController"/>
+      <argument>App\Controller\ExcelController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
     <service id=".service_locator.PvoQzFT" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7638,12 +7700,14 @@
         <argument key="api_platform.state_provider.object" type="service_closure" id="api_platform.state_provider.object"/>
       </argument>
     </service>
-    <service id=".service_locator.CouaREF" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.zBXSgam" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="ApiPlatform\Doctrine\Common\State\PersistProcessor" type="service_closure" id="api_platform.doctrine.orm.state.persist_processor"/>
         <argument key="ApiPlatform\Doctrine\Common\State\RemoveProcessor" type="service_closure" id="api_platform.doctrine.orm.state.remove_processor"/>
+        <argument key="App\State\PdfDocumentProcessor" type="service_closure" id="App\State\PdfDocumentProcessor"/>
         <argument key="App\State\SendOrderProcessor" type="service_closure" id="App\State\SendOrderProcessor"/>
+        <argument key="App\State\XlDocumentProcessor" type="service_closure" id="App\State\XlDocumentProcessor"/>
         <argument key="api_platform.doctrine.orm.state.persist_processor" type="service_closure" id="api_platform.doctrine.orm.state.persist_processor"/>
         <argument key="api_platform.doctrine.orm.state.remove_processor" type="service_closure" id="api_platform.doctrine.orm.state.remove_processor"/>
       </argument>
@@ -8475,6 +8539,7 @@
     <service id="Symfony\Contracts\Cache\TagAwareCacheInterface" alias="cache.app.taggable"/>
     <service id="Symfony\Component\Asset\Packages" alias="assets.packages"/>
     <service id="Symfony\Contracts\HttpClient\HttpClientInterface" alias="http_client.uri_template"/>
+    <service id="Psr\Http\Client\ClientInterface" alias="psr18.http_client"/>
     <service id="Symfony\Component\HttpKernel\Debug\FileLinkFormatter" alias="debug.file_link_formatter"/>
     <service id="Symfony\Component\Stopwatch\Stopwatch" alias="debug.stopwatch"/>
     <service id="router" alias="router.default" public="true"/>
@@ -8672,7 +8737,7 @@
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.vcYFt0B" alias=".service_locator.dwy0.Hv"/>
     <service id=".service_locator.bnaLdkn" alias="api_platform.serializer_locator"/>
-    <service id=".service_locator.u2c5QN9" alias="api_platform.filter_locator"/>
+    <service id=".service_locator.Jk9RMDS" alias="api_platform.filter_locator"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.ZTS8xoE" alias=".service_locator.cYPtYzc"/>
     <service id=".service_locator.Lkb6s9e" alias=".service_locator.tUIAove"/>
@@ -8734,6 +8799,6 @@
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.BlxN3Cw" alias=".service_locator.LrCXAmX"/>
     <service id=".service_locator.2HqhmmI" alias=".service_locator.IZ0cs.H"/>
-    <service id=".service_locator.9wsZ0hv" alias=".service_locator.CouaREF"/>
+    <service id=".service_locator.Qq34ODg" alias=".service_locator.zBXSgam"/>
   </services>
 </container>

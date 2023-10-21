@@ -99,7 +99,7 @@ class ProductProvider implements ProviderInterface
 
         foreach ($result as &$itemRec){
             $finalPrice = 0;
-            $discount = 5;
+            $discount = 0;
             if($itemRec->getBasePrice()){
                 $finalPrice = $itemRec->getBasePrice();
             }

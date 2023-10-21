@@ -85,9 +85,11 @@ class PriorityDocuments extends Priority
         return $result;
     }
 
-    public function GetPriceOffer(string $userExId, string $dateFrom , string $dateTo)
+    public function GetPriceOffer(string $userExId, \DateTimeImmutable $dateFrom , \DateTimeImmutable $dateTo)
     {
         $endpoint = "/CPROF";
+        $dateFrom = $dateFrom->format('Y-m-d\TH:i:s.u\Z');
+        $dateTo = $dateTo->format('Y-m-d\TH:i:s.u\Z');
 //        if($searchValue) {
 //            $queryParameters = [
 //                '$filter' => "CUSTNAME eq '$userExId' AND CPROFNUM eq '$searchValue'",
@@ -154,9 +156,11 @@ class PriorityDocuments extends Priority
         return $result;
     }
 
-    public function GetDeliveryOrder(string $userExId, string $dateFrom , string $dateTo)
+    public function GetDeliveryOrder(string $userExId, \DateTimeImmutable $dateFrom , \DateTimeImmutable $dateTo)
     {
         $endpoint = "/DOCUMENTS_D";
+        $dateFrom = $dateFrom->format('Y-m-d\TH:i:s.u\Z');
+        $dateTo = $dateTo->format('Y-m-d\TH:i:s.u\Z');
 //        if($searchValue) {
 //            $queryParameters = [
 //                '$filter' => "CUSTNAME eq '$userExId' AND DOCNO eq '$searchValue'",
@@ -223,9 +227,11 @@ class PriorityDocuments extends Priority
         return $result;
     }
 
-    public function GetAiInvoice(string $userExId, string $dateFrom , string $dateTo)
+    public function GetAiInvoice(string $userExId, \DateTimeImmutable $dateFrom , \DateTimeImmutable $dateTo)
     {
         $endpoint = "/AINVOICES";
+        $dateFrom = $dateFrom->format('Y-m-d\TH:i:s.u\Z');
+        $dateTo = $dateTo->format('Y-m-d\TH:i:s.u\Z');
 //        if($searchValue) {
 //            $queryParameters = [
 //                '$filter' => "CUSTNAME eq '$userExId' AND IVNUM eq '$searchValue'",
@@ -292,9 +298,11 @@ class PriorityDocuments extends Priority
         return $result;
     }
 
-    public function GetCiInvoice(string $userExId, string $dateFrom , string $dateTo)
+    public function GetCiInvoice(string $userExId, \DateTimeImmutable $dateFrom , \DateTimeImmutable $dateTo)
     {
         $endpoint = "/CINVOICES";
+        $dateFrom = $dateFrom->format('Y-m-d\TH:i:s.u\Z');
+        $dateTo = $dateTo->format('Y-m-d\TH:i:s.u\Z');
 //        if($searchValue) {
 //            $queryParameters = [
 //                '$filter' => "CUSTNAME eq '$userExId' AND IVNUM eq '$searchValue'",
@@ -361,9 +369,11 @@ class PriorityDocuments extends Priority
         return $result;
     }
 
-    public function GetReturnDocs(string $userExId, string $dateFrom , string $dateTo)
+    public function GetReturnDocs(string $userExId, \DateTimeImmutable $dateFrom , \DateTimeImmutable $dateTo)
     {
         $endpoint = "/DOCUMENTS_N";
+        $dateFrom = $dateFrom->format('Y-m-d\TH:i:s.u\Z');
+        $dateTo = $dateTo->format('Y-m-d\TH:i:s.u\Z');
 //        if($searchValue) {
 //            $queryParameters = [
 //                '$filter' => "CUSTNAME eq '$userExId' AND DOCNO eq '$searchValue'",

@@ -88,7 +88,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 1 => true,
             ],
             'class' => [
-                1 => 'App\\Entity\\product',
+                1 => 'App\\Entity\\Product',
             ],
             'collection' => [
                 1 => false,

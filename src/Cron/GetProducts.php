@@ -22,21 +22,27 @@ class GetProducts
     {
         $res = (new ErpManager($this->httpClient))->GetProducts();
         foreach ($res->products as $itemRec){
-            $findCategory = $this->categoryRepository->findOneByExtId($itemRec->categoryId);
-            $product = $this->productRepository->findOneBySku($itemRec->sku);
-            if(!$product){
-                $product = new Product();
-                $product->setSku($itemRec->sku);
-                $product->setCreatedAt(new \DateTimeImmutable());
+            if($itemRec->Extra18 || $itemRec->Extra2 || $itemRec->Extra6) {
+                $findCategoryLvl1 = $this->categoryRepository->findOneByExtId($itemRec->Extra18);
+                $findCategoryLvl2 = $this->categoryRepository->findOneByExtId($itemRec->Extra2);
+                $findCategoryLvl3 = $this->categoryRepository->findOneByExtId($itemRec->Extra6);
+                $product = $this->productRepository->findOneBySku($itemRec->sku);
+                if(!$product){
+                    $product = new Product();
+                    $product->setSku($itemRec->sku);
+                    $product->setCreatedAt(new \DateTimeImmutable());
+                }
+
+                $product->setTitle($itemRec->title);
+                $product->setPackQuantity($itemRec->packQuantity);
+                $product->setBasePrice($itemRec->baseprice);
+                $product->setUpdatedAt(new \DateTimeImmutable());
+                $product->setIsPublished($itemRec->status);
+                $product->setCategoryLvl1($findCategoryLvl1);
+                $product->setCategoryLvl2($findCategoryLvl2);
+                $product->setCategoryLvl3($findCategoryLvl3);
+                $this->productRepository->createProduct($product, true);
             }
-
-            $product->setTitle($itemRec->title);
-            $product->setBasePrice($itemRec->baseprice);
-            $product->setUpdatedAt(new \DateTimeImmutable());
-            $product->setIsPublished($itemRec->status);
-            $product->setCategoryLvl1($findCategory);
-            $this->productRepository->createProduct($product, true);
-
         }
 //
 //        foreach ($res->pr)

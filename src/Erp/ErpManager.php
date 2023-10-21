@@ -27,9 +27,9 @@ class ErpManager implements ErpInterface
     )
     {
         $erpType = 'Priority';
-        $username = 'API';
-        $password = 'ap#25!42';
-        $url = 'https://pri.argentools.co.il/odata/priority/tabula.ini/arg08';
+        $username = 'digitrade';
+        $password = 'Digitrade22';
+        $url = 'https://817.152.co.il/odata/Priority/tabula.ini/teser';
         if ($erpType === 'Priority') {
             $this->erp = new Priority($url, $username, $password, $this->httpClient);
         } elseif ($erpType === 'SAP') {
@@ -118,6 +118,7 @@ class ErpManager implements ErpInterface
 
     public function GetStocks(): StocksDto
     {
+        return $this->erp->GetStocks();
     }
 
     public function GetCategories(): CategoriesDto

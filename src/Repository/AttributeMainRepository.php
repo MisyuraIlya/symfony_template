@@ -39,6 +39,17 @@ class AttributeMainRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findOneByExtIdAndTitle(?string $extId, ?string $title): ?AttributeMain
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.extId = :val1')
+            ->where('a.title = :val2')
+            ->setParameter('val1', $extId)
+            ->setParameter('val2', $title)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return AttributeMain[] Returns an array of AttributeMain objects
 //     */

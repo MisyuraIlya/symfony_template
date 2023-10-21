@@ -85,7 +85,7 @@ class SendOrderProcessor implements ProcessorInterface
         $obj->setProduct($findProduct);
         $obj->setHistory($history);
         $obj->setQuantity($productsDto->quantity);
-        $obj->setTotal($productsDto->total);
+        $obj->setTotal($productsDto->quantity * $productsDto->price);
         $obj->setSinglePrice($productsDto->price);
         $obj->setDiscount($productsDto->discount);
         $this->historyDetailedRepository->createHistoryDetailed($obj,true);
@@ -97,7 +97,7 @@ class SendOrderProcessor implements ProcessorInterface
         $total = 0;
         assert($dto instanceof SendOrder);
         foreach ($dto->products as $itemRec){
-            $total += $itemRec->total;
+            $total += $itemRec->price * $itemRec->quantity;
         }
 
         return $total;

@@ -103,10 +103,18 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
             ],
             'normalizationContext' => [
-                null,
+                [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
             ],
             'denormalizationContext' => [
-                null,
+                [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
             ],
             'collectDenormalizationErrors' => [
                 null,
@@ -354,20 +362,68 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'normalizationContext' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
+                4 => [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
+                [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
+                [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
+                8 => [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
+                10 => [
+                    'groups' => [
+                        'history:read',
+                    ],
+                ],
             ],
             'denormalizationContext' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
+                4 => [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
+                [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
+                [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
+                8 => [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
+                10 => [
+                    'groups' => [
+                        'history:write',
+                    ],
+                ],
             ],
             'collectDenormalizationErrors' => [
                 2 => null,

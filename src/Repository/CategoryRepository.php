@@ -30,7 +30,7 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneByExtId(string $extId): ?Category
+    public function findOneByExtId(?string $extId): ?Category
     {
         return $this->createQueryBuilder('c')
             ->where('c.extId = :val1')

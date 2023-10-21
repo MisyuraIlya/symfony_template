@@ -10,13 +10,13 @@ use ApiPlatform\Metadata\ApiProperty;
 
 #[ApiResource(
     shortName: 'Documents',
-
     operations: [
         new GetCollection(
-            uriTemplate: '/documents?userExId=41104111&from=2023-02-10&to=2023-03-10&documentType=orders&limit=10'
+//            uriTemplate: '/documents?userExId=41104111&from=2023-02-10&to=2023-03-10&documentType=orders&limit=10'
         ),
         new Get()
     ],
+    paginationItemsPerPage: 10,
     provider: DocumentsProvider::class,
 )]
 class Documents

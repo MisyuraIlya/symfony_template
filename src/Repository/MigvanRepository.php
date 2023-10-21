@@ -30,7 +30,7 @@ class MigvanRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneBySkuAndUserExtId(string $sku, string $userExtId): ?Migvan
+    public function findOneBySkuAndUserExtId(?string $sku, ?string $userExtId): ?Migvan
     {
         return $this->createQueryBuilder('m')
             ->where('m.sku = :val1')

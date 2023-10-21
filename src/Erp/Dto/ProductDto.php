@@ -14,6 +14,7 @@ class ProductDto
     public ?string $baseprice;
     public bool $intevntory_managed;
     public ?string $parent;
+    public ?int $packQuantity;
 
     public ?string $Extra1;
     public ?string $Extra2;

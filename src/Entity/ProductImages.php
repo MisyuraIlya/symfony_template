@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use App\Repository\ProductImagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,93 +13,58 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Product;
 
 #[ORM\Entity(repositoryClass: ProductImagesRepository::class)]
 #[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Post(),
-        new Put(),
-        new Patch(),
-    ],
     normalizationContext: [
         'groups' => ['productImages:read'],
     ],
-    denormalizationContext: [
-        'groups' => ['productImages:write'],
-    ],
+
 )]
 class ProductImages
 {
+    #[Groups(['product:read','category:read','productImages:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['product:read','category:read','productImages:read'])]
     #[ORM\ManyToOne(inversedBy: 'imagePath')]
-    private ?product $product = null;
+    private ?Product $product = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updatedAt = null;
-
-    #[Groups(['product:read'])]
-    #[ORM\Column(length: 255)]
-    private ?string $imagePath = null;
+    #[Groups(['product:read','category:read','productImages:read'])]
+    #[ORM\ManyToOne(inversedBy: 'productImages')]
+    private ?MediaObject $mediaObject = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduct(): ?product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(?product $product): static
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getMediaObject(): ?MediaObject
     {
-        return $this->createdAt;
+        return $this->mediaObject;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setMediaObject(?MediaObject $mediaObject): static
     {
-        $this->createdAt = $createdAt;
+        $this->mediaObject = $mediaObject;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getImagePath(): ?string
-    {
-        return $this->imagePath;
-    }
-
-    public function setImagePath(string $imagePath): static
-    {
-        $this->imagePath = $imagePath;
-
-        return $this;
-    }
 }

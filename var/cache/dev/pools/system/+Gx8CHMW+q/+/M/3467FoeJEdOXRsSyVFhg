@@ -12,16 +12,16 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'readable' => [
-                false,
+                true,
             ],
             'writable' => [
-                false,
+                true,
             ],
             'readableLink' => [
-                null,
+                true,
             ],
             'writableLink' => [
-                null,
+                true,
             ],
             'required' => [
                 false,
@@ -88,7 +88,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 1 => true,
             ],
             'class' => [
-                1 => 'App\\Entity\\product',
+                1 => 'App\\Entity\\Product',
             ],
             'collection' => [
                 1 => false,

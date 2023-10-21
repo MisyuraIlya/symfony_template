@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\HistoryDetailedRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Product;
+use App\Entity\History;
 
 #[ORM\Entity(repositoryClass: HistoryDetailedRepository::class)]
 #[ApiResource]
@@ -16,10 +18,10 @@ class HistoryDetailed
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'historyDetaileds')]
-    private ?history $history = null;
+    private ?History $history = null;
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
-    private ?product $product = null;
+    private ?Product $product = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $singlePrice = null;
@@ -38,24 +40,24 @@ class HistoryDetailed
         return $this->id;
     }
 
-    public function getHistory(): ?history
+    public function getHistory(): ?History
     {
         return $this->history;
     }
 
-    public function setHistory(?history $history): static
+    public function setHistory(?History $history): static
     {
         $this->history = $history;
 
         return $this;
     }
 
-    public function getProduct(): ?product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(?product $product): static
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 

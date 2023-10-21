@@ -138,7 +138,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'order' => [
-                null,
+                [
+                    'orden' => 'ASC',
+                ],
             ],
             'fetchPartial' => [
                 null,
@@ -168,7 +170,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'paginationItemsPerPage' => [
-                null,
+                1000,
             ],
             'paginationMaximumItemsPerPage' => [
                 null,
@@ -282,12 +284,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'paginationItemsPerPage' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => 1000,
+                4 => 1000,
+                1000,
+                1000,
+                8 => 1000,
+                10 => 1000,
             ],
             'paginationMaximumItemsPerPage' => [
                 2 => null,
@@ -346,12 +348,24 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'order' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => [
+                    'orden' => 'ASC',
+                ],
+                4 => [
+                    'orden' => 'ASC',
+                ],
+                [
+                    'orden' => 'ASC',
+                ],
+                [
+                    'orden' => 'ASC',
+                ],
+                8 => [
+                    'orden' => 'ASC',
+                ],
+                10 => [
+                    'orden' => 'ASC',
+                ],
             ],
             'description' => [
                 2 => null,

@@ -21,6 +21,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
@@ -50,11 +51,13 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
         'SubAttributes.id' => 'exact',
     ]
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
 
 #[ApiResource(
     uriTemplate: '/catalog/{lvl1}',
     operations: [
-        new GetCollection(),
+        new GetCollection(
+        ),
         new Get(),
     ],
     uriVariables: [
@@ -103,6 +106,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     denormalizationContext: [
         'groups' => ['product:write'],
     ],
+    order: ['orden' => 'ASC'],
     paginationClientItemsPerPage: true,
 )]
 
@@ -118,9 +122,13 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $sku = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','product:write'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
+
+    #[Groups(['product:read','category:read','product:write'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $defaultImagePath = null;
 
     #[Groups(['product:read','category:read'])]
     #[ORM\Column(length: 255, nullable: true)]
@@ -130,7 +138,7 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $barcode = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','product:write'])]
     #[ORM\Column]
     private ?bool $isPublished = null;
 
@@ -143,7 +151,7 @@ class Product
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "productsLvl3")]
     private ?Category $categoryLvl3 = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','productImages:read'])]
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImages::class)]
     private Collection $imagePath;
 
@@ -189,6 +197,10 @@ class Product
     #[Groups(['product:read','category:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = 0;
+
+    #[Groups(['product:read','category:read','product:write'])]
+    #[ORM\Column]
+    private ?int $orden = null;
 
 
 
@@ -535,4 +547,29 @@ class Product
 
         return $this;
     }
+
+    public function getDefaultImagePath(): ?string
+    {
+        return $this->defaultImagePath;
+    }
+
+    public function setDefaultImagePath(?string $defaultImagePath): static
+    {
+        $this->defaultImagePath = $defaultImagePath;
+
+        return $this;
+    }
+
+    public function getOrden(): ?int
+    {
+        return $this->orden;
+    }
+
+    public function setOrden(int $orden): static
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
 }

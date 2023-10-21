@@ -22,6 +22,7 @@ use App\Erp\Dto\PriceListsDto;
 use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\ProductDto;
 use App\Erp\Dto\ProductsDto;
+use App\Erp\Dto\StockDto;
 use App\Erp\Dto\StocksDto;
 use App\Erp\Dto\UserDto;
 use App\Erp\Dto\UsersDto;
@@ -49,7 +50,9 @@ class Priority implements ErpInterface
                 'GET',
                 $this->url.$query,
                 [
-                    'auth_basic' => ['API', 'ap#25!42']
+                    'auth_basic' => ['digitrade', 'Digitrade22'],
+                    'http_version' => '1.1',
+                    'timeout' => 600
                 ]
             );
 
@@ -109,7 +112,6 @@ class Priority implements ErpInterface
     {
 
     }
-
     public function GetOnlineUser(string $userExtId):User
     {
 
@@ -130,7 +132,6 @@ class Priority implements ErpInterface
         $aiInvoice = [];
         $ciInvoice = [];
         $returnDocs = [];
-
         $enums = DocumentsType::getAllDetails();
         if($enums['ORDERS']['ENGLISH'] === $documentType){
             $order = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetOrders($userExId,$dateFrom, $dateTo);
@@ -143,6 +144,13 @@ class Priority implements ErpInterface
         } else if($enums['CI_INVOICE']['ENGLISH'] === $documentType) {
             $ciInvoice = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetCiInvoice($userExId,$dateFrom, $dateTo);
         } else if($enums['RETURN_ORDERS']['ENGLISH'] === $documentType) {
+            $returnDocs = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetReturnDocs($userExId,$dateFrom, $dateTo);
+        } else if($enums['ALL']['ENGLISH'] === $documentType) {
+            $order = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetOrders($userExId,$dateFrom, $dateTo);
+            $offers = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetPriceOffer($userExId,$dateFrom, $dateTo);
+            $documents = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetDeliveryOrder($userExId,$dateFrom, $dateTo);
+            $aiInvoice = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetAiInvoice($userExId,$dateFrom, $dateTo);
+            $ciInvoice = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetCiInvoice($userExId,$dateFrom, $dateTo);
             $returnDocs = (new PriorityDocuments($this->url, $this->username, $this->password, $this->httpClient))->GetReturnDocs($userExId,$dateFrom, $dateTo);
         }
 
@@ -220,7 +228,6 @@ class Priority implements ErpInterface
     {
         $endpoint = "/LOGPART";
         $queryExtras = [
-            '$filter' => "SPEC1 eq 'מוצר'",
             '$expand' => "PARTARC_SUBFORM"
         ];
         $queryString = http_build_query($queryExtras);
@@ -235,6 +242,7 @@ class Priority implements ErpInterface
             $dto->categoryDescription = $itemRec['FAMILYDES'];
             $dto->barcode = $itemRec['BARCODE'];
             $dto->title = $itemRec['PARTDES'];
+            $dto->packQuantity = $itemRec['CONV'];
             if($itemRec['STATDES'] === 'פעיל'){
                 $dto->status = true;
             } else {
@@ -245,6 +253,7 @@ class Priority implements ErpInterface
             $dto->Extra3 = $itemRec['SPEC3'];
             $dto->Extra4 = $itemRec['SPEC4'];
             $dto->Extra5 = $itemRec['SPEC5'];
+            $dto->Extra6 = $itemRec['SPEC6'];
             $dto->Extra7 = $itemRec['SPEC7'];
             $dto->Extra8 = $itemRec['SPEC8'];
             $dto->Extra9 = $itemRec['SPEC9'];
@@ -293,7 +302,6 @@ class Priority implements ErpInterface
         }
         return $dtoRes;
     }
-
     public function GetUsers(): UsersDto
     {
         $response = $this->GetRequest('/CUSTOMERS?$expand=CUSTDISCOUNT_SUBFORM,CUSTPLIST_SUBFORM');
@@ -432,17 +440,32 @@ class Priority implements ErpInterface
     {
 
     }
-
     public function GetMigvansOnline(?array $skus): MigvansDto
     {
         // TODO: Implement GetMigvansOnline() method.
     }
-
     public function GetStocks(): StocksDto
     {
-        // TODO: Implement GetStocks() method.
-    }
 
+        $endpoint = "/LOGPART";
+        $queryExtras = [
+            '$expand' => "LOGCOUNTERS_SUBFORM"
+        ];
+        $queryString = http_build_query($queryExtras);
+        $urlQuery = $endpoint . '?' . $queryString;
+
+        $response = $this->GetRequest($urlQuery);
+        $result = new StocksDto();
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['LOGCOUNTERS_SUBFORM'] as $subRec) {
+                $obj = new StockDto();
+                $obj->sku = $itemRec['PARTNAME'];
+                $obj->stock = $subRec['BALANCE'];
+                $result->stocks[] = $obj;
+            }
+        }
+        return $result;
+    }
     public function GetCategories(): CategoriesDto
     {
         $data = $this->GetRequest('/FAMILY_LOG');
@@ -457,16 +480,18 @@ class Priority implements ErpInterface
 
         return  $categoryResult;
     }
-
     public function GetPriceListDetailed(): PriceListsDetailedDto
     {
-        $endpoint = "/PRICELIST";
-        $queryExtras = [
-            '$expand' => "PARTPRICE2_SUBFORM"
-        ];
-        $queryString = http_build_query($queryExtras);
-        $urlQuery = $endpoint . '?' . $queryString;
+//        $endpoint = "/PRICELIST";
+//        $queryExtras = [
+//            '$expand' => "PARTPRICE2_SUBFORM"
+//        ];
+//        $queryString = http_build_query($queryExtras);
+//        $urlQuery = $endpoint . '?' . $queryString;
+        $urlQuery = '/PRICELIST?$expand=PARTPRICE2_SUBFORM&$top=100&$skip=600';
+//        dd($urlQuery);
         $response = $this->GetRequest($urlQuery);
+//        dd($response);
         $dto = new PriceListsDetailedDto();
         foreach ($response as $itemRec){
             foreach ($itemRec['PARTPRICE2_SUBFORM'] as $subRec){
@@ -481,7 +506,6 @@ class Priority implements ErpInterface
 
         return $dto;
     }
-
     private function ImplodeQueryByMakats(array $makats)
     {
         $filterParts = [];
@@ -492,6 +516,5 @@ class Priority implements ErpInterface
         $filterString = implode(' or ', $filterParts);
         return $filterString;
     }
-
 
 }

@@ -2,12 +2,14 @@
 
 namespace App\Command;
 
+use App\Cron\GetBasePrice;
 use App\Cron\GetCategories;
 use App\Cron\GetMainAttributes;
 use App\Cron\GetMigvans;
 use App\Cron\GetPriceList;
 use App\Cron\GetPriceListDetailed;
 use App\Cron\GetProducts;
+use App\Cron\GetStocks;
 use App\Cron\GetSubAttributes;
 use App\Cron\GetSubProducts;
 use App\Cron\GetSubUsers;
@@ -79,51 +81,61 @@ class CronManagerCommand extends Command
 //            // ...
 //        }
 
-        (new GetPriceList(
-            $this->httpClient,
-            $this->priceListRepository
-        ))->sync();
-        (new GetUsers($this->httpClient, $this->userRepository, $this->priceListRepository))->sync();
-        (new GetSubUsers($this->httpClient, $this->userRepository, $this->subUsersRepository))->sync();
-        (new GetCategories(
-            $this->httpClient,
-            $this->categoryRepository
-        ))->sync();
+//        (new GetPriceList(
+//            $this->httpClient,
+//            $this->priceListRepository
+//        ))->sync();
+//        (new GetUsers($this->httpClient, $this->userRepository, $this->priceListRepository))->sync();
+////        (new GetSubUsers($this->httpClient, $this->userRepository, $this->subUsersRepository))->sync();
+//        (new GetCategories(
+//            $this->httpClient,
+//            $this->categoryRepository,
+//        ))->sync();
         (new GetProducts(
             $this->httpClient,
             $this->categoryRepository,
             $this->productRepository
         ))->sync();
-        (new GetMainAttributes(
-            $this->httpClient,
-            $this->attributeMainRepository
-        ))->sync();
-        (new GetSubAttributes(
-            $this->httpClient,
-            $this->SubAttributeRepository,
-            $this->productRepository,
-            $this->attributeMainRepository
-        ))->sync();
-        (new GetSubProducts(
-            $this->httpClient,
-            $this->subProductRepository,
-            $this->productRepository
-        ))->sync();
+//        (new GetMainAttributes(
+//            $this->httpClient,
+//            $this->attributeMainRepository
+//        ))->sync();
+//        (new GetSubAttributes(
+//            $this->httpClient,
+//            $this->SubAttributeRepository,
+//            $this->productRepository,
+//            $this->attributeMainRepository
+//        ))->sync();
+//        (new GetSubProducts(
+//            $this->httpClient,
+//            $this->subProductRepository,
+//            $this->productRepository
+//        ))->sync();
 
-        (new GetPriceListDetailed(
-            $this->httpClient,
-            $this->productRepository,
-            $this->priceListRepository,
-            $this->priceListDetailedRepository
-        ))->sync();
-        (new GetMigvans(
-            $this->httpClient,
-            $this->migvanRepository,
-            $this->userRepository,
-            $this->productRepository
-        ))->sync();
+//        (new GetPriceListDetailed(
+//            $this->httpClient,
+//            $this->productRepository,
+//            $this->priceListRepository,
+//            $this->priceListDetailedRepository
+//        ))->sync();
+//        (new GetMigvans(
+//            $this->httpClient,
+//            $this->migvanRepository,
+//            $this->userRepository,
+//            $this->productRepository
+//        ))->sync();
+//        (new GetStocks(
+//            $this->httpClient,
+//            $this->productRepository
+//        ))->sync();
+
+//        (new GetBasePrice(
+//            $this->httpClient,
+//            $this->productRepository
+//        ))->sync();
+
+
         $io->success('All Cron Function Executed');
-
         return Command::SUCCESS;
     }
 }

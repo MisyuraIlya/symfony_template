@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
 #[ApiResource(
@@ -76,6 +75,7 @@ class MediaObject
     #[Assert\NotNull(groups: ['media_object_create'])]
     public ?File $file = null;
 
+    #[Groups(['product:read','category:read','productImages:read'])]
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
@@ -87,12 +87,18 @@ class MediaObject
     #[Groups(['media_object:read', 'media_object_create'])]
     private ?string $source = null;
 
-//    #[ORM\OneToMany(mappedBy: 'mediaObject', targetEntity: ProductImage::class, orphanRemoval: true)]
-//    private Collection $productImages;
+    #[ORM\OneToMany(mappedBy: 'mediaObject', targetEntity: ProductImages::class, orphanRemoval: true)]
+    private Collection $productImages;
+
+    #[ORM\OneToMany(mappedBy: 'MediaObject', targetEntity: Category::class, orphanRemoval: true)]
+    private Collection $categories;
+
+
 
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,33 +130,64 @@ class MediaObject
         return $this;
     }
 
-//    /**
-//     * @return Collection<int, ProductImage>
-//     */
-//    public function getProductImages(): Collection
-//    {
-//        return $this->productImages;
-//    }
+    /**
+     * @return Collection<int, ProductImages>
+     */
+    public function getProductImages(): Collection
+    {
+        return $this->productImages;
+    }
 
-//    public function addProductImage(ProductImage $productImage): static
-//    {
-//        if (!$this->productImages->contains($productImage)) {
-//            $this->productImages->add($productImage);
-//            $productImage->setMediaObject($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeProductImage(ProductImage $productImage): static
-//    {
-//        if ($this->productImages->removeElement($productImage)) {
-//            // set the owning side to null (unless already changed)
-//            if ($productImage->getMediaObject() === $this) {
-//                $productImage->setMediaObject(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+    public function addProductImage(ProductImages $productImage): static
+    {
+        if (!$this->productImages->contains($productImage)) {
+            $this->productImages->add($productImage);
+            $productImage->setMediaObject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductImage(ProductImages $productImage): static
+    {
+        if ($this->productImages->removeElement($productImage)) {
+            // set the owning side to null (unless already changed)
+            if ($productImage->getMediaObject() === $this) {
+                $productImage->setMediaObject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setMediaObject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getMediaObject() === $this) {
+                $category->setMediaObject(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

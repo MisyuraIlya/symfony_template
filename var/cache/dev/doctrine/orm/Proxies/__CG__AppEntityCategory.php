@@ -16,6 +16,7 @@ class Category extends \App\Entity\Category implements \Doctrine\ORM\Proxy\Inter
     }
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [
+        "\0".parent::class."\0".'MediaObject' => [parent::class, 'MediaObject', null],
         "\0".parent::class."\0".'categories' => [parent::class, 'categories', null],
         "\0".parent::class."\0".'description' => [parent::class, 'description', null],
         "\0".parent::class."\0".'extId' => [parent::class, 'extId', null],
@@ -29,6 +30,7 @@ class Category extends \App\Entity\Category implements \Doctrine\ORM\Proxy\Inter
         "\0".parent::class."\0".'productsLvl2' => [parent::class, 'productsLvl2', null],
         "\0".parent::class."\0".'productsLvl3' => [parent::class, 'productsLvl3', null],
         "\0".parent::class."\0".'title' => [parent::class, 'title', null],
+        'MediaObject' => [parent::class, 'MediaObject', null],
         'categories' => [parent::class, 'categories', null],
         'description' => [parent::class, 'description', null],
         'extId' => [parent::class, 'extId', null],

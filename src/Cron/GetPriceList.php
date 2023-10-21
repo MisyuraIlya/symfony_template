@@ -19,7 +19,6 @@ class GetPriceList
     public function sync()
     {
         $response = (new ErpManager($this->httpClient))->GetPriceList();
-
         foreach ($response->priceLists as $itemRec){
             $priceList = $this->priceListRepository->findOneByExtId($itemRec->priceListExtId);
             if(!$priceList){

@@ -9,48 +9,70 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['history:read']],
+    denormalizationContext: ['groups' => ['history:write']],
+)]
 class History
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['history:read','history:read'])]
     private ?int $id = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $orderExtId = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\ManyToOne(inversedBy: 'histories')]
     private ?User $user = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deliveryDate = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $total = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $orderComment = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $orderStatus = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $deliveryPrice = null;
 
+    #[Groups(['history:read','history:read'])]
     #[ORM\OneToMany(mappedBy: 'history', targetEntity: HistoryDetailed::class)]
     private Collection $historyDetaileds;
+
+    #[ORM\Column(length: 255)]
+    private ?string $documentType = null;
+
+    #[ORM\ManyToOne(inversedBy: 'histories')]
+    private ?Agent $isAgent = null;
 
     public function __construct()
     {
@@ -208,6 +230,30 @@ class History
                 $historyDetailed->setHistoryId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDocumentType(): ?string
+    {
+        return $this->documentType;
+    }
+
+    public function setDocumentType(string $documentType): static
+    {
+        $this->documentType = $documentType;
+
+        return $this;
+    }
+
+    public function getIsAgent(): ?Agent
+    {
+        return $this->isAgent;
+    }
+
+    public function setIsAgent(?Agent $isAgent): static
+    {
+        $this->isAgent = $isAgent;
 
         return $this;
     }

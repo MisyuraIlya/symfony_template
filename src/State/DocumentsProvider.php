@@ -6,15 +6,19 @@ use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\ApiResource\Documents;
+use App\Enum\DocumentsType;
 use App\Erp\ErpManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use ApiPlatform\State\Pagination\TraversablePaginator;
+use ApiPlatform\State\Pagination\Pagination;
 
 class DocumentsProvider implements ProviderInterface
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly RequestStack $requestStack,
+        private Pagination $pagination,
     )
     {
         $this->userExId = $this->requestStack->getCurrentRequest()->query->get('userExId');
@@ -28,7 +32,20 @@ class DocumentsProvider implements ProviderInterface
     {
 
         if ($operation instanceof CollectionOperationInterface) {
-            return $this->CollectionHandler($operation,$uriVariables,$context);
+            $currentPage = $this->pagination->getPage($context);
+            $itemsPerPage = $this->pagination->getLimit($operation, $context);
+            $offset = $this->pagination->getOffset($operation, $context);
+
+            $result = $this->CollectionHandler($operation,$uriVariables,$context);
+            $totalItems = count($result->documents);
+            $start = ($currentPage - 1) * $itemsPerPage;
+            $slicedResult = array_slice($result->documents, $start, $itemsPerPage);
+            return new TraversablePaginator(
+                new \ArrayIterator($slicedResult),
+                $currentPage,
+                $itemsPerPage,
+                $totalItems,
+            );
         }
         return $this->GetHandler($operation,$uriVariables,$context);
     }
@@ -46,6 +63,8 @@ class DocumentsProvider implements ProviderInterface
             $this->documentType,
             $this->limit
         );
+
+//        $response->selectBox = DocumentsType::getAllDetails();
 
         return $response;
 

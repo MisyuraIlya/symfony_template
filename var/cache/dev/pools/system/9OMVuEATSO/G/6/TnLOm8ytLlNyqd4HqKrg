@@ -12,6 +12,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'App\\ApiResource\\Cartesset',
                     'App\\ApiResource\\Documents',
                     'App\\ApiResource\\SendOrder',
+                    'App\\ApiResource\\XlxDocuments',
                     'App\\Entity\\AttributeMain',
                     'App\\Entity\\Category',
                     'App\\Entity\\History',
