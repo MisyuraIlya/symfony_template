@@ -103,7 +103,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
             ],
             'normalizationContext' => [
-                null,
+                [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
             ],
             'denormalizationContext' => [
                 null,
@@ -354,12 +358,36 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'normalizationContext' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
+                4 => [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
+                [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
+                [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
+                8 => [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
+                10 => [
+                    'groups' => [
+                        'historyDetailed:read',
+                    ],
+                ],
             ],
             'denormalizationContext' => [
                 2 => null,
@@ -434,12 +462,24 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'filters' => [
-                2 => [],
-                4 => [],
-                [],
-                [],
-                8 => [],
-                10 => [],
+                2 => [
+                    'annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter',
+                ],
+                4 => [
+                    'annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter',
+                ],
+                [
+                    'annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter',
+                ],
+                [
+                    'annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter',
+                ],
+                8 => [
+                    'annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter',
+                ],
+                10 => [
+                    'annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter',
+                ],
             ],
             'validationContext' => [
                 2 => null,

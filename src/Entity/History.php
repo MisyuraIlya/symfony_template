@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\HistoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['history:read']],
     denormalizationContext: ['groups' => ['history:write']],
 )]
+#[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 class History
 {
     #[ORM\Id]

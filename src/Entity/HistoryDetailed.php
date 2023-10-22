@@ -2,36 +2,56 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\HistoryDetailedRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Product;
 use App\Entity\History;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: HistoryDetailedRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['historyDetailed:read'],
+    ],
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'history.id' => 'exact',
+    ]
+)]
 class HistoryDetailed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['historyDetailed:read'])]
     private ?int $id = null;
 
+    #[Groups(['historyDetailed:read'])]
     #[ORM\ManyToOne(inversedBy: 'historyDetaileds')]
     private ?History $history = null;
 
+    #[Groups(['historyDetailed:read'])]
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     private ?Product $product = null;
 
+    #[Groups(['historyDetailed:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $singlePrice = null;
 
+    #[Groups(['historyDetailed:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
 
+    #[Groups(['historyDetailed:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
+    #[Groups(['historyDetailed:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $total = null;
 

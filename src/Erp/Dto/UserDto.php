@@ -11,6 +11,7 @@ class UserDto
     public ?string $phone;
     public ?string $address;
     public ?string $town;
+    public ?string $hp;
     public ?int $maxObligo;
     public ?int $maxCredit;
     public ?int $globalDiscount;

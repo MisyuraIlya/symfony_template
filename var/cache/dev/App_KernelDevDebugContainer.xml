@@ -5118,6 +5118,8 @@
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="annotated_app_entity_category_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_category_api_platform_doctrine_orm_filter_search_filter"/>
+        <argument key="annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter" type="service_closure" id="annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter"/>
+        <argument key="annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_order_filter" type="service_closure" id="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_order_filter"/>
         <argument key="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter"/>
@@ -6586,6 +6588,27 @@
       <argument type="service" id="logger" on-invalid="ignore"/>
       <argument type="collection">
         <argument key="lvlNumber">exact</argument>
+      </argument>
+      <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
+      <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
+    </service>
+    <service id="annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter" class="ApiPlatform\Doctrine\Orm\Filter\DateFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument type="collection">
+        <argument key="createdAt">null</argument>
+      </argument>
+      <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
+    </service>
+    <service id="annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter" class="ApiPlatform\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument type="service" id="api_platform.symfony.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument type="collection">
+        <argument key="history.id">exact</argument>
       </argument>
       <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
@@ -8737,7 +8760,7 @@
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.vcYFt0B" alias=".service_locator.dwy0.Hv"/>
     <service id=".service_locator.bnaLdkn" alias="api_platform.serializer_locator"/>
-    <service id=".service_locator.Jk9RMDS" alias="api_platform.filter_locator"/>
+    <service id=".service_locator.YJ_88.6" alias="api_platform.filter_locator"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.ZTS8xoE" alias=".service_locator.cYPtYzc"/>
     <service id=".service_locator.Lkb6s9e" alias=".service_locator.tUIAove"/>

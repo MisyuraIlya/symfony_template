@@ -85,17 +85,17 @@ class CronManagerCommand extends Command
 //            $this->httpClient,
 //            $this->priceListRepository
 //        ))->sync();
-//        (new GetUsers($this->httpClient, $this->userRepository, $this->priceListRepository))->sync();
+        (new GetUsers($this->httpClient, $this->userRepository, $this->priceListRepository))->sync();
 ////        (new GetSubUsers($this->httpClient, $this->userRepository, $this->subUsersRepository))->sync();
 //        (new GetCategories(
 //            $this->httpClient,
 //            $this->categoryRepository,
 //        ))->sync();
-        (new GetProducts(
-            $this->httpClient,
-            $this->categoryRepository,
-            $this->productRepository
-        ))->sync();
+//        (new GetProducts(
+//            $this->httpClient,
+//            $this->categoryRepository,
+//            $this->productRepository
+//        ))->sync();
 //        (new GetMainAttributes(
 //            $this->httpClient,
 //            $this->attributeMainRepository

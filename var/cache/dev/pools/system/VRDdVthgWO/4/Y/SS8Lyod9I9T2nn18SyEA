@@ -490,12 +490,24 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'filters' => [
-                2 => [],
-                4 => [],
-                [],
-                [],
-                8 => [],
-                10 => [],
+                2 => [
+                    'annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter',
+                ],
+                4 => [
+                    'annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter',
+                ],
+                [
+                    'annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter',
+                ],
+                [
+                    'annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter',
+                ],
+                8 => [
+                    'annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter',
+                ],
+                10 => [
+                    'annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter',
+                ],
             ],
             'validationContext' => [
                 2 => null,

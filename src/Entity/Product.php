@@ -118,11 +118,11 @@ class Product
     #[Groups(['product:read','category:read'])]
     private ?int $id = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','historyDetailed:read'])]
     #[ORM\Column(length: 255)]
     private ?string $sku = null;
 
-    #[Groups(['product:read','category:read','product:write'])]
+    #[Groups(['product:read','category:read','product:write','historyDetailed:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
