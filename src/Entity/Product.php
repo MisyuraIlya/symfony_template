@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Elasticsearch\Filter\TermFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Controller\GetProductsByMigvan;
 use App\Repository\ProductRepository;
 use App\State\ProductProvider;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -54,14 +55,11 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
 
 #[ApiResource(
-    uriTemplate: '/catalog/{lvl1}',
     operations: [
         new GetCollection(
-        ),
-        new Get(),
-    ],
-    uriVariables: [
-        'lvl1' => new Link(fromProperty: 'productsLvl1', fromClass: Category::class),
+            uriTemplate: '/catalog/{lvl1}/{lvl2}/{lvl3}',
+            controller: GetProductsByMigvan::class, // IF CLIENT WISH MIGVAN PER CLIENT
+        )
     ],
     normalizationContext: [
         'groups' => ['product:read'],
@@ -74,41 +72,41 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 
 )]
 
-#[ApiResource(
-    uriTemplate: '/catalog/lvl1/{lvl2}',
-    operations: [
-        new GetCollection(),
-        new Get(),
-    ],
-    uriVariables: [
-        'lvl2' => new Link(fromProperty: 'productsLvl2', fromClass: Category::class),
-    ],
-    normalizationContext: [
-        'groups' => ['product:read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['product:write'],
-    ],
-    paginationClientItemsPerPage: true,
-)]
-#[ApiResource(
-    uriTemplate: '/catalog/lvl1/lvl2/{lvl3}',
-    operations: [
-        new GetCollection(),
-        new Get()
-    ],
-    uriVariables: [
-        'lvl3' => new Link(fromProperty: 'productsLvl3', fromClass: Category::class),
-    ],
-    normalizationContext: [
-        'groups' => ['product:read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['product:write'],
-    ],
-    order: ['orden' => 'ASC'],
-    paginationClientItemsPerPage: true,
-)]
+//#[ApiResource(
+//    uriTemplate: '/catalog/lvl1/{lvl2}',
+//    operations: [
+//        new GetCollection(),
+//        new Get(),
+//    ],
+//    uriVariables: [
+//        'lvl2' => new Link(fromProperty: 'productsLvl2', fromClass: Category::class),
+//    ],
+//    normalizationContext: [
+//        'groups' => ['product:read'],
+//    ],
+//    denormalizationContext: [
+//        'groups' => ['product:write'],
+//    ],
+//    paginationClientItemsPerPage: true,
+//)]
+//#[ApiResource(
+//    uriTemplate: '/catalog/lvl1/lvl2/{lvl3}',
+//    operations: [
+//        new GetCollection(),
+//        new Get()
+//    ],
+//    uriVariables: [
+//        'lvl3' => new Link(fromProperty: 'productsLvl3', fromClass: Category::class),
+//    ],
+//    normalizationContext: [
+//        'groups' => ['product:read'],
+//    ],
+//    denormalizationContext: [
+//        'groups' => ['product:write'],
+//    ],
+//    order: ['orden' => 'ASC'],
+//    paginationClientItemsPerPage: true,
+//)]
 
 class Product
 {

@@ -17,21 +17,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         clone $p['ApiPlatform\\Metadata\\Operations'],
         clone $p['ApiPlatform\\Metadata\\GetCollection'],
         clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\Get'],
         clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\ApiResource'],
-        clone $p['ApiPlatform\\Metadata\\Operations'],
-        clone $p['ApiPlatform\\Metadata\\GetCollection'],
-        clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\Get'],
-        clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\ApiResource'],
-        clone $p['ApiPlatform\\Metadata\\Operations'],
-        clone $p['ApiPlatform\\Metadata\\GetCollection'],
-        clone $p['ApiPlatform\\Metadata\\Link'],
-        clone $p['ApiPlatform\\Metadata\\Get'],
         clone $p['ApiPlatform\\Metadata\\Link'],
         clone $p['ApiPlatform\\Metadata\\Link'],
     ],
@@ -41,8 +27,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'operations' => [
                 $o[1],
                 11 => $o[12],
-                18 => $o[19],
-                25 => $o[26],
             ],
             'provider' => [
                 'App\\State\\ProductProvider',
@@ -50,149 +34,99 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'uriTemplate' => [
                 null,
-                11 => '/catalog/{lvl1}',
-                18 => '/catalog/lvl1/{lvl2}',
-                25 => '/catalog/lvl1/lvl2/{lvl3}',
+                11 => null,
             ],
             'shortName' => [
                 'Product',
                 11 => 'Product',
-                18 => 'Product',
-                25 => 'Product',
             ],
             'description' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'types' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'formats' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'inputFormats' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'outputFormats' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'uriVariables' => [
                 [
                     'id' => $o[10],
                 ],
                 11 => [
-                    'lvl1' => $o[17],
-                ],
-                18 => [
-                    'lvl2' => $o[24],
-                ],
-                25 => [
-                    'lvl3' => $o[31],
+                    'id' => $o[17],
                 ],
             ],
             'routePrefix' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'defaults' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'requirements' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'options' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'stateless' => [
                 true,
                 11 => true,
-                18 => true,
-                25 => true,
             ],
             'sunset' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'acceptPatch' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'status' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'host' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'schemes' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'condition' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'controller' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'class' => [
                 'App\\Entity\\Product',
                 11 => 'App\\Entity\\Product',
-                18 => 'App\\Entity\\Product',
-                25 => 'App\\Entity\\Product',
             ],
             'urlGenerationStrategy' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'deprecationReason' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'cacheHeaders' => [
                 [
@@ -203,20 +137,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                 ],
                 11 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                18 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                25 => [
                     'vary' => [
                         'Content-Type',
                         'Authorization',
@@ -235,16 +155,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'product:read',
                     ],
                 ],
-                18 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
-                25 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
             ],
             'denormalizationContext' => [
                 [
@@ -257,224 +167,140 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'product:write',
                     ],
                 ],
-                18 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
-                25 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
             ],
             'collectDenormalizationErrors' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'hydraContext' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'openapiContext' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'openapi' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'validationContext' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'filters' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'elasticsearch' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'order' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => [
-                    'orden' => 'ASC',
-                ],
             ],
             'fetchPartial' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'forceEager' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationClientEnabled' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationClientItemsPerPage' => [
                 true,
                 11 => true,
-                18 => true,
-                25 => true,
             ],
             'paginationClientPartial' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationViaCursor' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationEnabled' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationFetchJoinCollection' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationUseOutputWalkers' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationItemsPerPage' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationMaximumItemsPerPage' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationPartial' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'paginationType' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'security' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'securityMessage' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'securityPostDenormalize' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'securityPostDenormalizeMessage' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'securityPostValidation' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'securityPostValidationMessage' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'compositeIdentifier' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'exceptionToStatus' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'queryParameterValidationEnabled' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'graphQlOperations' => [
                 [],
                 11 => [],
-                18 => [],
-                25 => [],
             ],
             'stateOptions' => [
                 null,
                 11 => null,
-                18 => null,
-                25 => null,
             ],
             'extraProperties' => [
                 [
                     'standard_put' => true,
                 ],
                 11 => [
-                    'standard_put' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
-                18 => [
-                    'standard_put' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
-                25 => [
                     'standard_put' => true,
                     'is_alternate_resource_metadata' => true,
                 ],
@@ -506,32 +332,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
                 12 => [
                     [
-                        '_api_/catalog/{lvl1}_get_collection',
+                        '_api_/catalog/{lvl1}/{lvl2}/{lvl3}_get_collection',
                         $o[13],
-                    ],
-                    [
-                        '_api_/catalog/{lvl1}_get',
-                        $o[15],
-                    ],
-                ],
-                19 => [
-                    [
-                        '_api_/catalog/lvl1/{lvl2}_get_collection',
-                        $o[20],
-                    ],
-                    [
-                        '_api_/catalog/lvl1/{lvl2}_get',
-                        $o[22],
-                    ],
-                ],
-                26 => [
-                    [
-                        '_api_/catalog/lvl1/lvl2/{lvl3}_get_collection',
-                        $o[27],
-                    ],
-                    [
-                        '_api_/catalog/lvl1/lvl2/{lvl3}_get',
-                        $o[29],
                     ],
                 ],
             ],
@@ -544,11 +346,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'Product',
                 8 => 'Product',
                 13 => 'Product',
-                15 => 'Product',
-                20 => 'Product',
-                22 => 'Product',
-                27 => 'Product',
-                29 => 'Product',
             ],
             'class' => [
                 2 => 'App\\Entity\\Product',
@@ -557,11 +354,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'App\\Entity\\Product',
                 8 => 'App\\Entity\\Product',
                 13 => 'App\\Entity\\Product',
-                15 => 'App\\Entity\\Product',
-                20 => 'App\\Entity\\Product',
-                22 => 'App\\Entity\\Product',
-                27 => 'App\\Entity\\Product',
-                29 => 'App\\Entity\\Product',
             ],
             'paginationEnabled' => [
                 2 => null,
@@ -570,11 +362,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationType' => [
                 2 => null,
@@ -583,11 +370,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationItemsPerPage' => [
                 2 => null,
@@ -596,11 +378,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationMaximumItemsPerPage' => [
                 2 => null,
@@ -609,11 +386,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationPartial' => [
                 2 => null,
@@ -622,11 +394,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationClientEnabled' => [
                 2 => null,
@@ -635,11 +402,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationClientItemsPerPage' => [
                 2 => true,
@@ -648,11 +410,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 true,
                 8 => true,
                 13 => true,
-                15 => true,
-                20 => true,
-                22 => true,
-                27 => true,
-                29 => true,
             ],
             'paginationClientPartial' => [
                 2 => null,
@@ -661,11 +418,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationFetchJoinCollection' => [
                 2 => null,
@@ -674,11 +426,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'paginationUseOutputWalkers' => [
                 2 => null,
@@ -687,11 +434,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'order' => [
                 2 => null,
@@ -700,15 +442,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => [
-                    'orden' => 'ASC',
-                ],
-                29 => [
-                    'orden' => 'ASC',
-                ],
             ],
             'description' => [
                 2 => null,
@@ -717,11 +450,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'normalizationContext' => [
                 2 => [
@@ -750,31 +478,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                 ],
                 13 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
-                15 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
-                20 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
-                22 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
-                27 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
-                29 => [
                     'groups' => [
                         'product:read',
                     ],
@@ -811,31 +514,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'product:write',
                     ],
                 ],
-                15 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
-                20 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
-                22 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
-                27 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
-                29 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
             ],
             'collectDenormalizationErrors' => [
                 2 => null,
@@ -844,11 +522,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'security' => [
                 2 => null,
@@ -857,11 +530,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'securityMessage' => [
                 2 => null,
@@ -870,11 +538,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'securityPostDenormalize' => [
                 2 => null,
@@ -883,11 +546,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'securityPostDenormalizeMessage' => [
                 2 => null,
@@ -896,11 +554,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'securityPostValidation' => [
                 2 => null,
@@ -909,11 +562,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'securityPostValidationMessage' => [
                 2 => null,
@@ -922,11 +570,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'deprecationReason' => [
                 2 => null,
@@ -935,11 +578,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'filters' => [
                 2 => [
@@ -978,36 +616,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
                 ],
-                15 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
-                ],
-                20 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
-                ],
-                22 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
-                ],
-                27 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
-                ],
-                29 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
-                    'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
-                ],
             ],
             'validationContext' => [
                 2 => null,
@@ -1016,11 +624,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'elasticsearch' => [
                 2 => null,
@@ -1029,11 +632,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'urlGenerationStrategy' => [
                 2 => null,
@@ -1042,11 +640,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'read' => [
                 2 => null,
@@ -1055,11 +648,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'deserialize' => [
                 2 => null,
@@ -1068,11 +656,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'validate' => [
                 2 => null,
@@ -1081,11 +664,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'write' => [
                 2 => null,
@@ -1094,11 +672,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'serialize' => [
                 2 => null,
@@ -1107,11 +680,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'fetchPartial' => [
                 2 => null,
@@ -1120,11 +688,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'forceEager' => [
                 2 => null,
@@ -1133,11 +696,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'priority' => [
                 2 => 0,
@@ -1146,11 +704,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 3,
                 8 => 4,
                 13 => 0,
-                15 => 1,
-                20 => 0,
-                22 => 1,
-                27 => 0,
-                29 => 1,
             ],
             'name' => [
                 2 => '_api_/products/{id}{._format}_get',
@@ -1158,12 +711,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 '_api_/products{._format}_post',
                 '_api_/products/{id}{._format}_put',
                 8 => '_api_/products/{id}{._format}_patch',
-                13 => '_api_/catalog/{lvl1}_get_collection',
-                15 => '_api_/catalog/{lvl1}_get',
-                20 => '_api_/catalog/lvl1/{lvl2}_get_collection',
-                22 => '_api_/catalog/lvl1/{lvl2}_get',
-                27 => '_api_/catalog/lvl1/lvl2/{lvl3}_get_collection',
-                29 => '_api_/catalog/lvl1/lvl2/{lvl3}_get',
+                13 => '_api_/catalog/{lvl1}/{lvl2}/{lvl3}_get_collection',
             ],
             'provider' => [
                 2 => 'App\\State\\ProductProvider',
@@ -1172,11 +720,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'App\\State\\ProductProvider',
                 8 => 'App\\State\\ProductProvider',
                 13 => 'App\\State\\ProductProvider',
-                15 => 'App\\State\\ProductProvider',
-                20 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
-                22 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
-                27 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
-                29 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
             ],
             'processor' => [
                 2 => 'api_platform.doctrine.orm.state.persist_processor',
@@ -1185,11 +728,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'api_platform.doctrine.orm.state.persist_processor',
                 8 => 'api_platform.doctrine.orm.state.persist_processor',
                 13 => 'api_platform.doctrine.orm.state.persist_processor',
-                15 => 'api_platform.doctrine.orm.state.persist_processor',
-                20 => 'api_platform.doctrine.orm.state.persist_processor',
-                22 => 'api_platform.doctrine.orm.state.persist_processor',
-                27 => 'api_platform.doctrine.orm.state.persist_processor',
-                29 => 'api_platform.doctrine.orm.state.persist_processor',
             ],
             'stateOptions' => [
                 2 => null,
@@ -1198,11 +736,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'extraProperties' => [
                 2 => [
@@ -1225,31 +758,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'user_defined_uri_template' => true,
                     'is_alternate_resource_metadata' => true,
                 ],
-                15 => [
-                    'standard_put' => true,
-                    'user_defined_uri_template' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
-                20 => [
-                    'standard_put' => true,
-                    'user_defined_uri_template' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
-                22 => [
-                    'standard_put' => true,
-                    'user_defined_uri_template' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
-                27 => [
-                    'standard_put' => true,
-                    'user_defined_uri_template' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
-                29 => [
-                    'standard_put' => true,
-                    'user_defined_uri_template' => true,
-                    'is_alternate_resource_metadata' => true,
-                ],
             ],
         ],
         'ApiPlatform\\Metadata\\HttpOperation' => [
@@ -1260,11 +768,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'method' => [
                 2 => 'GET',
@@ -1273,11 +776,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'PUT',
                 8 => 'PATCH',
                 13 => 'GET',
-                15 => 'GET',
-                20 => 'GET',
-                22 => 'GET',
-                27 => 'GET',
-                29 => 'GET',
             ],
             'uriTemplate' => [
                 2 => '/products/{id}{._format}',
@@ -1285,12 +783,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 '/products{._format}',
                 '/products/{id}{._format}',
                 8 => '/products/{id}{._format}',
-                13 => '/catalog/{lvl1}',
-                15 => '/catalog/{lvl1}',
-                20 => '/catalog/lvl1/{lvl2}',
-                22 => '/catalog/lvl1/{lvl2}',
-                27 => '/catalog/lvl1/lvl2/{lvl3}',
-                29 => '/catalog/lvl1/lvl2/{lvl3}',
+                13 => '/catalog/{lvl1}/{lvl2}/{lvl3}',
             ],
             'types' => [
                 2 => null,
@@ -1299,11 +792,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'inputFormats' => [
                 2 => [
@@ -1366,61 +854,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'text/html',
                     ],
                 ],
-                15 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                20 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                22 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                27 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                29 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
             ],
             'outputFormats' => [
                 2 => [
@@ -1489,61 +922,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'text/html',
                     ],
                 ],
-                15 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                20 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                22 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                27 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                29 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
             ],
             'uriVariables' => [
                 2 => [
@@ -1558,21 +936,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
                 13 => [
                     'lvl1' => $o[14],
-                ],
-                15 => [
-                    'lvl1' => $o[16],
-                ],
-                20 => [
-                    'lvl2' => $o[21],
-                ],
-                22 => [
-                    'lvl2' => $o[23],
-                ],
-                27 => [
-                    'lvl3' => $o[28],
-                ],
-                29 => [
-                    'lvl3' => $o[30],
+                    'lvl2' => $o[15],
+                    'lvl3' => $o[16],
                 ],
             ],
             'routePrefix' => [
@@ -1582,11 +947,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'routeName' => [
                 2 => null,
@@ -1595,11 +955,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'defaults' => [
                 2 => null,
@@ -1608,11 +963,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'requirements' => [
                 2 => null,
@@ -1621,11 +971,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'options' => [
                 2 => null,
@@ -1634,11 +979,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'stateless' => [
                 2 => true,
@@ -1647,11 +987,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 true,
                 8 => true,
                 13 => true,
-                15 => true,
-                20 => true,
-                22 => true,
-                27 => true,
-                29 => true,
             ],
             'sunset' => [
                 2 => null,
@@ -1660,11 +995,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'acceptPatch' => [
                 2 => 'application/merge-patch+json',
@@ -1673,11 +1003,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'application/merge-patch+json',
                 8 => 'application/merge-patch+json',
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'host' => [
                 2 => null,
@@ -1686,11 +1011,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'schemes' => [
                 2 => null,
@@ -1699,11 +1019,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'condition' => [
                 2 => null,
@@ -1712,11 +1027,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'controller' => [
                 2 => null,
@@ -1724,12 +1034,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 null,
                 8 => null,
-                13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
+                13 => 'App\\Controller\\GetProductsByMigvan',
             ],
             'cacheHeaders' => [
                 2 => [
@@ -1774,41 +1079,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'Origin',
                     ],
                 ],
-                15 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                20 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                22 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                27 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                29 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
             ],
             'hydraContext' => [
                 2 => null,
@@ -1817,11 +1087,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'openapiContext' => [
                 2 => null,
@@ -1830,11 +1095,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'openapi' => [
                 2 => null,
@@ -1843,11 +1103,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'exceptionToStatus' => [
                 2 => null,
@@ -1856,11 +1111,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
             'queryParameterValidationEnabled' => [
                 2 => null,
@@ -1869,11 +1119,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 8 => null,
                 13 => null,
-                15 => null,
-                20 => null,
-                22 => null,
-                27 => null,
-                29 => null,
             ],
         ],
         'ApiPlatform\\Metadata\\Link' => [
@@ -1883,29 +1128,19 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 9 => 'id',
                 'id',
                 14 => 'lvl1',
-                16 => 'lvl1',
-                'lvl1',
-                21 => 'lvl2',
-                23 => 'lvl2',
                 'lvl2',
-                28 => 'lvl3',
-                30 => 'lvl3',
                 'lvl3',
+                'id',
             ],
             'fromProperty' => [
                 3 => null,
                 7 => null,
                 9 => null,
                 null,
-                14 => 'productsLvl1',
-                16 => 'productsLvl1',
-                'productsLvl1',
-                21 => 'productsLvl2',
-                23 => 'productsLvl2',
-                'productsLvl2',
-                28 => 'productsLvl3',
-                30 => 'productsLvl3',
-                'productsLvl3',
+                14 => null,
+                null,
+                null,
+                null,
             ],
             'toProperty' => [
                 3 => null,
@@ -1913,13 +1148,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 9 => null,
                 null,
                 14 => null,
-                16 => null,
                 null,
-                21 => null,
-                23 => null,
                 null,
-                28 => null,
-                30 => null,
                 null,
             ],
             'fromClass' => [
@@ -1927,15 +1157,10 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 7 => 'App\\Entity\\Product',
                 9 => 'App\\Entity\\Product',
                 'App\\Entity\\Product',
-                14 => 'App\\Entity\\Category',
-                16 => 'App\\Entity\\Category',
-                'App\\Entity\\Category',
-                21 => 'App\\Entity\\Category',
-                23 => 'App\\Entity\\Category',
-                'App\\Entity\\Category',
-                28 => 'App\\Entity\\Category',
-                30 => 'App\\Entity\\Category',
-                'App\\Entity\\Category',
+                14 => 'App\\Entity\\Product',
+                'App\\Entity\\Product',
+                'App\\Entity\\Product',
+                'App\\Entity\\Product',
             ],
             'toClass' => [
                 3 => null,
@@ -1943,13 +1168,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 9 => null,
                 null,
                 14 => null,
-                16 => null,
                 null,
-                21 => null,
-                23 => null,
                 null,
-                28 => null,
-                30 => null,
                 null,
             ],
             'identifiers' => [
@@ -1968,25 +1188,10 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 14 => [
                     'id',
                 ],
-                16 => [
-                    'id',
-                ],
                 [
                     'id',
                 ],
-                21 => [
-                    'id',
-                ],
-                23 => [
-                    'id',
-                ],
                 [
-                    'id',
-                ],
-                28 => [
-                    'id',
-                ],
-                30 => [
                     'id',
                 ],
                 [
@@ -1999,13 +1204,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 9 => null,
                 null,
                 14 => null,
-                16 => null,
                 null,
-                21 => null,
-                23 => null,
                 null,
-                28 => null,
-                30 => null,
                 null,
             ],
             'expandedValue' => [
@@ -2014,13 +1214,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 9 => null,
                 null,
                 14 => null,
-                16 => null,
                 null,
-                21 => null,
-                23 => null,
                 null,
-                28 => null,
-                30 => null,
                 null,
             ],
         ],
@@ -2028,8 +1223,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'itemUriTemplate' => [
                 4 => null,
                 13 => null,
-                20 => null,
-                27 => null,
             ],
         ],
         'ApiPlatform\\Metadata\\Post' => [
@@ -2046,8 +1239,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
     [
         $o[0],
         $o[11],
-        $o[18],
-        $o[25],
     ],
     []
 ); }];
