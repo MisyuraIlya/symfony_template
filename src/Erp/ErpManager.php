@@ -26,10 +26,10 @@ class ErpManager implements ErpInterface
         private readonly HttpClientInterface $httpClient,
     )
     {
-        $erpType = 'Priority';
-        $username = 'digitrade';
-        $password = 'Digitrade22';
-        $url = 'https://817.152.co.il/odata/Priority/tabula.ini/teser';
+        $erpType =  $_ENV['ERP_TYPE'];
+        $username =  $_ENV['ERP_USERNAME'];
+        $password =  $_ENV['ERP_PASSWORD'];
+        $url = $_ENV['ERP_URL'];
         if ($erpType === 'Priority') {
             $this->erp = new Priority($url, $username, $password, $this->httpClient);
         } elseif ($erpType === 'SAP') {

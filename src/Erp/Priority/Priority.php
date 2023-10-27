@@ -50,7 +50,7 @@ class Priority implements ErpInterface
                 'GET',
                 $this->url.$query,
                 [
-                    'auth_basic' => ['digitrade', 'Digitrade22'],
+                    'auth_basic' => [$this->username, $this->password],
                     'http_version' => '1.1',
                     'timeout' => 600
                 ]
@@ -68,7 +68,7 @@ class Priority implements ErpInterface
             'POST',
             $this->url.$table,
             [
-                'auth_basic' => ['API', 'ap#25!42'],
+                'auth_basic' => [$this->username, $this->password],
                 'timeout' => 60,
                 'body' => $obj
             ]
