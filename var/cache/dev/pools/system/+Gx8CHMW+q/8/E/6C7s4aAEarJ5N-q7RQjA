@@ -23,6 +23,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'productsLvl2',
                     'productsLvl3',
                     'MediaObject',
+                    'categoryAttributes',
                     'mediaObject',
                 ],
             ],

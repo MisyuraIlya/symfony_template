@@ -42,14 +42,12 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
     paginationClientItemsPerPage: true,
     provider: ProductProvider::class,
 )]
-#[ApiFilter(TermFilter::class, properties: ['SubAttributes.id'])] // need to serach attributes
 #[ApiFilter(OrderFilter::class, properties: ['sku', 'title'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
         'sku' => 'exact',
         'title' => 'partial',
-        'SubAttributes.id' => 'exact',
     ]
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
@@ -71,42 +69,6 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
     provider: ProductProvider::class,
 
 )]
-
-//#[ApiResource(
-//    uriTemplate: '/catalog/lvl1/{lvl2}',
-//    operations: [
-//        new GetCollection(),
-//        new Get(),
-//    ],
-//    uriVariables: [
-//        'lvl2' => new Link(fromProperty: 'productsLvl2', fromClass: Category::class),
-//    ],
-//    normalizationContext: [
-//        'groups' => ['product:read'],
-//    ],
-//    denormalizationContext: [
-//        'groups' => ['product:write'],
-//    ],
-//    paginationClientItemsPerPage: true,
-//)]
-//#[ApiResource(
-//    uriTemplate: '/catalog/lvl1/lvl2/{lvl3}',
-//    operations: [
-//        new GetCollection(),
-//        new Get()
-//    ],
-//    uriVariables: [
-//        'lvl3' => new Link(fromProperty: 'productsLvl3', fromClass: Category::class),
-//    ],
-//    normalizationContext: [
-//        'groups' => ['product:read'],
-//    ],
-//    denormalizationContext: [
-//        'groups' => ['product:write'],
-//    ],
-//    order: ['orden' => 'ASC'],
-//    paginationClientItemsPerPage: true,
-//)]
 
 class Product
 {
@@ -161,9 +123,6 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: PriceListDetailed::class)]
     private Collection $priceListDetaileds;
 
-    #[Groups(['product:read','category:read','SubAttribute:read'])]
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: SubAttribute::class)]
-    private Collection $SubAttributes;
 
     #[Groups(['product:read','category:read'])]
     #[ORM\Column]
@@ -200,6 +159,10 @@ class Product
     #[ORM\Column]
     private ?int $orden = null;
 
+    #[Groups(['product:read','category:read'])]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAttribute::class)]
+    private Collection $productAttributes;
+
 
 
     public function __construct()
@@ -207,8 +170,8 @@ class Product
         $this->imagePath = new ArrayCollection();
         $this->migvans = new ArrayCollection();
         $this->priceListDetaileds = new ArrayCollection();
-        $this->SubAttributes = new ArrayCollection();
         $this->subProducts = new ArrayCollection();
+        $this->productAttributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -402,36 +365,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection<int, SubAttribute>
-     */
-    public function getSubAttributes(): Collection
-    {
-        return $this->SubAttributes;
-    }
-
-    public function addSubAttribute(SubAttribute $SubAttribute): static
-    {
-        if (!$this->SubAttributes->contains($SubAttribute)) {
-            $this->SubAttributes->add($SubAttribute);
-            $SubAttribute->setProductId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubAttribute(SubAttribute $SubAttribute): static
-    {
-        if ($this->SubAttributes->removeElement($SubAttribute)) {
-            // set the owning side to null (unless already changed)
-            if ($SubAttribute->getProductId() === $this) {
-                $SubAttribute->setProductId(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -566,6 +499,36 @@ class Product
     public function setOrden(int $orden): static
     {
         $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductAttribute>
+     */
+    public function getProductAttributes(): Collection
+    {
+        return $this->productAttributes;
+    }
+
+    public function addProductAttribute(ProductAttribute $productAttribute): static
+    {
+        if (!$this->productAttributes->contains($productAttribute)) {
+            $this->productAttributes->add($productAttribute);
+            $productAttribute->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductAttribute(ProductAttribute $productAttribute): static
+    {
+        if ($this->productAttributes->removeElement($productAttribute)) {
+            // set the owning side to null (unless already changed)
+            if ($productAttribute->getProduct() === $this) {
+                $productAttribute->setProduct(null);
+            }
+        }
 
         return $this;
     }

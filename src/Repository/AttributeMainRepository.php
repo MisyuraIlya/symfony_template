@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\AttributeMain;
+use App\Entity\Category;
+use App\Entity\Product;
+use App\Entity\ProductAttribute;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\SubAttribute;
 
 /**
  * @extends ServiceEntityRepository<AttributeMain>
@@ -50,28 +54,56 @@ class AttributeMainRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-//    /**
-//     * @return AttributeMain[] Returns an array of AttributeMain objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAttributesByCategoryExistProducts(int $lvl1, int $lvl2, int $lvl3)
+    {
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder->select('p')
+            ->from(Product::class, 'p')
+            ->where('p.isPublished = true');
+        if ($lvl1) {
+            $queryBuilder->andWhere('p.categoryLvl1 = :lvl1')
+                ->setParameter('lvl1', $lvl1);
+            if ($lvl2) {
+                $queryBuilder->andWhere('p.categoryLvl2 = :lvl2')
+                    ->setParameter('lvl2', $lvl2);
+                if ($lvl3) {
+                    $queryBuilder->andWhere('p.categoryLvl3 = :lvl3')
+                        ->setParameter('lvl3', $lvl3);
+                }
+            }
+        }
+        $products = $queryBuilder->getQuery()->getResult();
+        $prods = [];
+        foreach ($products as $product) {
+            $prods[] = $product->getId();
+        }
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder->select('pa')
+            ->from(ProductAttribute::class, 'pa')
+            ->where($queryBuilder->expr()->in('pa.product', ':products'))
+            ->setParameter('products', $prods);
 
-//    public function findOneBySomeField($value): ?AttributeMain
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $productAttributes = $queryBuilder->getQuery()->getResult();
+        $subAttributes = [];
+        foreach ($productAttributes as $subAttribute) {
+            $subAttributes[] = ($subAttribute->getAttributeSub())->getId();
+        }
+        $uniqueArray2 = array_unique($subAttributes);
+        $uniqueArray2 = array_unique($uniqueArray2);
+        $res = $this->fetchByArr($uniqueArray2);
+        return $res;
+    }
+
+    private function fetchByArr($uniqueArray2)
+    {
+        $dql = "SELECT PARTIAL am.{id, title}, PARTIAL sa.{id, title} FROM App\Entity\AttributeMain am
+                LEFT JOIN am.SubAttributes sa
+                WHERE sa.id IN (:uniqueArray2)";
+
+        return $this->_em->createQuery($dql)
+            ->setParameter('uniqueArray2', $uniqueArray2)
+            ->getResult();
+    }
+
+
 }

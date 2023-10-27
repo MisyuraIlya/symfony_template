@@ -48,15 +48,14 @@ class ProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function getProductsByMigvan(int $page = 1, string $userExtId = null, int $itemsPerPage = 24, int $lvl1, int $lvl2, int $lvl3): Paginator
+    public function getCatalog(int $page = 1, string $userExtId = null, int $itemsPerPage = 24, int $lvl1, int $lvl2, int $lvl3, ?string $orderBy = null, ?string $attributes, ?string $searchValue): Paginator
     {
-        $firstResult = ($page - 1) * $itemsPerPage;
 
+        $firstResult = ($page - 1) * $itemsPerPage;
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder->select('p')
             ->from(Product::class, 'p')
             ->andWhere('p.isPublished = true');
-
         if ($userExtId) {
             $user = $this->userRepository->findOneByExtId($userExtId);
             $queryBuilder->join('p.migvans', 'm')
@@ -79,38 +78,33 @@ class ProductRepository extends ServiceEntityRepository
             }
         }
 
+        if (!empty($attributes)) {
+            $attributes = explode(",", $attributes);
+            $queryBuilder->join('p.productAttributes', 'pa');
+            $attributeConditions = [];
+            foreach ($attributes as $index => $attribute) {
+                $attributeConditions[] = $queryBuilder->expr()->eq('pa.attributeSub', ":attribute$index");
+                $queryBuilder->setParameter("attribute$index", $attribute);
+            }
+            $queryBuilder->andWhere(call_user_func_array([$queryBuilder->expr(), 'orX'], $attributeConditions));
+        }
+
+        if ($searchValue) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('p.title', ':searchValue'));
+            $queryBuilder->setParameter('searchValue', '%' . $searchValue . '%');
+        }
+
+        if($orderBy){
+            $queryBuilder->orderBy("p.$orderBy", 'ASC');
+        }
+
         $query = $queryBuilder->getQuery()
             ->setFirstResult($firstResult)
             ->setMaxResults($itemsPerPage);
-
         $doctrinePaginator = new DoctrinePaginator($query);
         $paginator = new Paginator($doctrinePaginator);
 
         return $paginator;
     }
 
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

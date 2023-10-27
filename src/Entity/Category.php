@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategoryRepository;
+use App\State\CategoriesStateProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +24,17 @@ use ApiPlatform\Metadata\Link;
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:write']],
     order: ['orden' => 'ASC'],
-    paginationItemsPerPage: 1000,
+)]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/categoriesApp',
+            provider: CategoriesStateProvider::class
+        )
+    ],
+    normalizationContext: ['groups' => ['category:read']],
+    denormalizationContext: ['groups' => ['category:write']],
+    order: ['orden' => 'ASC']
 )]
 #[ApiFilter(
     SearchFilter::class,
@@ -31,7 +42,6 @@ use ApiPlatform\Metadata\Link;
         'lvlNumber' => 'exact',
     ]
 )]
-//#[ApiFilter(OrderFilter::class, properties: ['orden'], arguments: ['orderParameterName' => 'order'])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -90,12 +100,16 @@ class Category
     #[ORM\ManyToOne(inversedBy: 'categories')]
     private ?MediaObject $MediaObject = null;
 
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryAttributes::class)]
+    private Collection $categoryAttributes;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->productsLvl1 = new ArrayCollection();
         $this->productsLvl2 = new ArrayCollection();
         $this->productsLvl3 = new ArrayCollection();
+        $this->categoryAttributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,6 +221,22 @@ class Category
         return $this->categories;
     }
 
+
+    //CUSTOM FUNCTION
+    public function setCategories(array $newCategories): static
+    {
+        $newCategoriesCollection = new ArrayCollection();
+        foreach ($newCategories as $newCategory) {
+            if ($newCategory instanceof Category) {
+                $newCategoriesCollection->add($newCategory);
+            }
+        }
+        $this->categories = $newCategoriesCollection;
+
+        return $this;
+    }
+
+
     /**
      * @return Collection
      */
@@ -290,4 +320,35 @@ class Category
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CategoryAttributes>
+     */
+    public function getCategoryAttributes(): Collection
+    {
+        return $this->categoryAttributes;
+    }
+
+    public function addCategoryAttribute(CategoryAttributes $categoryAttribute): static
+    {
+        if (!$this->categoryAttributes->contains($categoryAttribute)) {
+            $this->categoryAttributes->add($categoryAttribute);
+            $categoryAttribute->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategoryAttribute(CategoryAttributes $categoryAttribute): static
+    {
+        if ($this->categoryAttributes->removeElement($categoryAttribute)) {
+            // set the owning side to null (unless already changed)
+            if ($categoryAttribute->getCategory() === $this) {
+                $categoryAttribute->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

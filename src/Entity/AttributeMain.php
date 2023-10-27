@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AttributeMainRepository;
+use App\State\AttributeStateProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,9 +17,22 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\Link;
-
+use App\Entity\Category;
 #[ORM\Entity(repositoryClass: AttributeMainRepository::class)]
 #[ApiResource(
+    operations:[
+        new GetCollection(
+            uriTemplate: '/attribute/{lvl1}/{lvl2}/{lvl3}',
+            uriVariables: [
+                'lvl1' => new Link(fromClass: Category::class),
+                'lvl2' => new Link(fromClass: Category::class),
+                'lvl3' => new Link(fromClass: Category::class),
+            ],
+            provider: AttributeStateProvider::class
+
+        )
+    ],
+
     normalizationContext: ['groups' => ['attribute:read']],
     denormalizationContext: ['groups' => ['attribute:write']],
 )]
@@ -32,28 +46,38 @@ class AttributeMain
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $extId = null;
 
-    #[Groups(['product:read','category:read','SubAttribute:read','attribute:write'])]
+    #[Groups(['category:read','SubAttribute:read','attribute:write','attribute:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column]
     private ?bool $isPublished = null;
 
+    #[Groups(['category:read','SubAttribute:read','attribute:write','attribute:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $orden = null;
 
+    #[Groups(['product:read','category:read','SubAttribute:read','attribute:write','attribute:read'])]
     #[ORM\Column]
     private ?bool $isInProductCard = null;
 
+    #[Groups(['category:read','SubAttribute:read','attribute:write','attribute:read'])]
     #[ORM\Column]
     private ?bool $isInFilter = null;
 
+    #[Groups(['category:read','SubAttribute:read','attribute:write','attribute:read'])]
     #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: SubAttribute::class)]
     private Collection $SubAttributes;
+
+    #[ORM\OneToMany(mappedBy: 'attributeMain', targetEntity: CategoryAttributes::class)]
+    private Collection $categoryAttributes;
+
 
     public function __construct()
     {
         $this->SubAttributes = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->categoryAttributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,4 +186,35 @@ class AttributeMain
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CategoryAttributes>
+     */
+    public function getCategoryAttributes(): Collection
+    {
+        return $this->categoryAttributes;
+    }
+
+    public function addCategoryAttribute(CategoryAttributes $categoryAttribute): static
+    {
+        if (!$this->categoryAttributes->contains($categoryAttribute)) {
+            $this->categoryAttributes->add($categoryAttribute);
+            $categoryAttribute->setAttributeMain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategoryAttribute(CategoryAttributes $categoryAttribute): static
+    {
+        if ($this->categoryAttributes->removeElement($categoryAttribute)) {
+            // set the owning side to null (unless already changed)
+            if ($categoryAttribute->getAttributeMain() === $this) {
+                $categoryAttribute->setAttributeMain(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -654,9 +654,14 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
     </service>
     <service id="App\Repository\HistoryDetailedRepository" class="App\Repository\HistoryDetailedRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
@@ -679,6 +684,10 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\PriceListRepository" class="App\Repository\PriceListRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\ProductAttributeRepository" class="App\Repository\ProductAttributeRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -719,10 +728,23 @@
       <tag name="serializer.normalizer"/>
       <argument type="service" id="vich_uploader.storage.file_system"/>
     </service>
+    <service id="App\State\AttributeStateProvider" class="App\State\AttributeStateProvider" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_provider"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="App\Repository\AttributeMainRepository"/>
+      <argument type="service" id="api_platform.doctrine.orm.state.collection_provider"/>
+    </service>
     <service id="App\State\CartessetProvider" class="App\State\CartessetProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="request_stack"/>
+    </service>
+    <service id="App\State\CategoriesStateProvider" class="App\State\CategoriesStateProvider" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_provider"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="api_platform.doctrine.orm.state.collection_provider"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Repository\CategoryRepository"/>
     </service>
     <service id="App\State\DocumentsProvider" class="App\State\DocumentsProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
@@ -4424,7 +4446,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.zB2Gk3l"/>
+      <argument type="service" id=".service_locator.37.U96T"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5081,7 +5103,7 @@
       <argument>true</argument>
     </service>
     <service id="api_platform.state_provider.locator" class="ApiPlatform\State\CallableProvider">
-      <argument type="service" id=".service_locator.IZ0cs.H"/>
+      <argument type="service" id=".service_locator.4ZGe8iQ"/>
     </service>
     <service id="api_platform.pagination" class="ApiPlatform\State\Pagination\Pagination">
       <argument>%api_platform.collection.pagination%</argument>
@@ -5129,7 +5151,6 @@
         <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter"/>
         <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter"/>
         <argument key="annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter"/>
-        <argument key="annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter" type="service_closure" id="annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter"/>
       </argument>
     </service>
     <service id="api_platform.serializer.uuid_denormalizer" class="ApiPlatform\RamseyUuid\Serializer\UuidDenormalizer">
@@ -6641,18 +6662,6 @@
       <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
     </service>
-    <service id="annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter" class="ApiPlatform\Elasticsearch\Filter\TermFilter" autowire="true" autoconfigure="true">
-      <tag name="api_platform.filter"/>
-      <argument type="service" id="api_platform.metadata.property.name_collection_factory.cached"/>
-      <argument type="service" id="api_platform.metadata.property.metadata_factory.cached"/>
-      <argument type="service" id="api_platform.resource_class_resolver"/>
-      <argument type="service" id="api_platform.symfony.iri_converter"/>
-      <argument type="service" id="property_accessor"/>
-      <argument>null</argument>
-      <argument type="collection">
-        <argument key="SubAttributes.id">null</argument>
-      </argument>
-    </service>
     <service id="annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter" class="ApiPlatform\Doctrine\Orm\Filter\OrderFilter" autowire="true">
       <tag name="api_platform.filter"/>
       <argument type="service" id="doctrine"/>
@@ -6674,7 +6683,6 @@
       <argument type="collection">
         <argument key="sku">exact</argument>
         <argument key="title">partial</argument>
-        <argument key="SubAttributes.id">exact</argument>
       </argument>
       <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
@@ -6738,6 +6746,8 @@
     <service id=".abstract.instanceof.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\HistoryDetailedRepository" class="App\Repository\HistoryDetailedRepository" autowire="true" abstract="true"/>
@@ -6752,6 +6762,8 @@
     <service id=".abstract.instanceof.App\Repository\PriceListDetailedRepository" class="App\Repository\PriceListDetailedRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PriceListRepository" class="App\Repository\PriceListRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\PriceListRepository" class="App\Repository\PriceListRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProductAttributeRepository" class="App\Repository\ProductAttributeRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\ProductAttributeRepository" class="App\Repository\ProductAttributeRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProductImagesRepository" class="App\Repository\ProductImagesRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\ProductImagesRepository" class="App\Repository\ProductImagesRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProductInfoRepository" class="App\Repository\ProductInfoRepository" autowire="true" abstract="true"/>
@@ -6770,8 +6782,12 @@
     <service id=".abstract.instanceof.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Serializer\Normalizer\NormalizerInterface.0.App\Serializer\MediaObjectNormalizer" class="App\Serializer\MediaObjectNormalizer" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Serializer\MediaObjectNormalizer" class="App\Serializer\MediaObjectNormalizer" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\AttributeStateProvider" class="App\State\AttributeStateProvider" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\AttributeStateProvider" class="App\State\AttributeStateProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\CartessetProvider" class="App\State\CartessetProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\CartessetProvider" class="App\State\CartessetProvider" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\CategoriesStateProvider" class="App\State\CategoriesStateProvider" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\CategoriesStateProvider" class="App\State\CategoriesStateProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\DocumentsProvider" class="App\State\DocumentsProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\DocumentsProvider" class="App\State\DocumentsProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\PdfDocumentProcessor" class="App\State\PdfDocumentProcessor" autowire="true" abstract="true"/>
@@ -6784,8 +6800,6 @@
     <service id=".abstract.instanceof.App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Validator\ConstraintValidatorInterface.0.App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.ApiPlatform\Api\FilterInterface.0.annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter" class="ApiPlatform\Elasticsearch\Filter\TermFilter" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter" class="ApiPlatform\Elasticsearch\Filter\TermFilter" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.7nzbL4K" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7363,11 +7377,12 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.zB2Gk3l" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.37.U96T" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AgentRepository" type="service_closure" id="App\Repository\AgentRepository"/>
         <argument key="App\Repository\AttributeMainRepository" type="service_closure" id="App\Repository\AttributeMainRepository"/>
+        <argument key="App\Repository\CategoryAttributesRepository" type="service_closure" id="App\Repository\CategoryAttributesRepository"/>
         <argument key="App\Repository\CategoryRepository" type="service_closure" id="App\Repository\CategoryRepository"/>
         <argument key="App\Repository\HistoryDetailedRepository" type="service_closure" id="App\Repository\HistoryDetailedRepository"/>
         <argument key="App\Repository\HistoryRepository" type="service_closure" id="App\Repository\HistoryRepository"/>
@@ -7375,6 +7390,7 @@
         <argument key="App\Repository\MigvanRepository" type="service_closure" id="App\Repository\MigvanRepository"/>
         <argument key="App\Repository\PriceListDetailedRepository" type="service_closure" id="App\Repository\PriceListDetailedRepository"/>
         <argument key="App\Repository\PriceListRepository" type="service_closure" id="App\Repository\PriceListRepository"/>
+        <argument key="App\Repository\ProductAttributeRepository" type="service_closure" id="App\Repository\ProductAttributeRepository"/>
         <argument key="App\Repository\ProductImagesRepository" type="service_closure" id="App\Repository\ProductImagesRepository"/>
         <argument key="App\Repository\ProductInfoRepository" type="service_closure" id="App\Repository\ProductInfoRepository"/>
         <argument key="App\Repository\ProductRepository" type="service_closure" id="App\Repository\ProductRepository"/>
@@ -7722,14 +7738,16 @@
         <argument key="security.user_checker" type="service_closure" id="security.user_checker"/>
       </argument>
     </service>
-    <service id=".service_locator.IZ0cs.H" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.4ZGe8iQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="ApiPlatform\Doctrine\Orm\State\CollectionProvider" type="service_closure" id="api_platform.doctrine.orm.state.collection_provider"/>
         <argument key="ApiPlatform\Doctrine\Orm\State\ItemProvider" type="service_closure" id="api_platform.doctrine.orm.state.item_provider"/>
         <argument key="ApiPlatform\State\CreateProvider" type="service_closure" id="api_platform.state_provider.create"/>
         <argument key="ApiPlatform\State\ObjectProvider" type="service_closure" id="api_platform.state_provider.object"/>
+        <argument key="App\State\AttributeStateProvider" type="service_closure" id="App\State\AttributeStateProvider"/>
         <argument key="App\State\CartessetProvider" type="service_closure" id="App\State\CartessetProvider"/>
+        <argument key="App\State\CategoriesStateProvider" type="service_closure" id="App\State\CategoriesStateProvider"/>
         <argument key="App\State\DocumentsProvider" type="service_closure" id="App\State\DocumentsProvider"/>
         <argument key="App\State\ProductProvider" type="service_closure" id="App\State\ProductProvider"/>
         <argument key="api_platform.doctrine.orm.state.collection_provider" type="service_closure" id="api_platform.doctrine.orm.state.collection_provider"/>
@@ -8775,7 +8793,7 @@
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.vcYFt0B" alias=".service_locator.dwy0.Hv"/>
     <service id=".service_locator.bnaLdkn" alias="api_platform.serializer_locator"/>
-    <service id=".service_locator.YJ_88.6" alias="api_platform.filter_locator"/>
+    <service id=".service_locator.k0SNYZ5" alias="api_platform.filter_locator"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.mIkLLE4" alias=".service_locator.qznbUgC"/>
     <service id=".service_locator.Lkb6s9e" alias=".service_locator.tUIAove"/>
@@ -8837,7 +8855,7 @@
     <service id=".service_locator.B_yLtTQ" alias=".service_locator.Lo8jEUu"/>
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.BlxN3Cw" alias=".service_locator.LrCXAmX"/>
-    <service id=".service_locator.2HqhmmI" alias=".service_locator.IZ0cs.H"/>
+    <service id=".service_locator.sosszfS" alias=".service_locator.4ZGe8iQ"/>
     <service id=".service_locator.Qq34ODg" alias=".service_locator.zBXSgam"/>
   </services>
 </container>

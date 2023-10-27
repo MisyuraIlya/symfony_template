@@ -4,15 +4,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
     $o = [
         clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Metadata\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\ApiResource')),
         clone ($p['ApiPlatform\\Metadata\\Operations'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Operations')),
-        clone ($p['ApiPlatform\\Metadata\\Get'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Get')),
-        clone ($p['ApiPlatform\\Metadata\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Link')),
         clone ($p['ApiPlatform\\Metadata\\GetCollection'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\GetCollection')),
-        clone ($p['ApiPlatform\\Metadata\\Post'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Post')),
-        clone ($p['ApiPlatform\\Metadata\\Put'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Put')),
+        clone ($p['ApiPlatform\\Metadata\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Link')),
         clone $p['ApiPlatform\\Metadata\\Link'],
-        clone ($p['ApiPlatform\\Metadata\\Patch'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Patch')),
         clone $p['ApiPlatform\\Metadata\\Link'],
-        clone ($p['ApiPlatform\\Metadata\\Delete'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Delete')),
+        clone ($p['ApiPlatform\\Metadata\\NotExposed'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\NotExposed')),
         clone $p['ApiPlatform\\Metadata\\Link'],
         clone $p['ApiPlatform\\Metadata\\Link'],
     ],
@@ -45,7 +41,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'uriVariables' => [
                 [
-                    'id' => $o[12],
+                    'id' => $o[8],
                 ],
             ],
             'routePrefix' => [
@@ -222,28 +218,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'operations' => [
                 1 => [
                     [
-                        '_api_/attribute_mains/{id}{._format}_get',
+                        '_api_/attribute/{lvl1}/{lvl2}/{lvl3}_get_collection',
                         $o[2],
                     ],
                     [
-                        '_api_/attribute_mains{._format}_get_collection',
-                        $o[4],
-                    ],
-                    [
-                        '_api_/attribute_mains{._format}_post',
-                        $o[5],
-                    ],
-                    [
-                        '_api_/attribute_mains/{id}{._format}_put',
+                        '_api_/attribute_mains/{id}{._format}_get',
                         $o[6],
-                    ],
-                    [
-                        '_api_/attribute_mains/{id}{._format}_patch',
-                        $o[8],
-                    ],
-                    [
-                        '_api_/attribute_mains/{id}{._format}_delete',
-                        $o[10],
                     ],
                 ],
             ],
@@ -251,115 +231,59 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         'ApiPlatform\\Metadata\\Operation' => [
             'shortName' => [
                 2 => 'AttributeMain',
-                4 => 'AttributeMain',
-                'AttributeMain',
-                'AttributeMain',
-                8 => 'AttributeMain',
-                10 => 'AttributeMain',
+                6 => 'AttributeMain',
             ],
             'class' => [
                 2 => 'App\\Entity\\AttributeMain',
-                4 => 'App\\Entity\\AttributeMain',
-                'App\\Entity\\AttributeMain',
-                'App\\Entity\\AttributeMain',
-                8 => 'App\\Entity\\AttributeMain',
-                10 => 'App\\Entity\\AttributeMain',
+                6 => 'App\\Entity\\AttributeMain',
             ],
             'paginationEnabled' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationType' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationItemsPerPage' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationMaximumItemsPerPage' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationPartial' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationClientEnabled' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationClientItemsPerPage' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationClientPartial' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationFetchJoinCollection' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'paginationUseOutputWalkers' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'order' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'description' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'normalizationContext' => [
                 2 => [
@@ -367,27 +291,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'attribute:read',
                     ],
                 ],
-                4 => [
-                    'groups' => [
-                        'attribute:read',
-                    ],
-                ],
-                [
-                    'groups' => [
-                        'attribute:read',
-                    ],
-                ],
-                [
-                    'groups' => [
-                        'attribute:read',
-                    ],
-                ],
-                8 => [
-                    'groups' => [
-                        'attribute:read',
-                    ],
-                ],
-                10 => [
+                6 => [
                     'groups' => [
                         'attribute:read',
                     ],
@@ -399,27 +303,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'attribute:write',
                     ],
                 ],
-                4 => [
-                    'groups' => [
-                        'attribute:write',
-                    ],
-                ],
-                [
-                    'groups' => [
-                        'attribute:write',
-                    ],
-                ],
-                [
-                    'groups' => [
-                        'attribute:write',
-                    ],
-                ],
-                8 => [
-                    'groups' => [
-                        'attribute:write',
-                    ],
-                ],
-                10 => [
+                6 => [
                     'groups' => [
                         'attribute:write',
                     ],
@@ -427,255 +311,132 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'collectDenormalizationErrors' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'security' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'securityMessage' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'securityPostDenormalize' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'securityPostDenormalizeMessage' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'securityPostValidation' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'securityPostValidationMessage' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'deprecationReason' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'filters' => [
                 2 => [],
-                4 => [],
-                [],
-                [],
-                8 => [],
-                10 => [],
+                6 => [],
             ],
             'validationContext' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'elasticsearch' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'urlGenerationStrategy' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'read' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => false,
             ],
             'deserialize' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'validate' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'write' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'serialize' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'fetchPartial' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'forceEager' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'priority' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => 0,
+                6 => null,
             ],
             'name' => [
-                2 => '_api_/attribute_mains/{id}{._format}_get',
-                4 => '_api_/attribute_mains{._format}_get_collection',
-                '_api_/attribute_mains{._format}_post',
-                '_api_/attribute_mains/{id}{._format}_put',
-                8 => '_api_/attribute_mains/{id}{._format}_patch',
-                10 => '_api_/attribute_mains/{id}{._format}_delete',
+                2 => '_api_/attribute/{lvl1}/{lvl2}/{lvl3}_get_collection',
+                6 => '_api_/attribute_mains/{id}{._format}_get',
             ],
             'provider' => [
-                2 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
-                4 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
-                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
-                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
-                8 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
-                10 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                2 => 'App\\State\\AttributeStateProvider',
+                6 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
             ],
             'processor' => [
                 2 => 'api_platform.doctrine.orm.state.persist_processor',
-                4 => 'api_platform.doctrine.orm.state.persist_processor',
-                'api_platform.doctrine.orm.state.persist_processor',
-                'api_platform.doctrine.orm.state.persist_processor',
-                8 => 'api_platform.doctrine.orm.state.persist_processor',
-                10 => 'api_platform.doctrine.orm.state.remove_processor',
+                6 => 'api_platform.doctrine.orm.state.persist_processor',
             ],
             'stateOptions' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'extraProperties' => [
                 2 => [
                     'standard_put' => true,
-                    'generated_operation' => true,
+                    'user_defined_uri_template' => true,
                 ],
-                4 => [
+                6 => [
                     'standard_put' => true,
                     'generated_operation' => true,
                 ],
-                [
-                    'standard_put' => true,
-                    'generated_operation' => true,
-                ],
-                [
-                    'standard_put' => true,
-                    'generated_operation' => true,
-                ],
-                8 => [
-                    'standard_put' => true,
-                    'generated_operation' => true,
-                ],
-                10 => [
-                    'standard_put' => true,
-                    'generated_operation' => true,
+            ],
+            'output' => [
+                6 => [
+                    'class' => null,
                 ],
             ],
         ],
         'ApiPlatform\\Metadata\\HttpOperation' => [
             'paginationViaCursor' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'method' => [
                 2 => 'GET',
-                4 => 'GET',
-                'POST',
-                'PUT',
-                8 => 'PATCH',
-                10 => 'DELETE',
+                6 => 'GET',
             ],
             'uriTemplate' => [
-                2 => '/attribute_mains/{id}{._format}',
-                4 => '/attribute_mains{._format}',
-                '/attribute_mains{._format}',
-                '/attribute_mains/{id}{._format}',
-                8 => '/attribute_mains/{id}{._format}',
-                10 => '/attribute_mains/{id}{._format}',
+                2 => '/attribute/{lvl1}/{lvl2}/{lvl3}',
+                6 => '/attribute_mains/{id}{._format}',
             ],
             'types' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'inputFormats' => [
                 2 => [
@@ -689,45 +450,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'text/html',
                     ],
                 ],
-                4 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                8 => [
-                    'json' => [
-                        'application/merge-patch+json',
-                    ],
-                ],
-                10 => [
+                6 => [
                     'jsonld' => [
                         'application/ld+json',
                     ],
@@ -751,51 +474,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'text/html',
                     ],
                 ],
-                4 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                8 => [
-                    'jsonld' => [
-                        'application/ld+json',
-                    ],
-                    'json' => [
-                        'application/json',
-                    ],
-                    'html' => [
-                        'text/html',
-                    ],
-                ],
-                10 => [
+                6 => [
                     'jsonld' => [
                         'application/ld+json',
                     ],
@@ -809,114 +488,61 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'uriVariables' => [
                 2 => [
-                    'id' => $o[3],
+                    'lvl1' => $o[3],
+                    'lvl2' => $o[4],
+                    'lvl3' => $o[5],
                 ],
-                5 => [],
-                [
+                6 => [
                     'id' => $o[7],
-                ],
-                8 => [
-                    'id' => $o[9],
-                ],
-                10 => [
-                    'id' => $o[11],
                 ],
             ],
             'routePrefix' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'routeName' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'defaults' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'requirements' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'options' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'stateless' => [
                 2 => true,
-                4 => true,
-                true,
-                true,
-                8 => true,
-                10 => true,
+                6 => true,
             ],
             'sunset' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'acceptPatch' => [
-                2 => 'application/merge-patch+json',
-                4 => null,
-                'application/merge-patch+json',
-                'application/merge-patch+json',
-                8 => 'application/merge-patch+json',
-                10 => 'application/merge-patch+json',
+                2 => null,
+                6 => null,
             ],
             'host' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'schemes' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'condition' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'controller' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => 'api_platform.action.not_exposed',
             ],
             'cacheHeaders' => [
                 2 => [
@@ -926,35 +552,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'Origin',
                     ],
                 ],
-                4 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                8 => [
-                    'vary' => [
-                        'Content-Type',
-                        'Authorization',
-                        'Origin',
-                    ],
-                ],
-                10 => [
+                6 => [
                     'vary' => [
                         'Content-Type',
                         'Authorization',
@@ -964,92 +562,80 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'hydraContext' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'openapiContext' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'openapi' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => false,
             ],
             'exceptionToStatus' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
             ],
             'queryParameterValidationEnabled' => [
                 2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                6 => null,
+            ],
+            'status' => [
+                6 => 404,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\GetCollection' => [
+            'itemUriTemplate' => [
+                2 => null,
             ],
         ],
         'ApiPlatform\\Metadata\\Link' => [
             'parameterName' => [
-                3 => 'id',
+                3 => 'lvl1',
+                'lvl2',
+                'lvl3',
                 7 => 'id',
-                9 => 'id',
-                11 => 'id',
                 'id',
             ],
             'fromProperty' => [
                 3 => null,
+                null,
+                null,
                 7 => null,
-                9 => null,
-                11 => null,
                 null,
             ],
             'toProperty' => [
                 3 => null,
+                null,
+                null,
                 7 => null,
-                9 => null,
-                11 => null,
                 null,
             ],
             'fromClass' => [
-                3 => 'App\\Entity\\AttributeMain',
+                3 => 'App\\Entity\\Category',
+                'App\\Entity\\Category',
+                'App\\Entity\\Category',
                 7 => 'App\\Entity\\AttributeMain',
-                9 => 'App\\Entity\\AttributeMain',
-                11 => 'App\\Entity\\AttributeMain',
                 'App\\Entity\\AttributeMain',
             ],
             'toClass' => [
                 3 => null,
+                null,
+                null,
                 7 => null,
-                9 => null,
-                11 => null,
                 null,
             ],
             'identifiers' => [
                 3 => [
                     'id',
                 ],
+                [
+                    'id',
+                ],
+                [
+                    'id',
+                ],
                 7 => [
-                    'id',
-                ],
-                9 => [
-                    'id',
-                ],
-                11 => [
                     'id',
                 ],
                 [
@@ -1058,32 +644,17 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'compositeIdentifier' => [
                 3 => null,
+                null,
+                null,
                 7 => null,
-                9 => null,
-                11 => null,
                 null,
             ],
             'expandedValue' => [
                 3 => null,
-                7 => null,
-                9 => null,
-                11 => null,
                 null,
-            ],
-        ],
-        'ApiPlatform\\Metadata\\GetCollection' => [
-            'itemUriTemplate' => [
-                4 => null,
-            ],
-        ],
-        'ApiPlatform\\Metadata\\Post' => [
-            'itemUriTemplate' => [
-                5 => null,
-            ],
-        ],
-        'ApiPlatform\\Metadata\\Put' => [
-            'allowCreate' => [
-                6 => null,
+                null,
+                7 => null,
+                null,
             ],
         ],
     ],

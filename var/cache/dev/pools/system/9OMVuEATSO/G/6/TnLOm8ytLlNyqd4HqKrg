@@ -15,6 +15,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'App\\ApiResource\\XlxDocuments',
                     'App\\Entity\\AttributeMain',
                     'App\\Entity\\Category',
+                    'App\\Entity\\CategoryAttributes',
                     'App\\Entity\\History',
                     'App\\Entity\\HistoryDetailed',
                     'App\\Entity\\MediaObject',

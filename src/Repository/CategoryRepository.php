@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,8 +17,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        UserRepository $userRepository,
+    )
     {
+        $this->userRepository = $userRepository;
         parent::__construct($registry, Category::class);
     }
 
@@ -39,28 +44,67 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-//    /**
-//     * @return Category[] Returns an array of Category objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getCategoriesByMigvanAndSearch(?string $userExtId,?string $searchValue)
+    {
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder->select('p')
+            ->from(Product::class, 'p')
+            ->andWhere('p.isPublished = true');
+        if ($userExtId) {
+            $user = $this->userRepository->findOneByExtId($userExtId);
+            $queryBuilder->join('p.migvans', 'm')
+                ->where('m.user = :user')
+                ->setParameter('user', $user);
+        }
+        if ($searchValue) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('p.title', ':searchValue'));
+            $queryBuilder->setParameter('searchValue', '%' . $searchValue . '%');
+        }
 
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $products = $queryBuilder->getQuery()->getResult();
+        $prods = [];
+        $categoriesLvl2 = [];
+        $categoriesLvl3 = [];
+        foreach ($products as $product) {
+            assert($product instanceof Product);
+            if($product->getCategoryLvl2()){
+                $categoriesLvl2[] = $product->getCategoryLvl2()->getId();
+            }
+            if($product->getCategoryLvl3()){
+                $categoriesLvl3[] = $product->getCategoryLvl3()->getId();
+            }
+            $prods[] = $product->getId();
+        }
+        $qb = $this->createQueryBuilder('c');
+        $qb->join('c.productsLvl1', 'p')
+            ->where($qb->expr()->in('p.id', ':productIds'))
+            ->setParameter('productIds', $prods);
+
+        $result =  $qb->getQuery()->getResult();
+        foreach ($result as $itemRec){
+            assert($itemRec instanceof Category);
+            $newCat2 = [];
+            foreach ($itemRec->getCategories()->toArray() as $subCat) {
+                assert($subCat instanceof Category);
+                $newCat3 = [];
+                if(in_array($subCat->getId(), $categoriesLvl2)){
+                    $newCat2[] = $subCat;
+                    foreach ($subCat->getCategories() as $subCat3) {
+                        assert($subCat3 instanceof Category);
+                        if(in_array($subCat3->getId(), $categoriesLvl3)){
+                            $newCat3[] = $subCat3;
+                            $subCat->removeCategory($subCat3);
+                        }
+                    }
+                }
+                $itemRec->removeCategory($subCat);
+                $subCat->setCategories($newCat3);
+            }
+            $itemRec->setCategories($newCat2);
+        }
+
+
+        return $result;
+    }
+
 }

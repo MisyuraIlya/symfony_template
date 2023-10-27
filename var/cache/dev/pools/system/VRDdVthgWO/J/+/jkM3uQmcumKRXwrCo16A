@@ -581,37 +581,31 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'filters' => [
                 2 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
                 ],
                 4 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
                 ],
                 [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
                 ],
                 [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
                 ],
                 8 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
                 ],
                 13 => [
-                    'annotated_app_entity_product_api_platform_elasticsearch_filter_term_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_order_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_search_filter',
                     'annotated_app_entity_product_api_platform_doctrine_orm_filter_boolean_filter',
