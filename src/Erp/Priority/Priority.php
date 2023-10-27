@@ -55,12 +55,12 @@ class Priority implements ErpInterface
                     'timeout' => 600
                 ]
             );
-
             $statusCode = $response->getStatusCode();
             $contentType = $response->getHeaders()['content-type'][0];
             $content = $response->getContent();
             $content = $response->toArray();
-            return $content['value'];
+
+        return $content['value'];
     }
     public function PostRequest(object $obj, string $table)
     {
@@ -103,6 +103,7 @@ class Priority implements ErpInterface
                 $dto->priceAfterDiscount = $listRec['DPRICE'];
                 $dto->vatPrice = $listRec['VATPRICE'];
                 $dto->vatAfterDiscount = $listRec['DVATPRICE'];
+                $dto->discountPrecent = $listRec['PERCENT'];
                 $result->prices[] = $dto;
             }
         }
@@ -110,7 +111,28 @@ class Priority implements ErpInterface
     }
     public function GetStocksOnline(?array $skus):StocksDto
     {
+        $queryFilter = $this->ImplodeQueryByMakats($skus);
 
+        $endpoint = "/LOGPART";
+        $queryParameters = [
+            '$filter' => "$queryFilter",
+            '$expand' => 'LOGCOUNTERS_SUBFORM',
+        ];
+        $queryString = http_build_query($queryParameters);
+        $urlQuery = $endpoint . '?' . $queryString;
+
+        $response = $this->GetRequest($urlQuery);
+        $stocks = new StocksDto();
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['LOGCOUNTERS_SUBFORM'] as $subRec){
+                $dto = new StockDto();
+                $dto->sku = $itemRec['PARTNAME'];
+                $dto->stock = $subRec['BALANCE'];
+                $stocks->stocks[] = $dto;
+            }
+        }
+
+        return $stocks;
     }
     public function GetOnlineUser(string $userExtId):User
     {
@@ -120,9 +142,25 @@ class Priority implements ErpInterface
     {
 
     }
-    public function GetMigvanOnline()
+    public function GetMigvanOnline(string $userExtId):MigvansDto
     {
+        $endpoint = "/CUSTOMERS";
+        $queryParameters = [
+            '$select' => "CUSTNAME",
+            '$filter' => "CUSTNAME eq '$userExtId'",
+            '$expand' => 'CUSTPART_SUBFORM',
+        ];
+        $queryString = http_build_query($queryParameters);
+        $urlQuery = $endpoint . '?' . $queryString;
+        $response = $this->GetRequest($urlQuery);
 
+        $result = new MigvansDto();
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['CUSTPART_SUBFORM'] as $subRec){
+                $result->migvans[] = $subRec['PARTNAME'];
+            }
+        }
+        return $result;
     }
     public function GetDocuments(string $userExId, \DateTimeImmutable $dateFrom, \DateTimeImmutable $dateTo, string $documentType , ?int $limit = 10): DocumentsDto
     {

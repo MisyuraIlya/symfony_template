@@ -54,12 +54,29 @@ class AttributeMainRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findAttributesByCategoryExistProducts(int $lvl1, int $lvl2, int $lvl3)
+    public function findAttributesByCategoryExistProducts(int $lvl1, int $lvl2, int $lvl3, ?string $userExtId, ?array $migvanOnline,?string $searchValue)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder->select('p')
             ->from(Product::class, 'p')
             ->where('p.isPublished = true');
+
+        if (!empty($migvanOnline)) {
+            $queryBuilder->andWhere($queryBuilder->expr()->in('p.sku', $migvanOnline));
+        }
+
+        if ($userExtId && empty($migvanOnline)) {
+            $user = $this->userRepository->findOneByExtId($userExtId);
+            $queryBuilder->join('p.migvans', 'm')
+                ->where('m.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        if ($searchValue) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('p.title', ':searchValue'));
+            $queryBuilder->setParameter('searchValue', '%' . $searchValue . '%');
+        }
+
         if ($lvl1) {
             $queryBuilder->andWhere('p.categoryLvl1 = :lvl1')
                 ->setParameter('lvl1', $lvl1);

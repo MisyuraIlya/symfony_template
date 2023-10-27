@@ -30,7 +30,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'provider' => [
                 'App\\State\\ProductProvider',
-                11 => 'App\\State\\ProductProvider',
             ],
             'uriTemplate' => [
                 null,
@@ -150,11 +149,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'product:read',
                     ],
                 ],
-                11 => [
-                    'groups' => [
-                        'product:read',
-                    ],
-                ],
+                11 => null,
             ],
             'denormalizationContext' => [
                 [
@@ -162,11 +157,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'product:write',
                     ],
                 ],
-                11 => [
-                    'groups' => [
-                        'product:write',
-                    ],
-                ],
+                11 => null,
             ],
             'collectDenormalizationErrors' => [
                 null,
@@ -214,7 +205,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'paginationClientItemsPerPage' => [
                 true,
-                11 => true,
+                11 => null,
             ],
             'paginationClientPartial' => [
                 null,
@@ -1028,7 +1019,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
                 null,
                 8 => null,
-                13 => 'App\\Controller\\GetProductsByMigvan',
+                13 => null,
             ],
             'cacheHeaders' => [
                 2 => [
@@ -1151,9 +1142,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 7 => 'App\\Entity\\Product',
                 9 => 'App\\Entity\\Product',
                 'App\\Entity\\Product',
-                14 => 'App\\Entity\\Product',
-                'App\\Entity\\Product',
-                'App\\Entity\\Product',
+                14 => 'App\\Entity\\Category',
+                'App\\Entity\\Category',
+                'App\\Entity\\Category',
                 'App\\Entity\\Product',
             ],
             'toClass' => [

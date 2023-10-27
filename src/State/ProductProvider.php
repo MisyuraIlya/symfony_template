@@ -6,8 +6,10 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
+use App\Entity\Product;
 use App\Erp\Dto\PricesDto;
 use App\Erp\ErpManager;
+use App\Repository\ProductRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Doctrine\Orm\Paginator;
@@ -18,132 +20,139 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ProductProvider implements ProviderInterface
 {
 
+    private array $skus = [];
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly RequestStack $requestStack,
         #[Autowire(service: CollectionProvider::class)] private ProviderInterface $collectionProvider,
         #[Autowire(service: ItemProvider::class)] private ProviderInterface $itemProvider,
+        private readonly ProductRepository $productRepository
     )
-    {}
+    {
+        $this->ErpManager = new ErpManager($httpClient);
+        $this->isOnlinePrice = $_ENV['IS_ONLINE_PRICE'] === "true";
+        $this->isOnlineStock = $_ENV['IS_ONLINE_STOCK'] === "true";
+        $this->isOnlineMigvan = $_ENV['IS_ONLINE_MIGVAN'] === "true";
+        $this->isUsedMigvan = $_ENV['IS_USED_MIGVAN'] === "true";
+    }
 
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
+        $migvanOnline = null;
+        $userExtId =  $this->requestStack->getCurrentRequest()->get('userExtId');
 
-        if ($operation instanceof CollectionOperationInterface) {
-            return $this->CollectionHandler($operation,$uriVariables,$context);
+        if($this->isOnlineMigvan && $userExtId && $this->isUsedMigvan){
+            $migvanOnline = ($this->ErpManager->GetMigvanOnline($userExtId))->migvans;
         }
 
-        return $this->GetHandler($operation,$uriVariables,$context);
-    }
+        $data = $this->GetDbData($migvanOnline);
+        assert($data instanceof Paginator);
 
-    private function CollectionHandler($operation,$uriVariables,$context)
-    {
-        $entities = $this->collectionProvider->provide($operation, $uriVariables, $context);
-        assert($entities instanceof Paginator);
-        $result = [];
-        $arrayMakats = [];
-        foreach ($entities as $entity) {
-            $arrayMakats[] = $entity->getSku();
-            $result[] = $entity;
+        if($this->isOnlinePrice) {
+            $this->GetOnlinePrice($data);
+        } else {
+            $this->GetDbPrice($data);
         }
 
-//            $this->FetchPriceOnline($arrayMakats, $result);
-        $this->FetchPriceFromPriceList($result);
+        if($this->isOnlineStock) {
+            $this->GetOnlineStock($data);
+        }
 
         return new TraversablePaginator(
-            new \ArrayIterator($result),
-            $entities->getCurrentPage(),
-            $entities->getItemsPerPage(),
-            $entities->getTotalItems()
+            new \ArrayIterator($data->getIterator()),
+            $data->getCurrentPage(),
+            $data->getItemsPerPage(),
+            $data->getTotalItems()
         );
     }
 
-    private function GetHandler($operation,$uriVariables,$context)
+    private function GetDbData($onlineMigvan)
     {
-        $entity = $this->itemProvider->provide($operation, $uriVariables, $context);
-//        $this->FetchPriceFromPriceListPerProduct($entity);
-        $this->FetchPriceFromPriceListPerProduct($entity);
-        return $entity;
+        $lvl1 = (int) $this->requestStack->getCurrentRequest()->attributes->get('lvl1');
+        $lvl2 = (int) $this->requestStack->getCurrentRequest()->attributes->get('lvl2');
+        $lvl3 = (int) $this->requestStack->getCurrentRequest()->attributes->get('lvl3');
+        $orderBy =  $this->requestStack->getCurrentRequest()->get('orderBy');
+        $userExtId =  $this->requestStack->getCurrentRequest()->get('userExtId');
+        $page = (int)  $this->requestStack->getCurrentRequest()->get('page', 1);
+        $itemsPerPage = (int)  $this->requestStack->getCurrentRequest()->get('itemsPerPage',24);
+        $attributes =  $this->requestStack->getCurrentRequest()->get('attributes');
+        $searchValue = $this->requestStack->getCurrentRequest()->get('search');
+        if($this->isUsedMigvan) {
+            $userExtId = null; // if there no migvan then userExtId must be null to fetch all categories
+        }
+        if($this->isOnlineMigvan){
+            $data = $this->productRepository->getCatalogByMigvanArray($page, $userExtId, $itemsPerPage, $lvl1, $lvl2, $lvl3, $orderBy, $attributes,$searchValue, $onlineMigvan);
+        } else {
+            $data = $this->productRepository->getCatalog($page, $userExtId, $itemsPerPage, $lvl1, $lvl2, $lvl3, $orderBy, $attributes,$searchValue);
+        }
+        $this->GetSkus($data);
+        return $data;
     }
 
-
-    // ATTRIBUTE HANDLER
-
-    private function attributeHandler()
-    {
-        //TODO HANDLE
-    }
-
-    // ONLINE
-    private function FetchPriceOnline(array $makats, array $result)
+    private function GetOnlinePrice(Paginator $data)
     {
         $priceList = $this->requestStack->getCurrentRequest()->query->get('priceList');
-
-        $response = (new ErpManager($this->httpClient))->GetPricesOnline($makats, $priceList);
-
-        foreach ($response->prices as $itemRec){
-            foreach ($result as &$subRec){
-                if($subRec->getSku() === $itemRec->sku){
-                    $subRec->setFinalPrice($itemRec->price);
-                    break;
+        //IF THERE NO PRICE LIST GO TO DB BASE PRICE
+        if($priceList){
+            $response = $this->ErpManager->GetPricesOnline($this->skus,$priceList);
+            foreach ($response->prices as $priceRec){
+                foreach ($data as $dataRec){
+                    assert($dataRec instanceof Product);
+                    if($dataRec->getSku() === $priceRec->sku){
+                        if($priceRec->price){
+                            $dataRec->setFinalPrice($priceRec->price);
+                        }
+                        if($priceRec->discountPrecent){
+                            $dataRec->setDiscount($priceRec->discountPrecent);
+                        }
+                    }
                 }
             }
         }
-        return $response;
+        $this->GetDbPrice($data);
     }
 
-    private function FetchPriceFromPriceList(array $result)
+    private function GetDbPrice(Paginator $data)
     {
         $priceList = $this->requestStack->getCurrentRequest()->query->get('priceList');
 
-        foreach ($result as &$itemRec){
+        foreach ($data as $entity) {
             $finalPrice = 0;
-            $discount = 0;
-            if($itemRec->getBasePrice()){
-                $finalPrice = $itemRec->getBasePrice();
+            if($entity->getBasePrice()){
+                $finalPrice = $entity->getBasePrice();
             }
-
-            $prices = $itemRec->getPriceListDetaileds();
+            $prices = $entity->getPriceListDetaileds();
             foreach ($prices as $subRec){
                 if($subRec->getPriceListExId() === $priceList) {
                     $finalPrice = $subRec->getPrice();
-                    $discount = $subRec->getDiscount();
                 }
             }
-            $itemRec->setStock(100);
-            $itemRec->setDiscount($discount);
-            $itemRec->setFinalPrice($finalPrice);
+            $entity->setFinalPrice($finalPrice);
+        }
+
+    }
+
+    private function GetOnlineStock(Paginator $data)
+    {
+        $response = $this->ErpManager->GetStocksOnline($this->skus);
+        foreach ($response->stocks as $stockRec){
+            foreach ($data as $itemRec){
+                assert($itemRec instanceof Product);
+                if($itemRec->getSku() === $stockRec->sku){
+                    $itemRec->setStock($stockRec->stock);
+                }
+            }
         }
     }
 
-    private function FetchPriceOnlinePerProduct($entity)
+    private function GetSkus(Paginator $data)
     {
-        $priceList = $this->requestStack->getCurrentRequest()->query->get('priceList');
-        $response = (new ErpManager($this->httpClient))->GetPricesOnline([$entity->getSku()], $priceList);
-        foreach ($response->prices as $itemRec){
-                if($entity->getSku() === $itemRec->sku){
-                    $entity->setFinalPrice($itemRec->price);
-                    break;
-                }
+        $arraySkus = [];
+        foreach ($data as $entity) {
+            $arraySkus[] = $entity->getSku();
         }
-        return $entity;
-    }
-
-    private function FetchPriceFromPriceListPerProduct($entity)
-    {
-        $priceList = $this->requestStack->getCurrentRequest()->query->get('priceList');
-        $finalPrice = 0;
-        if($entity->getBasePrice()){
-            $finalPrice = $entity->getBasePrice();
-        }
-        $prices = $entity->getPriceListDetaileds();
-        foreach ($prices as $subRec){
-            if($subRec->getPriceListExId() === $priceList) {
-                $finalPrice = $subRec->getPrice();
-            }
-        }
-        $entity->setFinalPrice($finalPrice);
+        $this->skus =  $arraySkus;
     }
 
 }

@@ -44,13 +44,18 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function getCategoriesByMigvanAndSearch(?string $userExtId,?string $searchValue)
+    public function getCategoriesByMigvanAndSearch(?string $userExtId,?string $searchValue, ?array $migvanOnline)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder->select('p')
             ->from(Product::class, 'p')
             ->andWhere('p.isPublished = true');
-        if ($userExtId) {
+
+        if (!empty($migvanOnline)) {
+            $queryBuilder->andWhere($queryBuilder->expr()->in('p.sku', $migvanOnline));
+        }
+
+        if ($userExtId && empty($migvanOnline)) {
             $user = $this->userRepository->findOneByExtId($userExtId);
             $queryBuilder->join('p.migvans', 'm')
                 ->where('m.user = :user')

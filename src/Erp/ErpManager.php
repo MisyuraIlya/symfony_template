@@ -54,7 +54,7 @@ class ErpManager implements ErpInterface
     }
     public function GetStocksOnline(?array $skus):StocksDto
     {
-        return $this->erp->GetStocksOnline();
+        return $this->erp->GetStocksOnline($skus);
     }
 
     public function GetOnlineUser(string $userExtId):User
@@ -65,9 +65,9 @@ class ErpManager implements ErpInterface
     {
         return $this->erp->SendOrder($historyId);
     }
-    public function GetMigvanOnline()
+    public function GetMigvanOnline(string $userExtId): MigvansDto
     {
-        return $this->erp->GetMigvanOnline();
+        return $this->erp->GetMigvanOnline($userExtId);
     }
     public function GetDocuments(string $userExId, \DateTimeImmutable $dateFrom, \DateTimeImmutable $dateTo, string $documentType ,?int $limit = 10): DocumentsDto
     {
