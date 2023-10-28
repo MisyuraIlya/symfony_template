@@ -42,10 +42,8 @@ class SendOrderProcessor implements ProcessorInterface
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('send order processor state');
+            $error->setCreatedAt(new \DateTimeImmutable());
             $this->errorRepository->createError($error,true);
-            $obj =  new \stdClass();
-            $obj->error = $exception->getMessage();
-            return $obj;
         }
 
     }
@@ -54,17 +52,18 @@ class SendOrderProcessor implements ProcessorInterface
     {
         assert($dto instanceof SendOrder);
         $findUser = $this->userRepository->findOneByExtId($dto->userExtId);
-        if(!$findUser) throw new \Error('לא נמצא לקוח כזה');
-        if($findUser->getIsBlocked()) throw new \Error('לקוח חסום אנא פנה לתמיכה');
+        if(!$findUser) throw new \Exception('לא נמצא לקוח כזה');
+        if($findUser->getIsBlocked()) throw new \Exception('לקוח חסום אנא פנה לתמיכה');
 
         $history = $this->HandleHistory($dto, $findUser);
+
         foreach ($dto->products as $productRec){
             $this->HandleHistoryDetailed($productRec, $history);
         }
 
         try {
-            $orderNumber = (new ErpManager($this->httpClient))->SendOrder($history->getId(), $this->historyRepository, $this->historyDetailedRepository);
-//        $orderNumber = '123123';
+//            $orderNumber = (new ErpManager($this->httpClient))->SendOrder($history->getId(), $this->historyRepository, $this->historyDetailedRepository);
+        $orderNumber = '123123';
             sleep(5);
             $this->SaveOrderNumber($orderNumber, $history);
 
@@ -98,6 +97,7 @@ class SendOrderProcessor implements ProcessorInterface
     {
         assert($productsDto instanceof CartDto);
         $findProduct = $this->productRepository->findOneBySku($productsDto->sku);
+
         if(!$findProduct) throw new \Error('לא נמצא פריט כזה');
         if(!$findProduct->isIsPublished()) throw new \Error( 'פריט חסום' . ' ' .  $findProduct->getTitle());
 

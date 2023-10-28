@@ -15,9 +15,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'operations' => [
                 $o[1],
             ],
-            'processor' => [
-                'App\\State\\SendOrderProcessor',
-            ],
             'uriTemplate' => [
                 null,
             ],
@@ -371,7 +368,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'processor' => [
                 2 => 'App\\State\\SendOrderProcessor',
-                'App\\State\\SendOrderProcessor',
             ],
             'stateOptions' => [
                 2 => null,

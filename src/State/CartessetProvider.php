@@ -27,7 +27,7 @@ class CartessetProvider implements ProviderInterface
     {
         try {
             return $this->GetHandler($operation,$uriVariables,$context);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('cartesset provider state');

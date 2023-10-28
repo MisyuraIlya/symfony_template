@@ -25,7 +25,7 @@ class GetProducts
     {
         try {
             $res = (new ErpManager($this->httpClient))->GetProducts();
-            foreach ($res->products as $itemRec){
+            foreach ($res->products as $key => $itemRec){
                 if($itemRec->Extra18 || $itemRec->Extra2 || $itemRec->Extra6) {
                     $findCategoryLvl1 = $this->categoryRepository->findOneByExtId($itemRec->Extra18);
                     $findCategoryLvl2 = $this->categoryRepository->findOneByExtId($itemRec->Extra2);
@@ -37,6 +37,7 @@ class GetProducts
                         $product->setCreatedAt(new \DateTimeImmutable());
                     }
 
+                    $product->setOrden($key);
                     $product->setTitle($itemRec->title);
                     $product->setPackQuantity($itemRec->packQuantity);
                     $product->setBasePrice($itemRec->baseprice);

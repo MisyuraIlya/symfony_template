@@ -21,6 +21,25 @@ class ProductAttributeRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductAttribute::class);
     }
 
+    public function save(ProductAttribute $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function findOneByProductIdAndAttributeSubId(?int $productId, ?int $attributeSubId): ?ProductAttribute
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.product = :val1')
+            ->andWhere('a.attributeSub = :val2')
+            ->setParameter('val1', $productId)
+            ->setParameter('val2', $attributeSubId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 //    /**
 //     * @return ProductAttribute[] Returns an array of ProductAttribute objects
 //     */

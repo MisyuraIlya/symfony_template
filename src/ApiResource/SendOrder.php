@@ -11,9 +11,10 @@ use App\State\SendOrderProcessor;
 #[ApiResource(
     shortName: 'SendOrder',
     operations: [
-        new Post(),
+        new Post(
+            processor: SendOrderProcessor::class
+        ),
     ],
-    processor: SendOrderProcessor::class
 )]
 class SendOrder
 {

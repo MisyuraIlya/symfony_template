@@ -50,7 +50,6 @@ class ProductRepository extends ServiceEntityRepository
 
     public function getCatalog(int $page = 1, string $userExtId = null, int $itemsPerPage = 24, int $lvl1, int $lvl2, int $lvl3, ?string $orderBy = null, ?string $attributes, ?string $searchValue): Paginator
     {
-
         $firstResult = ($page - 1) * $itemsPerPage;
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder->select('p')
@@ -110,7 +109,6 @@ class ProductRepository extends ServiceEntityRepository
 
     public function getCatalogByMigvanArray(int $page = 1, string $userExtId = null, int $itemsPerPage = 24, int $lvl1, int $lvl2, int $lvl3, ?string $orderBy = null, ?string $attributes, ?string $searchValue, ?array $onlineMigvan): Paginator
     {
-
         $firstResult = ($page - 1) * $itemsPerPage;
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder->select('p')

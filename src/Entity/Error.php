@@ -28,6 +28,9 @@ class Error
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $functionName = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function __construct()
     {
         $this->history = new ArrayCollection();
@@ -100,6 +103,18 @@ class Error
     public function setFunctionName(?string $functionName): static
     {
         $this->functionName = $functionName;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

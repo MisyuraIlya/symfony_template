@@ -51,7 +51,7 @@ class DocumentsProvider implements ProviderInterface
                 );
             }
             return $this->GetHandler($operation,$uriVariables,$context);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('documents provider state');

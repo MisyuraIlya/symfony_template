@@ -467,7 +467,7 @@ class Priority implements ErpInterface
                 $userDto->userExId = $userRec['CUSTNAME'];
                 $userDto->userDescription = $userRec['CUSTDES'];
                 $userDto->name = $userRec['CUSTDES'];
-                $userDto->isBlocked = $userRec['INACTIVEFLAG'] === 'Y' ? false : true;
+                $userDto->isBlocked = $userRec['INACTIVEFLAG'] === 'Y' ? true : false;
                 $userDto->maxObligo = $userRec['MAX_OBLIGO'];
                 $userDto->maxCredit = $userRec['MAX_CREDIT'];
                 $userDto->phone = $userRec['PHONE'];

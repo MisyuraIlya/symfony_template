@@ -17,12 +17,10 @@ class SubAttribute extends \App\Entity\SubAttribute implements \Doctrine\ORM\Pro
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [
         "\0".parent::class."\0".'attribute' => [parent::class, 'attribute', null],
-        "\0".parent::class."\0".'categoryAttributes' => [parent::class, 'categoryAttributes', null],
         "\0".parent::class."\0".'id' => [parent::class, 'id', null],
         "\0".parent::class."\0".'productAttributes' => [parent::class, 'productAttributes', null],
         "\0".parent::class."\0".'title' => [parent::class, 'title', null],
         'attribute' => [parent::class, 'attribute', null],
-        'categoryAttributes' => [parent::class, 'categoryAttributes', null],
         'id' => [parent::class, 'id', null],
         'productAttributes' => [parent::class, 'productAttributes', null],
         'title' => [parent::class, 'title', null],

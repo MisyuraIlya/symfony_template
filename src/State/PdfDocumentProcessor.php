@@ -33,7 +33,7 @@ class PdfDocumentProcessor implements ProcessorInterface
             $obj->url = $ftpUplaodFilePath;
             return $obj;
 
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('pdf document processor state');

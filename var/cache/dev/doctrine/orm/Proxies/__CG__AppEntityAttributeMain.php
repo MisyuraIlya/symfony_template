@@ -17,7 +17,6 @@ class AttributeMain extends \App\Entity\AttributeMain implements \Doctrine\ORM\P
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [
         "\0".parent::class."\0".'SubAttributes' => [parent::class, 'SubAttributes', null],
-        "\0".parent::class."\0".'categoryAttributes' => [parent::class, 'categoryAttributes', null],
         "\0".parent::class."\0".'extId' => [parent::class, 'extId', null],
         "\0".parent::class."\0".'id' => [parent::class, 'id', null],
         "\0".parent::class."\0".'isInFilter' => [parent::class, 'isInFilter', null],
@@ -26,7 +25,6 @@ class AttributeMain extends \App\Entity\AttributeMain implements \Doctrine\ORM\P
         "\0".parent::class."\0".'orden' => [parent::class, 'orden', null],
         "\0".parent::class."\0".'title' => [parent::class, 'title', null],
         'SubAttributes' => [parent::class, 'SubAttributes', null],
-        'categoryAttributes' => [parent::class, 'categoryAttributes', null],
         'extId' => [parent::class, 'extId', null],
         'id' => [parent::class, 'id', null],
         'isInFilter' => [parent::class, 'isInFilter', null],

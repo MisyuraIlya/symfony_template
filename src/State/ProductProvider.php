@@ -53,13 +53,13 @@ class ProductProvider implements ProviderInterface
             $data = $this->GetDbData($migvanOnline);
             assert($data instanceof Paginator);
 
-            if($this->isOnlinePrice) {
+            if($this->isOnlinePrice && count($data) >0) {
                 $this->GetOnlinePrice($data);
             } else {
                 $this->GetDbPrice($data);
             }
 
-            if($this->isOnlineStock) {
+            if($this->isOnlineStock && count($data) > 0) {
                 $this->GetOnlineStock($data);
             }
 
@@ -69,7 +69,7 @@ class ProductProvider implements ProviderInterface
                 $data->getItemsPerPage(),
                 $data->getTotalItems()
             );
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('Product provider state');

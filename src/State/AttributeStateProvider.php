@@ -59,7 +59,7 @@ class AttributeStateProvider implements ProviderInterface
             $lvl3 = $this->requestStack->getCurrentRequest()->attributes->get('lvl3');
             $response = $this->attributeMainRepository->findAttributesByCategoryExistProducts($lvl1,$lvl2,$lvl3, $userExtId, $migvanOnline,$search);
             return $response;
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('attribute state provider state');

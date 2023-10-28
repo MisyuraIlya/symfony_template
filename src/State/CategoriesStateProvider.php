@@ -54,7 +54,7 @@ class CategoriesStateProvider implements ProviderInterface
 
             $response = $this->categoryRepository->getCategoriesByMigvanAndSearch($userExtId,$search,$migvanOnline);
             return $response;
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());
             $error->setFunctionName('Categories provider state');

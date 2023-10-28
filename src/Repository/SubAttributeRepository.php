@@ -41,13 +41,11 @@ class SubAttributeRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findOneBySkuAndTitle(?string $sku, ?string $title): ?SubAttribute
+    public function findOneByTitle( ?string $title): ?SubAttribute
     {
         return $this->createQueryBuilder('a')
-            ->where('a.product = :val1')
-            ->andWhere('a.title = :val2')
-            ->setParameter('val1', $sku)
-            ->setParameter('val2', $title)
+            ->where('a.title = :val1')
+            ->setParameter('val1', $title)
             ->getQuery()
             ->getOneOrNullResult();
     }

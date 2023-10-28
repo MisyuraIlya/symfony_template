@@ -482,6 +482,8 @@
       <argument type="service" id="App\Repository\MigvanRepository"/>
       <argument type="service" id="App\Repository\AttributeMainRepository"/>
       <argument type="service" id="App\Repository\SubAttributeRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
+      <argument type="service" id="App\Repository\ProductAttributeRepository"/>
       <call method="setName">
         <argument>CronManager</argument>
       </call>
@@ -515,14 +517,17 @@
     <service id="App\Cron\GetBasePrice" class="App\Cron\GetBasePrice" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetCategories" class="App\Cron\GetCategories" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetMainAttributes" class="App\Cron\GetMainAttributes" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\AttributeMainRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetMigvans" class="App\Cron\GetMigvans" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
@@ -533,42 +538,51 @@
     <service id="App\Cron\GetPriceList" class="App\Cron\GetPriceList" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\PriceListRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetPriceListDetailed" class="App\Cron\GetPriceListDetailed" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
       <argument type="service" id="App\Repository\PriceListRepository"/>
       <argument type="service" id="App\Repository\PriceListDetailedRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetProducts" class="App\Cron\GetProducts" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetStocks" class="App\Cron\GetStocks" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetSubAttributes" class="App\Cron\GetSubAttributes" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\SubAttributeRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
       <argument type="service" id="App\Repository\AttributeMainRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
+      <argument type="service" id="App\Repository\ProductAttributeRepository"/>
     </service>
     <service id="App\Cron\GetSubProducts" class="App\Cron\GetSubProducts" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\SubProductRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetSubUsers" class="App\Cron\GetSubUsers" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\SubUserRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Cron\GetUsers" class="App\Cron\GetUsers" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\PriceListRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
@@ -673,6 +687,10 @@
       <argument type="service" id="doctrine"/>
       <argument type="service" id="App\Repository\UserRepository"/>
     </service>
+    <service id="App\Repository\ErrorRepository" class="App\Repository\ErrorRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\HistoryDetailedRepository" class="App\Repository\HistoryDetailedRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -750,11 +768,13 @@
       <argument type="service" id="App\Repository\AttributeMainRepository"/>
       <argument type="service" id="api_platform.doctrine.orm.state.collection_provider"/>
       <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\CartessetProvider" class="App\State\CartessetProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="request_stack"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\CategoriesStateProvider" class="App\State\CategoriesStateProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
@@ -763,15 +783,18 @@
       <argument type="service" id="api_platform.doctrine.orm.state.collection_provider"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\DocumentsProvider" class="App\State\DocumentsProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="request_stack"/>
       <argument type="service" id="api_platform.pagination"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\PdfDocumentProcessor" class="App\State\PdfDocumentProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
@@ -780,6 +803,7 @@
       <argument type="service" id="api_platform.doctrine.orm.state.collection_provider"/>
       <argument type="service" id="api_platform.doctrine.orm.state.item_provider"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
@@ -788,9 +812,11 @@
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
       <argument type="service" id="http_client.uri_template"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Validator\IsValidOrder" class="App\Validator\IsValidOrder" autowire="true" autoconfigure="true"/>
     <service id="App\Validator\IsValidOrderValidator" class="App\Validator\IsValidOrderValidator" autowire="true" autoconfigure="true">
@@ -4465,7 +4491,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.37.U96T"/>
+      <argument type="service" id=".service_locator.4.OllCY"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -6769,6 +6795,8 @@
     <service id=".abstract.instanceof.App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ErrorRepository" class="App\Repository\ErrorRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\ErrorRepository" class="App\Repository\ErrorRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\HistoryDetailedRepository" class="App\Repository\HistoryDetailedRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\HistoryDetailedRepository" class="App\Repository\HistoryDetailedRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\HistoryRepository" class="App\Repository\HistoryRepository" autowire="true" abstract="true"/>
@@ -7387,13 +7415,14 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.37.U96T" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.4.OllCY" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AgentRepository" type="service_closure" id="App\Repository\AgentRepository"/>
         <argument key="App\Repository\AttributeMainRepository" type="service_closure" id="App\Repository\AttributeMainRepository"/>
         <argument key="App\Repository\CategoryAttributesRepository" type="service_closure" id="App\Repository\CategoryAttributesRepository"/>
         <argument key="App\Repository\CategoryRepository" type="service_closure" id="App\Repository\CategoryRepository"/>
+        <argument key="App\Repository\ErrorRepository" type="service_closure" id="App\Repository\ErrorRepository"/>
         <argument key="App\Repository\HistoryDetailedRepository" type="service_closure" id="App\Repository\HistoryDetailedRepository"/>
         <argument key="App\Repository\HistoryRepository" type="service_closure" id="App\Repository\HistoryRepository"/>
         <argument key="App\Repository\MediaObjectRepository" type="service_closure" id="App\Repository\MediaObjectRepository"/>

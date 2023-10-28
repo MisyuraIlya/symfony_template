@@ -16,6 +16,7 @@ use App\Cron\GetSubUsers;
 use App\Cron\GetUsers;
 use App\Repository\AttributeMainRepository;
 use App\Repository\ErrorRepository;
+use App\Repository\ProductAttributeRepository;
 use App\Repository\SubAttributeRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\MigvanRepository;
@@ -42,6 +43,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class CronManagerCommand extends Command
 {
     private $entityManager;
+    private bool $isOnlinePrice;
+    private bool $isOnlineMigvan;
+    private bool $isUsedMigvan;
 
     public function __construct(
         private HttpClientInterface                  $httpClient,
@@ -56,9 +60,13 @@ class CronManagerCommand extends Command
         private readonly AttributeMainRepository     $attributeMainRepository,
         private readonly SubAttributeRepository      $SubAttributeRepository,
         private readonly ErrorRepository $errorRepository,
+        private readonly ProductAttributeRepository $productAttributeRepository,
     )
     {
         parent::__construct();
+        $this->isOnlinePrice = $_ENV['IS_ONLINE_PRICE'] === "true";
+        $this->isOnlineMigvan = $_ENV['IS_ONLINE_MIGVAN'] === "true";
+        $this->isUsedMigvan = $_ENV['IS_USED_MIGVAN'] === "true";
     }
 
     protected function configure(): void
@@ -101,17 +109,18 @@ class CronManagerCommand extends Command
             $this->productRepository,
             $this->errorRepository
         ))->sync();
-//        (new GetMainAttributes(
-//            $this->httpClient,
-//            $this->attributeMainRepository,
-//            $this->errorRepository
-//        ))->sync();
+        (new GetMainAttributes(
+            $this->httpClient,
+            $this->attributeMainRepository,
+            $this->errorRepository
+        ))->sync();
         (new GetSubAttributes(
             $this->httpClient,
             $this->SubAttributeRepository,
             $this->productRepository,
             $this->attributeMainRepository,
-            $this->errorRepository
+            $this->errorRepository,
+            $this->productAttributeRepository,
         ))->sync();
 //        (new GetSubProducts(
 //            $this->httpClient,
@@ -120,20 +129,26 @@ class CronManagerCommand extends Command
 //            $this->errorRepository
 //        ))->sync();
 
-        (new GetPriceListDetailed(
-            $this->httpClient,
-            $this->productRepository,
-            $this->priceListRepository,
-            $this->priceListDetailedRepository,
-            $this->errorRepository
-        ))->sync();
-        (new GetMigvans(
-            $this->httpClient,
-            $this->migvanRepository,
-            $this->userRepository,
-            $this->productRepository,
-            $this->errorRepository
-        ))->sync();
+        if(!$this->isOnlinePrice && !$this->isOnlineMigvan) {
+            (new GetPriceListDetailed(
+                $this->httpClient,
+                $this->productRepository,
+                $this->priceListRepository,
+                $this->priceListDetailedRepository,
+                $this->errorRepository
+            ))->sync();
+        }
+
+        if(!$this->isUsedMigvan) {
+            (new GetMigvans(
+                $this->httpClient,
+                $this->migvanRepository,
+                $this->userRepository,
+                $this->productRepository,
+                $this->errorRepository
+            ))->sync();
+        }
+
         (new GetStocks(
             $this->httpClient,
             $this->productRepository,
