@@ -455,6 +455,19 @@
     <service id="App\ApiResource\XlxDocuments" class="App\ApiResource\XlxDocuments" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\XlxDocuments&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
+    <service id="App\Command\CronImageUploaderCommand" class="App\Command\CronImageUploaderCommand" autowire="true" autoconfigure="true">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ProductImagesRepository"/>
+      <argument type="service" id="App\Repository\MediaObjectRepository"/>
+      <call method="setName">
+        <argument>CronImageUploader</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Add a short description for your command</argument>
+      </call>
+    </service>
     <service id="App\Command\CronManagerCommand" class="App\Command\CronManagerCommand" autowire="true" autoconfigure="true">
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
@@ -725,6 +738,11 @@
       <tag name="serializer.normalizer"/>
       <argument type="service" id="vich_uploader.storage.file_system"/>
     </service>
+    <service id="App\Service\FtpService" class="App\Service\FtpService" autowire="true" autoconfigure="true">
+      <tag name="container.error" message="Cannot autowire service &quot;App\Service\FtpService&quot;: argument &quot;$projectFolder&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
+    </service>
+    <service id="App\Service\ImageService" class="App\Service\ImageService" autowire="true" autoconfigure="true"/>
+    <service id="App\Service\XlxDocumentService" class="App\Service\XlxDocumentService" autowire="true" autoconfigure="true"/>
     <service id="App\State\AttributeStateProvider" class="App\State\AttributeStateProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
@@ -6697,6 +6715,8 @@
       </argument>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
     </service>
+    <service id=".instanceof.Symfony\Component\Console\Command\Command.0.App\Command\CronImageUploaderCommand" class="App\Command\CronImageUploaderCommand" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Command\CronImageUploaderCommand" class="App\Command\CronImageUploaderCommand" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Console\Command\Command.0.App\Command\CronManagerCommand" class="App\Command\CronManagerCommand" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Command\CronManagerCommand" class="App\Command\CronManagerCommand" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AuthController" class="App\Controller\AuthController" autowire="true" abstract="true"/>
@@ -7869,6 +7889,13 @@
     <service id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.y4_Zrx.&quot;: it needs an instance of &quot;Symfony\Component\Config\Loader\LoaderInterface&quot; but this type has been excluded from autowiring."/>
     </service>
+    <service id=".App\Command\CronImageUploaderCommand.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>CronImageUploader</argument>
+      <argument type="collection"/>
+      <argument>Add a short description for your command</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="App\Command\CronImageUploaderCommand"/>
+    </service>
     <service id=".App\Command\CronManagerCommand.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>CronManager</argument>
       <argument type="collection"/>
@@ -8329,8 +8356,9 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.TO2ZcSL"/>
+      <argument type="service" id=".service_locator.umg.12q"/>
       <argument type="collection">
+        <argument key="CronImageUploader">App\Command\CronImageUploaderCommand</argument>
         <argument key="CronManager">App\Command\CronManagerCommand</argument>
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -8439,9 +8467,10 @@
         <argument key="make:story">maker.auto_command.make_story</argument>
       </argument>
     </service>
-    <service id=".service_locator.TO2ZcSL" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.umg.12q" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Command\CronImageUploaderCommand" type="service_closure" id=".App\Command\CronImageUploaderCommand.lazy"/>
         <argument key="App\Command\CronManagerCommand" type="service_closure" id=".App\Command\CronManagerCommand.lazy"/>
         <argument key="console.command.about" type="service_closure" id=".console.command.about.lazy"/>
         <argument key="console.command.assets_install" type="service_closure" id=".console.command.assets_install.lazy"/>

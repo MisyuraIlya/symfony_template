@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Metadata\Link;
 use App\Entity\Category;
+
 #[ORM\Entity(repositoryClass: AttributeMainRepository::class)]
 #[ApiResource(
     operations:[
@@ -69,15 +70,10 @@ class AttributeMain
     #[ORM\OneToMany(mappedBy: 'attribute', targetEntity: SubAttribute::class)]
     private Collection $SubAttributes;
 
-    #[ORM\OneToMany(mappedBy: 'attributeMain', targetEntity: CategoryAttributes::class)]
-    private Collection $categoryAttributes;
-
-
     public function __construct()
     {
         $this->SubAttributes = new ArrayCollection();
         $this->categories = new ArrayCollection();
-        $this->categoryAttributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,36 +177,6 @@ class AttributeMain
             // set the owning side to null (unless already changed)
             if ($SubAttribute->getAttributeId() === $this) {
                 $SubAttribute->setAttributeId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CategoryAttributes>
-     */
-    public function getCategoryAttributes(): Collection
-    {
-        return $this->categoryAttributes;
-    }
-
-    public function addCategoryAttribute(CategoryAttributes $categoryAttribute): static
-    {
-        if (!$this->categoryAttributes->contains($categoryAttribute)) {
-            $this->categoryAttributes->add($categoryAttribute);
-            $categoryAttribute->setAttributeMain($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategoryAttribute(CategoryAttributes $categoryAttribute): static
-    {
-        if ($this->categoryAttributes->removeElement($categoryAttribute)) {
-            // set the owning side to null (unless already changed)
-            if ($categoryAttribute->getAttributeMain() === $this) {
-                $categoryAttribute->setAttributeMain(null);
             }
         }
 

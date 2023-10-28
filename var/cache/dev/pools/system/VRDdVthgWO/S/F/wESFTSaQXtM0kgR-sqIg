@@ -236,7 +236,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 13 => null,
             ],
             'paginationItemsPerPage' => [
-                null,
+                1000,
                 13 => null,
             ],
             'paginationMaximumItemsPerPage' => [
@@ -379,12 +379,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 15 => null,
             ],
             'paginationItemsPerPage' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => 1000,
+                4 => 1000,
+                1000,
+                1000,
+                8 => 1000,
+                10 => 1000,
                 15 => null,
             ],
             'paginationMaximumItemsPerPage' => [

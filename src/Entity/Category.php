@@ -24,6 +24,7 @@ use ApiPlatform\Metadata\Link;
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:write']],
     order: ['orden' => 'ASC'],
+    paginationItemsPerPage: 1000,
 )]
 #[ApiResource(
     operations: [
@@ -100,16 +101,12 @@ class Category
     #[ORM\ManyToOne(inversedBy: 'categories')]
     private ?MediaObject $MediaObject = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: CategoryAttributes::class)]
-    private Collection $categoryAttributes;
-
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->productsLvl1 = new ArrayCollection();
         $this->productsLvl2 = new ArrayCollection();
         $this->productsLvl3 = new ArrayCollection();
-        $this->categoryAttributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -321,34 +318,5 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection<int, CategoryAttributes>
-     */
-    public function getCategoryAttributes(): Collection
-    {
-        return $this->categoryAttributes;
-    }
-
-    public function addCategoryAttribute(CategoryAttributes $categoryAttribute): static
-    {
-        if (!$this->categoryAttributes->contains($categoryAttribute)) {
-            $this->categoryAttributes->add($categoryAttribute);
-            $categoryAttribute->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategoryAttribute(CategoryAttributes $categoryAttribute): static
-    {
-        if ($this->categoryAttributes->removeElement($categoryAttribute)) {
-            // set the owning side to null (unless already changed)
-            if ($categoryAttribute->getCategory() === $this) {
-                $categoryAttribute->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
 
 }

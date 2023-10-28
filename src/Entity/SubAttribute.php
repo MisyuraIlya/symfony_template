@@ -43,15 +43,11 @@ class SubAttribute
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\OneToMany(mappedBy: 'AttributeSub', targetEntity: CategoryAttributes::class)]
-    private Collection $categoryAttributes;
-
     #[ORM\OneToMany(mappedBy: 'attributeSub', targetEntity: ProductAttribute::class)]
     private Collection $productAttributes;
 
     public function __construct()
     {
-        $this->categoryAttributes = new ArrayCollection();
         $this->productAttributes = new ArrayCollection();
     }
 
@@ -80,36 +76,6 @@ class SubAttribute
     public function setTitle(?string $title): static
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CategoryAttributes>
-     */
-    public function getCategoryAttributes(): Collection
-    {
-        return $this->categoryAttributes;
-    }
-
-    public function addCategoryAttribute(CategoryAttributes $categoryAttribute): static
-    {
-        if (!$this->categoryAttributes->contains($categoryAttribute)) {
-            $this->categoryAttributes->add($categoryAttribute);
-            $categoryAttribute->setAttributeSub($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategoryAttribute(CategoryAttributes $categoryAttribute): static
-    {
-        if ($this->categoryAttributes->removeElement($categoryAttribute)) {
-            // set the owning side to null (unless already changed)
-            if ($categoryAttribute->getAttributeSub() === $this) {
-                $categoryAttribute->setAttributeSub(null);
-            }
-        }
 
         return $this;
     }

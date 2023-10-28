@@ -16,7 +16,6 @@ class Product extends \App\Entity\Product implements \Doctrine\ORM\Proxy\Interna
     }
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [
-        "\0".parent::class."\0".'SubAttributes' => [parent::class, 'SubAttributes', null],
         "\0".parent::class."\0".'barcode' => [parent::class, 'barcode', null],
         "\0".parent::class."\0".'basePrice' => [parent::class, 'basePrice', null],
         "\0".parent::class."\0".'categoryLvl1' => [parent::class, 'categoryLvl1', null],
@@ -34,12 +33,12 @@ class Product extends \App\Entity\Product implements \Doctrine\ORM\Proxy\Interna
         "\0".parent::class."\0".'orden' => [parent::class, 'orden', null],
         "\0".parent::class."\0".'packQuantity' => [parent::class, 'packQuantity', null],
         "\0".parent::class."\0".'priceListDetaileds' => [parent::class, 'priceListDetaileds', null],
+        "\0".parent::class."\0".'productAttributes' => [parent::class, 'productAttributes', null],
         "\0".parent::class."\0".'sku' => [parent::class, 'sku', null],
         "\0".parent::class."\0".'stock' => [parent::class, 'stock', null],
         "\0".parent::class."\0".'subProducts' => [parent::class, 'subProducts', null],
         "\0".parent::class."\0".'title' => [parent::class, 'title', null],
         "\0".parent::class."\0".'updatedAt' => [parent::class, 'updatedAt', null],
-        'SubAttributes' => [parent::class, 'SubAttributes', null],
         'barcode' => [parent::class, 'barcode', null],
         'basePrice' => [parent::class, 'basePrice', null],
         'categoryLvl1' => [parent::class, 'categoryLvl1', null],
@@ -57,6 +56,7 @@ class Product extends \App\Entity\Product implements \Doctrine\ORM\Proxy\Interna
         'orden' => [parent::class, 'orden', null],
         'packQuantity' => [parent::class, 'packQuantity', null],
         'priceListDetaileds' => [parent::class, 'priceListDetaileds', null],
+        'productAttributes' => [parent::class, 'productAttributes', null],
         'sku' => [parent::class, 'sku', null],
         'stock' => [parent::class, 'stock', null],
         'subProducts' => [parent::class, 'subProducts', null],
