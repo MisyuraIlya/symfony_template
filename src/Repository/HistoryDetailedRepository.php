@@ -30,6 +30,15 @@ class HistoryDetailedRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneByHistoryId(int $id): array
+    {
+        return $this->createQueryBuilder('hd')
+            ->where('hd.history = :val1')
+            ->setParameter('val1', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return HistoryDetailed[] Returns an array of HistoryDetailed objects
 //     */

@@ -5,7 +5,9 @@ namespace App\State;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Entity\Error;
 use App\Erp\ErpManager;
+use App\Repository\ErrorRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -14,6 +16,7 @@ class CartessetProvider implements ProviderInterface
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly RequestStack $requestStack,
+        private readonly ErrorRepository $errorRepository,
     )
     {
         $this->fromDate = $this->requestStack->getCurrentRequest()->query->get('from');
@@ -22,8 +25,17 @@ class CartessetProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-
-        return $this->GetHandler($operation,$uriVariables,$context);
+        try {
+            return $this->GetHandler($operation,$uriVariables,$context);
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setDescription($exception->getMessage());
+            $error->setFunctionName('cartesset provider state');
+            $this->errorRepository->createError($error,true);
+            $obj =  new \stdClass();
+            $obj->error = $exception->getMessage();
+            return $obj;
+        }
     }
 
 

@@ -5,8 +5,10 @@ namespace App\State;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Entity\Error;
 use App\Erp\ErpManager;
 use App\Repository\CategoryRepository;
+use App\Repository\ErrorRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,7 +21,8 @@ class CategoriesStateProvider implements ProviderInterface
         private readonly RequestStack $requestStack,
         #[Autowire(service: CollectionProvider::class)] private ProviderInterface $collectionProvider,
         private readonly UserRepository $userRepository,
-        private readonly CategoryRepository $categoryRepository
+        private readonly CategoryRepository $categoryRepository,
+        private readonly ErrorRepository $errorRepository,
     )
     {
         $this->ErpManager = new ErpManager($httpClient);
@@ -29,27 +32,36 @@ class CategoriesStateProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-
-        $userExtId = $this->requestStack->getCurrentRequest()->get('userExtId');
-        $search = $this->requestStack->getCurrentRequest()->get('search');
-        $migvanOnline = [];
-        if($this->isUsedMigvan && $userExtId) {
-            if($this->isOnlineMigvan) {
-                $migvanOnline = ($this->ErpManager->GetMigvanOnline($userExtId))->migvans;
-                if(count($migvanOnline) == 0) {
-                    $userExtId = null;
+        try {
+            $userExtId = $this->requestStack->getCurrentRequest()->get('userExtId');
+            $search = $this->requestStack->getCurrentRequest()->get('search');
+            $migvanOnline = [];
+            if($this->isUsedMigvan && $userExtId) {
+                if($this->isOnlineMigvan) {
+                    $migvanOnline = ($this->ErpManager->GetMigvanOnline($userExtId))->migvans;
+                    if(count($migvanOnline) == 0) {
+                        $userExtId = null;
+                    }
+                } else {
+                    $isUserHaveMigvan = $this->userRepository->isUserHaveMigvan($userExtId);
+                    if(!$isUserHaveMigvan){
+                        $userExtId = null;
+                    }
                 }
             } else {
-                $isUserHaveMigvan = $this->userRepository->isUserHaveMigvan($userExtId);
-                if(!$isUserHaveMigvan){
-                    $userExtId = null;
-                }
+                $userExtId = null; // if there no migvan then userExtId must be null to fetch all categories
             }
-        } else {
-            $userExtId = null; // if there no migvan then userExtId must be null to fetch all categories
-        }
 
-        $response = $this->categoryRepository->getCategoriesByMigvanAndSearch($userExtId,$search,$migvanOnline);
-        return $response;
+            $response = $this->categoryRepository->getCategoriesByMigvanAndSearch($userExtId,$search,$migvanOnline);
+            return $response;
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setDescription($exception->getMessage());
+            $error->setFunctionName('Categories provider state');
+            $this->errorRepository->createError($error,true);
+            $obj =  new \stdClass();
+            $obj->error = $exception->getMessage();
+            return $obj;
+        }
     }
 }

@@ -6,11 +6,14 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\Dto\CartDto;
 use App\ApiResource\SendOrder;
+use App\Entity\Error;
 use App\Entity\History;
 use App\Entity\HistoryDetailed;
 use App\Entity\User;
+use App\Enum\DocumentTypeHistory;
 use App\Enum\PurchaseStatus;
 use App\Erp\ErpManager;
+use App\Repository\ErrorRepository;
 use App\Repository\HistoryDetailedRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProductRepository;
@@ -25,14 +28,26 @@ class SendOrderProcessor implements ProcessorInterface
         private UserRepository $userRepository,
         private ProductRepository $productRepository,
         private HttpClientInterface $httpClient,
+        private readonly ErrorRepository $errorRepository,
     )
     {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        $entity = $this->HandlerSaveOrder($data);
-        return $entity;
+        try {
+            $entity = $this->HandlerSaveOrder($data);
+            return $entity;
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setDescription($exception->getMessage());
+            $error->setFunctionName('send order processor state');
+            $this->errorRepository->createError($error,true);
+            $obj =  new \stdClass();
+            $obj->error = $exception->getMessage();
+            return $obj;
+        }
+
     }
 
     private function HandlerSaveOrder(object $dto)
@@ -47,14 +62,19 @@ class SendOrderProcessor implements ProcessorInterface
             $this->HandleHistoryDetailed($productRec, $history);
         }
 
-//        $orderNumber = (new ErpManager($this->httpClient))->SendOrder($history->getId());
-        $orderNumber = '123123';
-        sleep(5);
-        $this->SaveOrderNumber($orderNumber, $history);
+        try {
+            $orderNumber = (new ErpManager($this->httpClient))->SendOrder($history->getId(), $this->historyRepository, $this->historyDetailedRepository);
+//        $orderNumber = '123123';
+            sleep(5);
+            $this->SaveOrderNumber($orderNumber, $history);
 
-        $res = new \stdClass();
-        $res->orderNumber = $orderNumber;
-        return $res;
+            $res = new \stdClass();
+            $res->orderNumber = $orderNumber;
+            return $res;
+        } catch (\Exception $e) {
+            $this->SaveError($e->getMessage(), $history);
+        }
+
     }
 
     private function HandleHistory(object $dto, User $user)
@@ -68,7 +88,8 @@ class SendOrderProcessor implements ProcessorInterface
         $newHistory->setOrderComment($dto->comment);
         $newHistory->setDeliveryPrice($dto->deliveryPrice);
         $newHistory->setTotal($this->CalculateTotal($dto));
-        $newHistory->setOrderStatus('pending');
+        $newHistory->setOrderStatus(PurchaseStatus::PENDING);
+        $newHistory->setDocumentType(DocumentTypeHistory::ORDER);
         $historyId = $this->historyRepository->createHistory($newHistory, true);
         return $historyId;
     }
@@ -106,8 +127,19 @@ class SendOrderProcessor implements ProcessorInterface
     private function SaveOrderNumber(string $orderNumber, History $history)
     {
         $history->setOrderExtId($orderNumber);
-        $history->setOrderStatus('paid');
+        $history->setOrderStatus(PurchaseStatus::PAID);
         $history->setUpdatedAt(new \DateTimeImmutable());
         $this->historyRepository->createHistory($history, true);
+    }
+
+    private function SaveError($message, History $history){
+
+        $error = new Error();
+        $error->setDescription($message);
+        $error->setFunctionName('Send Order');
+        $this->errorRepository->createError($error,true);
+        $history->setError($error);
+        $history->setUpdatedAt(new \DateTimeImmutable());
+        $this->historyRepository->createHistory($history,true);
     }
 }

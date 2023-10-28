@@ -15,6 +15,9 @@ use App\Erp\Dto\ProductsDto;
 use App\Erp\Dto\StocksDto;
 use App\Erp\Dto\UsersDto;
 use App\Erp\Priority\Priority;
+use App\Repository\HistoryDetailedRepository;
+use App\Repository\HistoryRepository;
+use Lcobucci\JWT\Exception;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -61,9 +64,9 @@ class ErpManager implements ErpInterface
     {
         return $this->erp->GetOnlineUser();
     }
-    public function SendOrder(int $historyId)
+    public function SendOrder(int $historyId, HistoryRepository $historyRepository, HistoryDetailedRepository $historyDetailedRepository)
     {
-        return $this->erp->SendOrder($historyId);
+        return $this->erp->SendOrder($historyId,$historyRepository,$historyDetailedRepository);
     }
     public function GetMigvanOnline(string $userExtId): MigvansDto
     {

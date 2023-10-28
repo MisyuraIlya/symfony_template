@@ -16,6 +16,8 @@ use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\StocksDto;
 use App\Erp\Dto\UsersDto;
 use App\Erp\Dto\ProductsDto;
+use App\Repository\HistoryDetailedRepository;
+use App\Repository\HistoryRepository;
 
 interface ErpInterface
 {
@@ -27,7 +29,7 @@ interface ErpInterface
     public function GetPricesOnline(?array $skus, ?string $priceList): PricesDto;
     public function GetStocksOnline(?array $skus): StocksDto;
     public function GetOnlineUser(string $userExtId): User;
-    public function SendOrder(int $historyId); //TODO
+    public function SendOrder(int $historyId, HistoryRepository $historyRepository, HistoryDetailedRepository $historyDetailedRepository);
     public function GetMigvansOnline(?array $skus): MigvansDto;
     public function GetDocuments(string $userExId, \DateTimeImmutable $dateFrom, \DateTimeImmutable $dateTo, string $documentType,  ?int $limit = 10): DocumentsDto;
     public function GetDocumentsItem(string $documentNumber): DocumentItemsDto;

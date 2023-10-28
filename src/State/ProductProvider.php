@@ -6,9 +6,11 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
+use App\Entity\Error;
 use App\Entity\Product;
 use App\Erp\Dto\PricesDto;
 use App\Erp\ErpManager;
+use App\Repository\ErrorRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use ApiPlatform\Metadata\CollectionOperationInterface;
@@ -26,7 +28,8 @@ class ProductProvider implements ProviderInterface
         private readonly RequestStack $requestStack,
         #[Autowire(service: CollectionProvider::class)] private ProviderInterface $collectionProvider,
         #[Autowire(service: ItemProvider::class)] private ProviderInterface $itemProvider,
-        private readonly ProductRepository $productRepository
+        private readonly ProductRepository $productRepository,
+        private readonly ErrorRepository $errorRepository,
     )
     {
         $this->ErpManager = new ErpManager($httpClient);
@@ -39,32 +42,42 @@ class ProductProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $migvanOnline = null;
-        $userExtId =  $this->requestStack->getCurrentRequest()->get('userExtId');
+        try {
+            $migvanOnline = null;
+            $userExtId =  $this->requestStack->getCurrentRequest()->get('userExtId');
 
-        if($this->isOnlineMigvan && $userExtId && $this->isUsedMigvan){
-            $migvanOnline = ($this->ErpManager->GetMigvanOnline($userExtId))->migvans;
+            if($this->isOnlineMigvan && $userExtId && $this->isUsedMigvan){
+                $migvanOnline = ($this->ErpManager->GetMigvanOnline($userExtId))->migvans;
+            }
+
+            $data = $this->GetDbData($migvanOnline);
+            assert($data instanceof Paginator);
+
+            if($this->isOnlinePrice) {
+                $this->GetOnlinePrice($data);
+            } else {
+                $this->GetDbPrice($data);
+            }
+
+            if($this->isOnlineStock) {
+                $this->GetOnlineStock($data);
+            }
+
+            return new TraversablePaginator(
+                new \ArrayIterator($data->getIterator()),
+                $data->getCurrentPage(),
+                $data->getItemsPerPage(),
+                $data->getTotalItems()
+            );
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setDescription($exception->getMessage());
+            $error->setFunctionName('Product provider state');
+            $this->errorRepository->createError($error,true);
+            $obj =  new \stdClass();
+            $obj->error = $exception->getMessage();
+            return $obj;
         }
-
-        $data = $this->GetDbData($migvanOnline);
-        assert($data instanceof Paginator);
-
-        if($this->isOnlinePrice) {
-            $this->GetOnlinePrice($data);
-        } else {
-            $this->GetDbPrice($data);
-        }
-
-        if($this->isOnlineStock) {
-            $this->GetOnlineStock($data);
-        }
-
-        return new TraversablePaginator(
-            new \ArrayIterator($data->getIterator()),
-            $data->getCurrentPage(),
-            $data->getItemsPerPage(),
-            $data->getTotalItems()
-        );
     }
 
     private function GetDbData($onlineMigvan)

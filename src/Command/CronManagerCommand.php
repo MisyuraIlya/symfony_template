@@ -15,6 +15,7 @@ use App\Cron\GetSubProducts;
 use App\Cron\GetSubUsers;
 use App\Cron\GetUsers;
 use App\Repository\AttributeMainRepository;
+use App\Repository\ErrorRepository;
 use App\Repository\SubAttributeRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\MigvanRepository;
@@ -54,6 +55,7 @@ class CronManagerCommand extends Command
         private readonly MigvanRepository            $migvanRepository,
         private readonly AttributeMainRepository     $attributeMainRepository,
         private readonly SubAttributeRepository      $SubAttributeRepository,
+        private readonly ErrorRepository $errorRepository,
     )
     {
         parent::__construct();
@@ -71,68 +73,78 @@ class CronManagerCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-//        $arg1 = $input->getArgument('arg1');
-//
-//        if ($arg1) {
-//            $io->note(sprintf('You passed an argument: %s', $arg1));
-//        }
-//
-//        if ($input->getOption('option1')) {
-//            // ...
-//        }
-
-//        (new GetPriceList(
+        (new GetPriceList(
+            $this->httpClient,
+            $this->priceListRepository,
+            $this->errorRepository
+        ))->sync();
+        (new GetUsers(
+            $this->httpClient,
+            $this->userRepository,
+            $this->priceListRepository,
+            $this->errorRepository
+        ))->sync();
+//       (new GetSubUsers(
 //            $this->httpClient,
-//            $this->priceListRepository
-//        ))->sync();
-        (new GetUsers($this->httpClient, $this->userRepository, $this->priceListRepository))->sync();
-////        (new GetSubUsers($this->httpClient, $this->userRepository, $this->subUsersRepository))->sync();
-//        (new GetCategories(
-//            $this->httpClient,
-//            $this->categoryRepository,
-//        ))->sync();
-//        (new GetProducts(
-//            $this->httpClient,
-//            $this->categoryRepository,
-//            $this->productRepository
-//        ))->sync();
+//            $this->userRepository,
+//            $this->subUsersRepository,
+//           $this->errorRepository
+//         ))->sync();
+        (new GetCategories(
+            $this->httpClient,
+            $this->categoryRepository,
+            $this->errorRepository
+        ))->sync();
+        (new GetProducts(
+            $this->httpClient,
+            $this->categoryRepository,
+            $this->productRepository,
+            $this->errorRepository
+        ))->sync();
 //        (new GetMainAttributes(
 //            $this->httpClient,
-//            $this->attributeMainRepository
+//            $this->attributeMainRepository,
+//            $this->errorRepository
 //        ))->sync();
-//        (new GetSubAttributes(
-//            $this->httpClient,
-//            $this->SubAttributeRepository,
-//            $this->productRepository,
-//            $this->attributeMainRepository
-//        ))->sync();
+        (new GetSubAttributes(
+            $this->httpClient,
+            $this->SubAttributeRepository,
+            $this->productRepository,
+            $this->attributeMainRepository,
+            $this->errorRepository
+        ))->sync();
 //        (new GetSubProducts(
 //            $this->httpClient,
 //            $this->subProductRepository,
-//            $this->productRepository
-//        ))->sync();
-
-//        (new GetPriceListDetailed(
-//            $this->httpClient,
 //            $this->productRepository,
-//            $this->priceListRepository,
-//            $this->priceListDetailedRepository
-//        ))->sync();
-//        (new GetMigvans(
-//            $this->httpClient,
-//            $this->migvanRepository,
-//            $this->userRepository,
-//            $this->productRepository
-//        ))->sync();
-//        (new GetStocks(
-//            $this->httpClient,
-//            $this->productRepository
+//            $this->errorRepository
 //        ))->sync();
 
-//        (new GetBasePrice(
-//            $this->httpClient,
-//            $this->productRepository
-//        ))->sync();
+        (new GetPriceListDetailed(
+            $this->httpClient,
+            $this->productRepository,
+            $this->priceListRepository,
+            $this->priceListDetailedRepository,
+            $this->errorRepository
+        ))->sync();
+        (new GetMigvans(
+            $this->httpClient,
+            $this->migvanRepository,
+            $this->userRepository,
+            $this->productRepository,
+            $this->errorRepository
+        ))->sync();
+        (new GetStocks(
+            $this->httpClient,
+            $this->productRepository,
+            $this->errorRepository
+        ))->sync();
+
+        (new GetBasePrice(
+            $this->httpClient,
+            $this->productRepository,
+            $this->errorRepository
+        ))->sync();
 
 
         $io->success('All Cron Function Executed');

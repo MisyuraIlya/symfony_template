@@ -6,8 +6,10 @@ use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\ApiResource\Documents;
+use App\Entity\Error;
 use App\Enum\DocumentsType;
 use App\Erp\ErpManager;
+use App\Repository\ErrorRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ApiPlatform\State\Pagination\TraversablePaginator;
@@ -19,6 +21,7 @@ class DocumentsProvider implements ProviderInterface
         private readonly HttpClientInterface $httpClient,
         private readonly RequestStack $requestStack,
         private Pagination $pagination,
+        private readonly ErrorRepository $errorRepository,
     )
     {
         $this->userExId = $this->requestStack->getCurrentRequest()->query->get('userExId');
@@ -30,24 +33,34 @@ class DocumentsProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
+        try {
+            if ($operation instanceof CollectionOperationInterface) {
+                $currentPage = $this->pagination->getPage($context);
+                $itemsPerPage = $this->pagination->getLimit($operation, $context);
+                $offset = $this->pagination->getOffset($operation, $context);
 
-        if ($operation instanceof CollectionOperationInterface) {
-            $currentPage = $this->pagination->getPage($context);
-            $itemsPerPage = $this->pagination->getLimit($operation, $context);
-            $offset = $this->pagination->getOffset($operation, $context);
-
-            $result = $this->CollectionHandler($operation,$uriVariables,$context);
-            $totalItems = count($result->documents);
-            $start = ($currentPage - 1) * $itemsPerPage;
-            $slicedResult = array_slice($result->documents, $start, $itemsPerPage);
-            return new TraversablePaginator(
-                new \ArrayIterator($slicedResult),
-                $currentPage,
-                $itemsPerPage,
-                $totalItems,
-            );
+                $result = $this->CollectionHandler($operation,$uriVariables,$context);
+                $totalItems = count($result->documents);
+                $start = ($currentPage - 1) * $itemsPerPage;
+                $slicedResult = array_slice($result->documents, $start, $itemsPerPage);
+                return new TraversablePaginator(
+                    new \ArrayIterator($slicedResult),
+                    $currentPage,
+                    $itemsPerPage,
+                    $totalItems,
+                );
+            }
+            return $this->GetHandler($operation,$uriVariables,$context);
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setDescription($exception->getMessage());
+            $error->setFunctionName('documents provider state');
+            $this->errorRepository->createError($error,true);
+            $obj =  new \stdClass();
+            $obj->error = $exception->getMessage();
+            return $obj;
         }
-        return $this->GetHandler($operation,$uriVariables,$context);
+
     }
 
     private function CollectionHandler($operation,$uriVariables,$context)

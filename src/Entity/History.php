@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\DocumentTypeHistory;
+use App\Enum\PurchaseStatus;
 use App\Repository\HistoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -53,7 +55,7 @@ class History
 
     #[Groups(['history:read','history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $orderStatus = null;
+    private ?PurchaseStatus $orderStatus = null;
 
     #[Groups(['history:read','history:read'])]
     #[ORM\Column]
@@ -72,10 +74,13 @@ class History
     private Collection $historyDetaileds;
 
     #[ORM\Column(length: 255)]
-    private ?string $documentType = null;
+    private ?DocumentTypeHistory $documentType = null;
 
     #[ORM\ManyToOne(inversedBy: 'histories')]
     private ?Agent $isAgent = null;
+
+    #[ORM\ManyToOne(inversedBy: 'history')]
+    private ?Error $error = null;
 
     public function __construct()
     {
@@ -164,7 +169,7 @@ class History
         return $this->orderStatus;
     }
 
-    public function setOrderStatus(?string $orderStatus): static
+    public function setOrderStatus(?PurchaseStatus $orderStatus): static
     {
         $this->orderStatus = $orderStatus;
 
@@ -237,12 +242,12 @@ class History
         return $this;
     }
 
-    public function getDocumentType(): ?string
+    public function getDocumentType(): ?DocumentTypeHistory
     {
         return $this->documentType;
     }
 
-    public function setDocumentType(string $documentType): static
+    public function setDocumentType(?DocumentTypeHistory $documentType): static
     {
         $this->documentType = $documentType;
 
@@ -257,6 +262,18 @@ class History
     public function setIsAgent(?Agent $isAgent): static
     {
         $this->isAgent = $isAgent;
+
+        return $this;
+    }
+
+    public function getError(): ?Error
+    {
+        return $this->error;
+    }
+
+    public function setError(?Error $error): static
+    {
+        $this->error = $error;
 
         return $this;
     }

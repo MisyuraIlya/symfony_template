@@ -2,8 +2,11 @@
 
 namespace App\Erp\Priority;
 
+use App\Entity\History;
+use App\Entity\HistoryDetailed;
 use App\Entity\User;
 use App\Enum\DocumentsType;
+use App\Enum\DocumentTypeHistory;
 use App\Erp\Dto\AttributeMainDto;
 use App\Erp\Dto\AttributeSubDto;
 use App\Erp\Dto\CartessetDto;
@@ -28,6 +31,8 @@ use App\Erp\Dto\UserDto;
 use App\Erp\Dto\UsersDto;
 use App\Erp\ErpInterface;
 use App\Erp\Enums\PriorityEnums;
+use App\Repository\HistoryDetailedRepository;
+use App\Repository\HistoryRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Priority implements ErpInterface
@@ -64,21 +69,22 @@ class Priority implements ErpInterface
     }
     public function PostRequest(object $obj, string $table)
     {
-        $response = $this->httpClient->request(
-            'POST',
-            $this->url.$table,
-            [
-                'auth_basic' => [$this->username, $this->password],
-                'timeout' => 60,
-                'body' => $obj
-            ]
-        );
-
-        $statusCode = $response->getStatusCode();
-        $contentType = $response->getHeaders()['content-type'][0];
-        $content = $response->getContent();
-        $content = $response->toArray();
-        return $content['value'];
+//        $response = $this->httpClient->request(
+//            'POST',
+//            $this->url.$table,
+//            [
+//                'auth_basic' => [$this->username, $this->password],
+//                'timeout' => 60,
+//                'body' => $obj
+//            ]
+//        );
+//
+//        $statusCode = $response->getStatusCode();
+//        $contentType = $response->getHeaders()['content-type'][0];
+//        $content = $response->getContent();
+//        $content = $response->toArray();
+//        return $content['value'];
+        return '123';
     }
 
     public function GetPricesOnline(?array $skus, ?string $priceList):PricesDto
@@ -135,10 +141,6 @@ class Priority implements ErpInterface
         return $stocks;
     }
     public function GetOnlineUser(string $userExtId):User
-    {
-
-    }
-    public function SendOrder(int $historyId)
     {
 
     }
@@ -260,6 +262,102 @@ class Priority implements ErpInterface
     {
 
     }
+
+
+    public function SendOrder(int $historyId, HistoryRepository $historyRepository, HistoryDetailedRepository $historyDetailedRepository): string
+    {
+        $order = $historyRepository->findOneById($historyId);
+        $findDetailds = $historyDetailedRepository->findOneByHistoryId($historyId);
+        if(!$order) throw new \Exception('לא נמצא הזמנה');
+
+        if($order->getDocumentType() === DocumentTypeHistory::ORDER) {
+            $response = $this->SendOrderTemplate($order,$findDetailds);
+        } elseif ($order->getDocumentType() === DocumentTypeHistory::QUOTE) {
+            $response = $this->SendQuoteTemplate($order,$findDetailds);
+        } elseif ($order->getDocumentType() === DocumentTypeHistory::RETURN) {
+            $response = $this->SendReturnTemplate($order,$findDetailds);
+        } else {
+            throw new \Exception('לא נמצא מסמך כזה');
+        }
+
+        return $response;
+    }
+    private function SendOrderTemplate(History $order, array $historyDetailed)
+    {
+        $obj = new \stdClass();
+        $obj->CUSTNAME = $order->getUser()->getExtId();
+        $obj->DUEDATE = $order->getCreatedAt()->format('Y-m-d\TH:i:sP');
+        $lines = new \stdClass();
+        $lines->lines = [];
+        foreach ($historyDetailed as $itemRec){
+            assert($itemRec instanceof HistoryDetailed);
+            $objLine = new \stdClass();
+            $objLine->PARTNAME = $itemRec->getProduct()->getSku();
+            $objLine->TQUANT = $itemRec->getQuantity();
+            $objLine->PRICE = $itemRec->getSinglePrice();
+            $lines->lines[] = $objLine;
+        }
+
+        $obj->ORDERITEMS_SUBFORM = $lines->lines;
+
+        $response = $this->PostRequest($obj, '/' . 'ORDERS');
+        if(isset($response->DOCNO) && $response->ORDNAME) {
+            return $response->ORDNAME;
+        } else {
+            throw new \Exception('הזמנה לא שודרה');
+        }
+    }
+
+    private function SendQuoteTemplate(History $order, array $historyDetailed)
+    {
+        $obj = new \stdClass();
+        $obj->CUSTNAME = $order->getUser()->getExtId();
+        $obj->PDATE = $order->getCreatedAt()->format('Y-m-d\TH:i:sP');
+        $lines = new \stdClass();
+        $lines->lines = [];
+        foreach ($historyDetailed as $itemRec){
+            assert($itemRec instanceof HistoryDetailed);
+            $objLine = new \stdClass();
+            $objLine->PARTNAME = $itemRec->getProduct()->getSku();
+            $objLine->TQUANT = $itemRec->getQuantity();
+            $objLine->PRICE = $itemRec->getSinglePrice();
+            $lines->lines[] = $objLine;
+        }
+
+        $obj->CPROFITEMS_SUBFORM = $lines->lines;
+
+        $response = $this->PostRequest($obj, '/' . 'CPROF');
+        if(isset($response->CPROFNUM) && $response->CPROFNUM) {
+            return $response->CPROFNUM;
+        } else {
+            throw new \Exception('הזמנה לא שודרה');
+        }
+    }
+
+    private function SendReturnTemplate(History $order, array $historyDetailed)
+    {
+        $obj = new \stdClass();
+        $obj->CUSTNAME = $order->getUser()->getExtId();
+        $lines = new \stdClass();
+        $lines->lines = [];
+        foreach ($historyDetailed as $itemRec){
+            $objLine = new \stdClass();
+            $objLine->PARTNAME = $itemRec->sku;
+            $objLine->TQUANT = $itemRec->quantity;
+            $objLine->PRICE = $itemRec->price;
+            $lines->lines[] = $objLine;
+        }
+
+        $obj->TRANSORDER_N_SUBFORM = $lines->lines;
+
+        $response = $this->PostRequest($obj, '/' . 'DOCUMENTS_N');
+        if(isset($response->DOCNO) && $response->DOCNO) {
+            return $response->DOCNO;
+        } else {
+            throw new \Exception('הזמנה לא שודרה');
+        }
+    }
+
 
     /** FOR CRON */
     public function GetProducts(): ProductsDto

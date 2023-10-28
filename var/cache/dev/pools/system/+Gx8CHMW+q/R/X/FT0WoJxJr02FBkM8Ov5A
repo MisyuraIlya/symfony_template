@@ -82,10 +82,13 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         ],
         'Symfony\\Component\\PropertyInfo\\Type' => [
             'builtinType' => [
-                1 => 'string',
+                1 => 'object',
             ],
             'nullable' => [
                 1 => false,
+            ],
+            'class' => [
+                1 => 'App\\Enum\\DocumentTypeHistory',
             ],
             'collection' => [
                 1 => false,
