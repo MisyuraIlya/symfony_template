@@ -25,6 +25,8 @@ use App\Erp\Dto\PriceListsDto;
 use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\ProductDto;
 use App\Erp\Dto\ProductsDto;
+use App\Erp\Dto\PurchaseHistory;
+use App\Erp\Dto\PurchaseHistoryItem;
 use App\Erp\Dto\StockDto;
 use App\Erp\Dto\StocksDto;
 use App\Erp\Dto\UserDto;
@@ -258,9 +260,33 @@ class Priority implements ErpInterface
         return $result;
 
     }
-    public function PurchaseHistoryPerUser(string $userExtId)
+    public function PurchaseHistoryByUserAndSku(string $userExtId, string $sku): PurchaseHistory
     {
-
+        $endpoint = "/ORDERS";
+        $queryParameters = [
+            '$filter' => "CUSTNAME eq '$userExtId'",
+            '$select' => "ORDNAME,CURDATE",
+            '$expand' => 'ORDERITEMS_SUBFORM($filter=PARTNAME eq ' . "'" . $sku . "'".')'
+        ];
+        $queryString = http_build_query($queryParameters);
+        $urlQuery = $endpoint . '?' . $queryString;
+        $response = $this->GetRequest($urlQuery);
+        $result = new PurchaseHistory();
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['ORDERITEMS_SUBFORM'] as $subRec){
+                $obj = new PurchaseHistoryItem();
+                $obj->documentNumber = $itemRec['ORDNAME'];
+                $obj->date = $itemRec['CURDATE'];
+                $obj->quantity = $subRec['TQUANT'];
+                $obj->price = $subRec['PRICE'];
+                $obj->vatPrice = $subRec['VPRICE'];
+                $obj->discount = $subRec['PERCENT'];
+                $obj->totalPrice = $subRec['QPRICE'];
+                $obj->vatTotal = $subRec['VATPRICE'];
+                $result->items[] = $obj;
+            }
+        }
+        return $result;
     }
 
 

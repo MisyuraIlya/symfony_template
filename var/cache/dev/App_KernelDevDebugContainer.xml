@@ -451,6 +451,7 @@
     <service id="App\ApiResource\Dto\CartDto" class="App\ApiResource\Dto\CartDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\XlxDocumentsDto" class="App\ApiResource\Dto\XlxDocumentsDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\XlxDto" class="App\ApiResource\Dto\XlxDto" autowire="true" autoconfigure="true"/>
+    <service id="App\ApiResource\PurchaseHistory" class="App\ApiResource\PurchaseHistory" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\SendOrder" class="App\ApiResource\SendOrder" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\XlxDocuments" class="App\ApiResource\XlxDocuments" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\XlxDocuments&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
@@ -605,6 +606,8 @@
     <service id="App\Erp\Dto\PricesDto" class="App\Erp\Dto\PricesDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\ProductDto" class="App\Erp\Dto\ProductDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\ProductsDto" class="App\Erp\Dto\ProductsDto" autowire="true" autoconfigure="true"/>
+    <service id="App\Erp\Dto\PurchaseHistory" class="App\Erp\Dto\PurchaseHistory" autowire="true" autoconfigure="true"/>
+    <service id="App\Erp\Dto\PurchaseHistoryItem" class="App\Erp\Dto\PurchaseHistoryItem" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\StockDto" class="App\Erp\Dto\StockDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\StocksDto" class="App\Erp\Dto\StocksDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\UserDto" class="App\Erp\Dto\UserDto" autowire="true" autoconfigure="true"/>
@@ -804,6 +807,10 @@
       <argument type="service" id="api_platform.doctrine.orm.state.item_provider"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
       <argument type="service" id="App\Repository\ErrorRepository"/>
+    </service>
+    <service id="App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_provider"/>
+      <argument type="service" id="http_client.uri_template"/>
     </service>
     <service id="App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
@@ -5148,7 +5155,7 @@
       <argument>true</argument>
     </service>
     <service id="api_platform.state_provider.locator" class="ApiPlatform\State\CallableProvider">
-      <argument type="service" id=".service_locator.4ZGe8iQ"/>
+      <argument type="service" id=".service_locator.YRZVDZh"/>
     </service>
     <service id="api_platform.pagination" class="ApiPlatform\State\Pagination\Pagination">
       <argument>%api_platform.collection.pagination%</argument>
@@ -5190,6 +5197,7 @@
       <argument type="collection">
         <argument key="annotated_app_entity_category_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_category_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter" type="service_closure" id="annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter"/>
+        <argument key="annotated_app_entity_history_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_history_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_history_detailed_api_platform_doctrine_orm_filter_search_filter"/>
         <argument key="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_order_filter" type="service_closure" id="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_order_filter"/>
         <argument key="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_search_filter" type="service_closure" id="annotated_app_entity_media_object_api_platform_doctrine_orm_filter_search_filter"/>
@@ -6662,6 +6670,18 @@
       <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
     </service>
+    <service id="annotated_app_entity_history_api_platform_doctrine_orm_filter_search_filter" class="ApiPlatform\Doctrine\Orm\Filter\SearchFilter" autowire="true">
+      <tag name="api_platform.filter"/>
+      <argument type="service" id="doctrine"/>
+      <argument type="service" id="api_platform.symfony.iri_converter"/>
+      <argument type="service" id="property_accessor"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument type="collection">
+        <argument key="user.extId">exact</argument>
+      </argument>
+      <argument type="service" id="api_platform.api.identifiers_extractor" on-invalid="ignore"/>
+      <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
+    </service>
     <service id="annotated_app_entity_history_api_platform_doctrine_orm_filter_date_filter" class="ApiPlatform\Doctrine\Orm\Filter\DateFilter" autowire="true">
       <tag name="api_platform.filter"/>
       <argument type="service" id="doctrine"/>
@@ -6841,6 +6861,8 @@
     <service id=".abstract.instanceof.App\State\PdfDocumentProcessor" class="App\State\PdfDocumentProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" abstract="true"/>
@@ -7777,7 +7799,7 @@
         <argument key="security.user_checker" type="service_closure" id="security.user_checker"/>
       </argument>
     </service>
-    <service id=".service_locator.4ZGe8iQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.YRZVDZh" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="ApiPlatform\Doctrine\Orm\State\CollectionProvider" type="service_closure" id="api_platform.doctrine.orm.state.collection_provider"/>
@@ -7789,6 +7811,7 @@
         <argument key="App\State\CategoriesStateProvider" type="service_closure" id="App\State\CategoriesStateProvider"/>
         <argument key="App\State\DocumentsProvider" type="service_closure" id="App\State\DocumentsProvider"/>
         <argument key="App\State\ProductProvider" type="service_closure" id="App\State\ProductProvider"/>
+        <argument key="App\State\PurchaseHistoryProvider" type="service_closure" id="App\State\PurchaseHistoryProvider"/>
         <argument key="api_platform.doctrine.orm.state.collection_provider" type="service_closure" id="api_platform.doctrine.orm.state.collection_provider"/>
         <argument key="api_platform.doctrine.orm.state.item_provider" type="service_closure" id="api_platform.doctrine.orm.state.item_provider"/>
         <argument key="api_platform.state_provider.create" type="service_closure" id="api_platform.state_provider.create"/>
@@ -8841,7 +8864,7 @@
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.vcYFt0B" alias=".service_locator.dwy0.Hv"/>
     <service id=".service_locator.bnaLdkn" alias="api_platform.serializer_locator"/>
-    <service id=".service_locator.k0SNYZ5" alias="api_platform.filter_locator"/>
+    <service id=".service_locator.ND1lkGX" alias="api_platform.filter_locator"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.ZTS8xoE" alias=".service_locator.cYPtYzc"/>
     <service id=".service_locator.Lkb6s9e" alias=".service_locator.tUIAove"/>
@@ -8902,7 +8925,7 @@
     <service id=".service_locator.B_yLtTQ" alias=".service_locator.Lo8jEUu"/>
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.BlxN3Cw" alias=".service_locator.LrCXAmX"/>
-    <service id=".service_locator.sosszfS" alias=".service_locator.4ZGe8iQ"/>
+    <service id=".service_locator.Zl7Xzz9" alias=".service_locator.YRZVDZh"/>
     <service id=".service_locator.Qq34ODg" alias=".service_locator.zBXSgam"/>
   </services>
 </container>

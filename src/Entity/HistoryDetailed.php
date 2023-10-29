@@ -28,10 +28,10 @@ class HistoryDetailed
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     private ?int $id = null;
 
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\ManyToOne(inversedBy: 'historyDetaileds')]
     private ?History $history = null;
 

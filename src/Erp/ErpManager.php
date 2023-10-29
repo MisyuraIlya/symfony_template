@@ -12,6 +12,7 @@ use App\Erp\Dto\PriceListsDetailedDto;
 use App\Erp\Dto\PriceListsDto;
 use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\ProductsDto;
+use App\Erp\Dto\PurchaseHistory;
 use App\Erp\Dto\StocksDto;
 use App\Erp\Dto\UsersDto;
 use App\Erp\Priority\Priority;
@@ -85,9 +86,9 @@ class ErpManager implements ErpInterface
     {
         return $this->erp->GetCartesset($userExId,$dateFrom,$dateTo);
     }
-    public function PurchaseHistoryPerUser(string $userExtId)
+    public function PurchaseHistoryByUserAndSku(string $userExtId, string $sku): PurchaseHistory
     {
-        return $this->erp->PurchaseHistoryPerUser();
+        return $this->erp->PurchaseHistoryByUserAndSku($userExtId,$sku);
     }
 
     /** FOR CRON */

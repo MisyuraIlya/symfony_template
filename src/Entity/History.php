@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\DocumentTypeHistory;
@@ -20,16 +21,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['history:read']],
     denormalizationContext: ['groups' => ['history:write']],
 )]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'user.extId' => 'exact',
+    ]
+)]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 class History
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     private ?int $id = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $orderExtId = null;
 
@@ -37,42 +44,43 @@ class History
     #[ORM\ManyToOne(inversedBy: 'histories')]
     private ?User $user = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deliveryDate = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $total = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $orderComment = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?PurchaseStatus $orderStatus = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $deliveryPrice = null;
 
-    #[Groups(['history:read','history:read'])]
+    #[Groups(['history:read'])]
     #[ORM\OneToMany(mappedBy: 'history', targetEntity: HistoryDetailed::class)]
     private Collection $historyDetaileds;
 
+    #[Groups(['history:read'])]
     #[ORM\Column(length: 255)]
     private ?DocumentTypeHistory $documentType = null;
 
@@ -164,7 +172,7 @@ class History
         return $this;
     }
 
-    public function getOrderStatus(): ?string
+    public function getOrderStatus(): ?PurchaseStatus
     {
         return $this->orderStatus;
     }
