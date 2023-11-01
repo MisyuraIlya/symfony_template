@@ -76,7 +76,7 @@ class History
     #[ORM\Column(nullable: true)]
     private ?int $deliveryPrice = null;
 
-    #[Groups(['history:read'])]
+    #[Groups(['history:read','historyDetailed:read'])]
     #[ORM\OneToMany(mappedBy: 'history', targetEntity: HistoryDetailed::class)]
     private Collection $historyDetaileds;
 

@@ -12,7 +12,7 @@ use ApiPlatform\Metadata\Link;
 
 
 #[ApiResource(
-    shortName: 'PurchaseHistory',
+    shortName: 'Documents',
     operations: [
         new GetCollection(
             uriTemplate: '/purchaseHistory/{userExtId}/{sku}',

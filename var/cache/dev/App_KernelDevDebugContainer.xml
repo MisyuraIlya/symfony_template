@@ -448,7 +448,7 @@
     <service id="App\ApiResource\Documents" class="App\ApiResource\Documents" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\Documents&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
-    <service id="App\ApiResource\Dto\CartDto" class="App\ApiResource\Dto\CartDto" autowire="true" autoconfigure="true"/>
+    <service id="App\ApiResource\Dto\CartsDto" class="App\ApiResource\Dto\CartsDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\XlxDocumentsDto" class="App\ApiResource\Dto\XlxDocumentsDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\XlxDto" class="App\ApiResource\Dto\XlxDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\PurchaseHistory" class="App\ApiResource\PurchaseHistory" autowire="true" autoconfigure="true"/>
@@ -673,6 +673,10 @@
     <service id="App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" autoconfigure="true">
       <tag name="foundry.factory"/>
     </service>
+    <service id="App\Repository\AdministratorRepository" class="App\Repository\AdministratorRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -811,6 +815,13 @@
     <service id="App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
+    </service>
+    <service id="App\State\RestoreCartStateProvider" class="App\State\RestoreCartStateProvider" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_provider"/>
+      <argument type="service" id="http_client.uri_template"/>
+      <argument type="service" id="App\Repository\HistoryRepository"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Repository\ProductRepository"/>
     </service>
     <service id="App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
@@ -4498,7 +4509,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.4.OllCY"/>
+      <argument type="service" id=".service_locator.sytB_FD"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5155,7 +5166,7 @@
       <argument>true</argument>
     </service>
     <service id="api_platform.state_provider.locator" class="ApiPlatform\State\CallableProvider">
-      <argument type="service" id=".service_locator.YRZVDZh"/>
+      <argument type="service" id=".service_locator.MFpCmoT"/>
     </service>
     <service id="api_platform.pagination" class="ApiPlatform\State\Pagination\Pagination">
       <argument>%api_platform.collection.pagination%</argument>
@@ -6807,6 +6818,8 @@
     <service id=".abstract.instanceof.App\Factory\UserFactory" class="App\Factory\UserFactory" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AdministratorRepository" class="App\Repository\AdministratorRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\AdministratorRepository" class="App\Repository\AdministratorRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" abstract="true"/>
@@ -6863,6 +6876,8 @@
     <service id=".abstract.instanceof.App\State\ProductProvider" class="App\State\ProductProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\RestoreCartStateProvider" class="App\State\RestoreCartStateProvider" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\RestoreCartStateProvider" class="App\State\RestoreCartStateProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" abstract="true"/>
@@ -7437,9 +7452,10 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.4.OllCY" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.sytB_FD" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\AdministratorRepository" type="service_closure" id="App\Repository\AdministratorRepository"/>
         <argument key="App\Repository\AgentRepository" type="service_closure" id="App\Repository\AgentRepository"/>
         <argument key="App\Repository\AttributeMainRepository" type="service_closure" id="App\Repository\AttributeMainRepository"/>
         <argument key="App\Repository\CategoryAttributesRepository" type="service_closure" id="App\Repository\CategoryAttributesRepository"/>
@@ -7799,7 +7815,7 @@
         <argument key="security.user_checker" type="service_closure" id="security.user_checker"/>
       </argument>
     </service>
-    <service id=".service_locator.YRZVDZh" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.MFpCmoT" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="ApiPlatform\Doctrine\Orm\State\CollectionProvider" type="service_closure" id="api_platform.doctrine.orm.state.collection_provider"/>
@@ -7812,6 +7828,7 @@
         <argument key="App\State\DocumentsProvider" type="service_closure" id="App\State\DocumentsProvider"/>
         <argument key="App\State\ProductProvider" type="service_closure" id="App\State\ProductProvider"/>
         <argument key="App\State\PurchaseHistoryProvider" type="service_closure" id="App\State\PurchaseHistoryProvider"/>
+        <argument key="App\State\RestoreCartStateProvider" type="service_closure" id="App\State\RestoreCartStateProvider"/>
         <argument key="api_platform.doctrine.orm.state.collection_provider" type="service_closure" id="api_platform.doctrine.orm.state.collection_provider"/>
         <argument key="api_platform.doctrine.orm.state.item_provider" type="service_closure" id="api_platform.doctrine.orm.state.item_provider"/>
         <argument key="api_platform.state_provider.create" type="service_closure" id="api_platform.state_provider.create"/>
@@ -8925,7 +8942,7 @@
     <service id=".service_locator.B_yLtTQ" alias=".service_locator.Lo8jEUu"/>
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.BlxN3Cw" alias=".service_locator.LrCXAmX"/>
-    <service id=".service_locator.Zl7Xzz9" alias=".service_locator.YRZVDZh"/>
+    <service id=".service_locator.pqQHEAi" alias=".service_locator.MFpCmoT"/>
     <service id=".service_locator.Qq34ODg" alias=".service_locator.zBXSgam"/>
   </services>
 </container>

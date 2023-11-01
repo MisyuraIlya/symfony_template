@@ -31,27 +31,26 @@ class HistoryDetailed
     #[Groups(['historyDetailed:read','history:read'])]
     private ?int $id = null;
 
-    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\ManyToOne(inversedBy: 'historyDetaileds')]
     private ?History $history = null;
 
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     private ?Product $product = null;
 
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $singlePrice = null;
 
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
 
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
-    #[Groups(['historyDetailed:read'])]
+    #[Groups(['historyDetailed:read','history:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $total = null;
 

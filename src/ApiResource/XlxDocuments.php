@@ -11,13 +11,19 @@ use App\State\PdfDocumentProcessor;
 use App\State\XlDocumentProcessor;
 
 #[ApiResource(
-    shortName: 'doc/xl',
-    operations: [new Post()],
+    shortName: 'createDocument',
+    operations: [new Post(
+        uriTemplate: '/xl',
+        description: 'create Xl document'
+    )],
     processor: XlDocumentProcessor::class
 )]
 #[ApiResource(
-    shortName: 'doc/pdf',
-    operations: [new Post()],
+    shortName: 'createDocument',
+    operations: [new Post(
+        uriTemplate: '/pdf',
+        description: 'create pdf document'
+    )],
     processor: PdfDocumentProcessor::class
 )]
 class XlxDocuments

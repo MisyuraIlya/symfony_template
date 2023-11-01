@@ -29,8 +29,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 4 => null,
             ],
             'shortName' => [
-                'doc/xl',
-                4 => 'doc/pdf',
+                'createDocument',
+                4 => 'createDocument',
             ],
             'description' => [
                 null,
@@ -286,17 +286,17 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'operations' => [
                 1 => [
                     [
-                        '_api_/doc/xls{._format}_post',
+                        '_api_/xl_post',
                         $o[2],
                     ],
                 ],
                 5 => [
                     [
-                        '_api_/doc/pdfs{._format}_post',
+                        '_api_/pdf_post',
                         $o[6],
                     ],
                     [
-                        '_api_/doc/pdfs/{documentNumber}{._format}_get',
+                        '_api_/create_documents/{documentNumber}{._format}_get',
                         $o[7],
                     ],
                 ],
@@ -304,9 +304,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         ],
         'ApiPlatform\\Metadata\\Operation' => [
             'shortName' => [
-                2 => 'doc/xl',
-                6 => 'doc/pdf',
-                'doc/pdf',
+                2 => 'createDocument',
+                6 => 'createDocument',
+                'createDocument',
             ],
             'class' => [
                 2 => 'App\\ApiResource\\XlxDocuments',
@@ -369,8 +369,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'description' => [
-                2 => null,
-                6 => null,
+                2 => 'create Xl document',
+                6 => 'create pdf document',
                 null,
             ],
             'normalizationContext' => [
@@ -484,9 +484,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'name' => [
-                2 => '_api_/doc/xls{._format}_post',
-                6 => '_api_/doc/pdfs{._format}_post',
-                '_api_/doc/pdfs/{documentNumber}{._format}_get',
+                2 => '_api_/xl_post',
+                6 => '_api_/pdf_post',
+                '_api_/create_documents/{documentNumber}{._format}_get',
             ],
             'processor' => [
                 2 => 'App\\State\\XlDocumentProcessor',
@@ -501,9 +501,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'extraProperties' => [
                 2 => [
                     'standard_put' => true,
+                    'user_defined_uri_template' => true,
                 ],
                 6 => [
                     'standard_put' => true,
+                    'user_defined_uri_template' => true,
                     'is_alternate_resource_metadata' => true,
                 ],
                 [
@@ -530,9 +532,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'GET',
             ],
             'uriTemplate' => [
-                2 => '/doc/xls{._format}',
-                6 => '/doc/pdfs{._format}',
-                '/doc/pdfs/{documentNumber}{._format}',
+                2 => '/xl',
+                6 => '/pdf',
+                '/create_documents/{documentNumber}{._format}',
             ],
             'types' => [
                 2 => null,

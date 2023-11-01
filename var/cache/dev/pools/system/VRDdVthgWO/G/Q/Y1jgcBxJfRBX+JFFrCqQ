@@ -20,7 +20,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'shortName' => [
-                'PurchaseHistory',
+                'Documents',
             ],
             'description' => [
                 null,
@@ -218,8 +218,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         ],
         'ApiPlatform\\Metadata\\Operation' => [
             'shortName' => [
-                2 => 'PurchaseHistory',
-                5 => 'PurchaseHistory',
+                2 => 'Documents',
+                5 => 'Documents',
             ],
             'class' => [
                 2 => 'App\\ApiResource\\PurchaseHistory',

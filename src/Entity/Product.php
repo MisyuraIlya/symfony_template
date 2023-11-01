@@ -77,30 +77,30 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     private ?int $id = null;
 
-    #[Groups(['product:read','category:read','historyDetailed:read'])]
+    #[Groups(['product:read','category:read','historyDetailed:read','history:read','restoreCart:read'])]
     #[ORM\Column(length: 255)]
     private ?string $sku = null;
 
-    #[Groups(['product:read','category:read','product:write','historyDetailed:read'])]
+    #[Groups(['product:read','category:read','product:write','historyDetailed:read','history:read','restoreCart:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['product:read','category:read','product:write'])]
+    #[Groups(['product:read','category:read','product:write','restoreCart:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $defaultImagePath = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $barcode = null;
 
-    #[Groups(['product:read','category:read','product:write'])]
+    #[Groups(['product:read','category:read','product:write','restoreCart:read'])]
     #[ORM\Column]
     private ?bool $isPublished = null;
 
@@ -113,7 +113,7 @@ class Product
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "productsLvl3")]
     private ?Category $categoryLvl3 = null;
 
-    #[Groups(['product:read','category:read','productImages:read'])]
+    #[Groups(['product:read','category:read','productImages:read','restoreCart:read'])]
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImages::class)]
     private Collection $imagePath;
 
@@ -121,7 +121,6 @@ class Product
     #[ORM\OneToMany(mappedBy: 'sku', targetEntity: Migvan::class)]
     private Collection $migvans;
 
-    #[Groups(['product:read','category:read'])]
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: PriceListDetailed::class)]
     private Collection $priceListDetaileds;
 
@@ -138,22 +137,22 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $basePrice = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $finalPrice = 0;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column]
     private ?int $stock = 0;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $packQuantity = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: SubProduct::class)]
     private Collection $subProducts;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = 0;
 
