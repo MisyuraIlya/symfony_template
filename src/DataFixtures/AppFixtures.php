@@ -30,11 +30,6 @@ class AppFixtures extends Fixture
                 'categoryLvl3' => CategoryFactory::random(),
             ];
         });
-        SubProductFactory::createMany(300, function(){
-            return [
-                'parent' => ProductFactory::random(),
-            ];
-        });
         ProductImagesFactory::createMany(500, function () {
             return [
                 'product' => ProductFactory::random(),
@@ -50,11 +45,6 @@ class AppFixtures extends Fixture
         UserFactory::createMany(30, function () {
             return [
                 'priceList' => PriceListFactory::random(),
-            ];
-        });
-        SubUserFactory::createMany(20, function () {
-            return [
-                'user' => UserFactory::random(),
             ];
         });
 //        UserInfoFactory::create(500, function () {

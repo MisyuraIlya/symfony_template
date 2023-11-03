@@ -33,8 +33,6 @@ class SubAttribute
     #[Groups(['product:read','SubAttribute:read', 'attribute:read'])]
     private ?int $id = null;
 
-
-
     #[Groups(['product:read','SubAttribute:read', 'attribute:read'])]
     #[ORM\ManyToOne(inversedBy: 'SubAttributes')]
     private ?AttributeMain $attribute = null;

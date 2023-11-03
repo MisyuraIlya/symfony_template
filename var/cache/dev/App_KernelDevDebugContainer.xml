@@ -474,10 +474,8 @@
       <tag name="container.no_preload"/>
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\UserRepository"/>
-      <argument type="service" id="App\Repository\SubUserRepository"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
-      <argument type="service" id="App\Repository\SubProductRepository"/>
       <argument type="service" id="App\Repository\PriceListRepository"/>
       <argument type="service" id="App\Repository\PriceListDetailedRepository"/>
       <argument type="service" id="App\Repository\MigvanRepository"/>
@@ -567,18 +565,6 @@
       <argument type="service" id="App\Repository\ErrorRepository"/>
       <argument type="service" id="App\Repository\ProductAttributeRepository"/>
     </service>
-    <service id="App\Cron\GetSubProducts" class="App\Cron\GetSubProducts" autowire="true" autoconfigure="true">
-      <argument type="service" id="http_client.uri_template"/>
-      <argument type="service" id="App\Repository\SubProductRepository"/>
-      <argument type="service" id="App\Repository\ProductRepository"/>
-      <argument type="service" id="App\Repository\ErrorRepository"/>
-    </service>
-    <service id="App\Cron\GetSubUsers" class="App\Cron\GetSubUsers" autowire="true" autoconfigure="true">
-      <argument type="service" id="http_client.uri_template"/>
-      <argument type="service" id="App\Repository\UserRepository"/>
-      <argument type="service" id="App\Repository\SubUserRepository"/>
-      <argument type="service" id="App\Repository\ErrorRepository"/>
-    </service>
     <service id="App\Cron\GetUsers" class="App\Cron\GetUsers" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\UserRepository"/>
@@ -661,31 +647,13 @@
     <service id="App\Factory\SubAttributeFactory" class="App\Factory\SubAttributeFactory" autowire="true" autoconfigure="true">
       <tag name="foundry.factory"/>
     </service>
-    <service id="App\Factory\SubProductFactory" class="App\Factory\SubProductFactory" autowire="true" autoconfigure="true">
-      <tag name="foundry.factory"/>
-    </service>
-    <service id="App\Factory\SubUserFactory" class="App\Factory\SubUserFactory" autowire="true" autoconfigure="true">
-      <tag name="foundry.factory"/>
-    </service>
     <service id="App\Factory\UserFactory" class="App\Factory\UserFactory" autowire="true" autoconfigure="true">
       <tag name="foundry.factory"/>
     </service>
     <service id="App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" autoconfigure="true">
       <tag name="foundry.factory"/>
     </service>
-    <service id="App\Repository\AdministratorRepository" class="App\Repository\AdministratorRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
     <service id="App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -740,14 +708,6 @@
       <argument type="service" id="App\Repository\UserRepository"/>
     </service>
     <service id="App\Repository\SubAttributeRepository" class="App\Repository\SubAttributeRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\SubProductRepository" class="App\Repository\SubProductRepository" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\SubUserRepository" class="App\Repository\SubUserRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -4509,7 +4469,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.sytB_FD"/>
+      <argument type="service" id=".service_locator.BdI0Kn9"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -6810,22 +6770,12 @@
     <service id=".abstract.instanceof.App\Factory\ProductInfoFactory" class="App\Factory\ProductInfoFactory" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\SubAttributeFactory" class="App\Factory\SubAttributeFactory" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Factory\SubAttributeFactory" class="App\Factory\SubAttributeFactory" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\SubProductFactory" class="App\Factory\SubProductFactory" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Factory\SubProductFactory" class="App\Factory\SubProductFactory" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\SubUserFactory" class="App\Factory\SubUserFactory" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Factory\SubUserFactory" class="App\Factory\SubUserFactory" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\UserFactory" class="App\Factory\UserFactory" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Factory\UserFactory" class="App\Factory\UserFactory" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Zenstruck\Foundry\ModelFactory.0.App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Factory\UserInfoFactory" class="App\Factory\UserInfoFactory" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AdministratorRepository" class="App\Repository\AdministratorRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\AdministratorRepository" class="App\Repository\AdministratorRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\AgentRepository" class="App\Repository\AgentRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\AttributeMainRepository" class="App\Repository\AttributeMainRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\CategoryAttributesRepository" class="App\Repository\CategoryAttributesRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\CategoryRepository" class="App\Repository\CategoryRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ErrorRepository" class="App\Repository\ErrorRepository" autowire="true" abstract="true"/>
@@ -6852,10 +6802,6 @@
     <service id=".abstract.instanceof.App\Repository\ProductRepository" class="App\Repository\ProductRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SubAttributeRepository" class="App\Repository\SubAttributeRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\SubAttributeRepository" class="App\Repository\SubAttributeRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SubProductRepository" class="App\Repository\SubProductRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\SubProductRepository" class="App\Repository\SubProductRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SubUserRepository" class="App\Repository\SubUserRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\SubUserRepository" class="App\Repository\SubUserRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\UserInfoRepository" class="App\Repository\UserInfoRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\UserInfoRepository" class="App\Repository\UserInfoRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\UserRepository" class="App\Repository\UserRepository" autowire="true" abstract="true"/>
@@ -7452,13 +7398,10 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.sytB_FD" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.BdI0Kn9" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Repository\AdministratorRepository" type="service_closure" id="App\Repository\AdministratorRepository"/>
-        <argument key="App\Repository\AgentRepository" type="service_closure" id="App\Repository\AgentRepository"/>
         <argument key="App\Repository\AttributeMainRepository" type="service_closure" id="App\Repository\AttributeMainRepository"/>
-        <argument key="App\Repository\CategoryAttributesRepository" type="service_closure" id="App\Repository\CategoryAttributesRepository"/>
         <argument key="App\Repository\CategoryRepository" type="service_closure" id="App\Repository\CategoryRepository"/>
         <argument key="App\Repository\ErrorRepository" type="service_closure" id="App\Repository\ErrorRepository"/>
         <argument key="App\Repository\HistoryDetailedRepository" type="service_closure" id="App\Repository\HistoryDetailedRepository"/>
@@ -7472,8 +7415,6 @@
         <argument key="App\Repository\ProductInfoRepository" type="service_closure" id="App\Repository\ProductInfoRepository"/>
         <argument key="App\Repository\ProductRepository" type="service_closure" id="App\Repository\ProductRepository"/>
         <argument key="App\Repository\SubAttributeRepository" type="service_closure" id="App\Repository\SubAttributeRepository"/>
-        <argument key="App\Repository\SubProductRepository" type="service_closure" id="App\Repository\SubProductRepository"/>
-        <argument key="App\Repository\SubUserRepository" type="service_closure" id="App\Repository\SubUserRepository"/>
         <argument key="App\Repository\UserInfoRepository" type="service_closure" id="App\Repository\UserInfoRepository"/>
         <argument key="App\Repository\UserRepository" type="service_closure" id="App\Repository\UserRepository"/>
       </argument>

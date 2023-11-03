@@ -28,9 +28,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 $o[1],
                 11 => $o[12],
             ],
-            'provider' => [
-                'App\\State\\ProductProvider',
-            ],
             'uriTemplate' => [
                 null,
                 11 => null,
@@ -699,11 +696,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 13 => '_api_/catalog/{lvl1}/{lvl2}/{lvl3}_get_collection',
             ],
             'provider' => [
-                2 => 'App\\State\\ProductProvider',
-                4 => 'App\\State\\ProductProvider',
-                'App\\State\\ProductProvider',
-                'App\\State\\ProductProvider',
-                8 => 'App\\State\\ProductProvider',
+                2 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                4 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                8 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
                 13 => 'App\\State\\ProductProvider',
             ],
             'processor' => [

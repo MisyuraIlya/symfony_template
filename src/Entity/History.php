@@ -84,9 +84,6 @@ class History
     #[ORM\Column(length: 255)]
     private ?DocumentTypeHistory $documentType = null;
 
-    #[ORM\ManyToOne(inversedBy: 'histories')]
-    private ?Agent $isAgent = null;
-
     #[ORM\ManyToOne(inversedBy: 'history')]
     private ?Error $error = null;
 
@@ -258,18 +255,6 @@ class History
     public function setDocumentType(?DocumentTypeHistory $documentType): static
     {
         $this->documentType = $documentType;
-
-        return $this;
-    }
-
-    public function getIsAgent(): ?Agent
-    {
-        return $this->isAgent;
-    }
-
-    public function setIsAgent(?Agent $isAgent): static
-    {
-        $this->isAgent = $isAgent;
 
         return $this;
     }

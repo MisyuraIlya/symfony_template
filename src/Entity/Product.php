@@ -39,7 +39,6 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
         'groups' => ['product:write'],
     ],
     paginationClientItemsPerPage: true,
-    provider: ProductProvider::class,
 )]
 #[ApiFilter(OrderFilter::class, properties: ['sku', 'title'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(
@@ -149,9 +148,6 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $packQuantity = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: SubProduct::class)]
-    private Collection $subProducts;
-
     #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $discount = 0;
@@ -164,14 +160,11 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAttribute::class)]
     private Collection $productAttributes;
 
-
-
     public function __construct()
     {
         $this->imagePath = new ArrayCollection();
         $this->migvans = new ArrayCollection();
         $this->priceListDetaileds = new ArrayCollection();
-        $this->subProducts = new ArrayCollection();
         $this->productAttributes = new ArrayCollection();
     }
 
@@ -422,36 +415,6 @@ class Product
     public function setPackQuantity(?int $packQuantity): static
     {
         $this->packQuantity = $packQuantity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, SubProduct>
-     */
-    public function getSubProducts(): Collection
-    {
-        return $this->subProducts;
-    }
-
-    public function addSubProduct(SubProduct $subProduct): static
-    {
-        if (!$this->subProducts->contains($subProduct)) {
-            $this->subProducts->add($subProduct);
-            $subProduct->setParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubProduct(SubProduct $subProduct): static
-    {
-        if ($this->subProducts->removeElement($subProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($subProduct->getParent() === $this) {
-                $subProduct->setParent(null);
-            }
-        }
 
         return $this;
     }

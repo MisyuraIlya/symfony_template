@@ -50,10 +50,8 @@ class CronManagerCommand extends Command
     public function __construct(
         private HttpClientInterface                  $httpClient,
         private readonly UserRepository              $userRepository,
-        private readonly SubUserRepository           $subUsersRepository,
         private readonly CategoryRepository          $categoryRepository,
         private readonly ProductRepository           $productRepository,
-        private readonly SubProductRepository        $subProductRepository,
         private readonly PriceListRepository         $priceListRepository,
         private readonly PriceListDetailedRepository $priceListDetailedRepository,
         private readonly MigvanRepository            $migvanRepository,
@@ -92,12 +90,6 @@ class CronManagerCommand extends Command
             $this->priceListRepository,
             $this->errorRepository
         ))->sync();
-//       (new GetSubUsers(
-//            $this->httpClient,
-//            $this->userRepository,
-//            $this->subUsersRepository,
-//           $this->errorRepository
-//         ))->sync();
         (new GetCategories(
             $this->httpClient,
             $this->categoryRepository,
@@ -122,13 +114,6 @@ class CronManagerCommand extends Command
             $this->errorRepository,
             $this->productAttributeRepository,
         ))->sync();
-//        (new GetSubProducts(
-//            $this->httpClient,
-//            $this->subProductRepository,
-//            $this->productRepository,
-//            $this->errorRepository
-//        ))->sync();
-
         if(!$this->isOnlinePrice && !$this->isOnlineMigvan) {
             (new GetPriceListDetailed(
                 $this->httpClient,

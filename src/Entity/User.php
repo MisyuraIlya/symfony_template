@@ -79,15 +79,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?PriceList $priceList = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SubUser::class)]
-    #[Groups(['user:read'])]
-    private Collection $SubUser;
-
     public function __construct()
     {
         $this->histories = new ArrayCollection();
         $this->migvans = new ArrayCollection();
-        $this->SubUser = new ArrayCollection();
     }
 
 
@@ -329,33 +324,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, SubUser>
-     */
-    public function getSubUser(): Collection
-    {
-        return $this->SubUser;
-    }
-
-    public function addSubUser(SubUser $subUser): static
-    {
-        if (!$this->SubUser->contains($subUser)) {
-            $this->SubUser->add($subUser);
-            $subUser->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubUser(SubUser $subUser): static
-    {
-        if ($this->SubUser->removeElement($subUser)) {
-            // set the owning side to null (unless already changed)
-            if ($subUser->getUser() === $this) {
-                $subUser->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 }
