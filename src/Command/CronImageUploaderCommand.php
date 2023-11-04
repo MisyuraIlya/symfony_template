@@ -51,7 +51,7 @@ class CronImageUploaderCommand extends Command
         (new ImageService())::resizeImagesInFolder($sourceFolder, $targetFolder, $targetSizeBytes);
         $this->SaveImagesInDb();
         (new FtpService('ctb2b.co.il', 'src/img/products'))->uploadAllImagesFromResizedFolder();
-
+        $this->DeletAll();
         $io->success('Images Successfuly resied and updated and loaded to ftp');
 
         return Command::SUCCESS;
@@ -89,5 +89,32 @@ class CronImageUploaderCommand extends Command
                 }
             }
         }
+    }
+
+    private function DeletAll()
+    {
+        $targetFolder = __DIR__.'/../../public/images';
+        if (!is_dir($targetFolder)) {
+            throw new \Exception("The 'images' folder does not exist locally.");
+        }
+
+        $files = glob($targetFolder . '/*'); // Get all file names in the folder
+        foreach($files as $file) { // Iterate through each file
+            if(is_file($file)) {
+                unlink($file); // Delete the file
+            }
+        }
+
+        $targetFolder = __DIR__.'/../../public/imagesResized';
+        if (!is_dir($targetFolder)) {
+            throw new \Exception("The 'imagesResized' folder does not exist locally.");
+        }
+        $files = glob($targetFolder . '/*'); // Get all file names in the folder
+        foreach($files as $file) { // Iterate through each file
+            if(is_file($file)) {
+                unlink($file); // Delete the file
+            }
+        }
+
     }
 }

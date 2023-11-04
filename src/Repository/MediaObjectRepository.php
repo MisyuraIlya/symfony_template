@@ -29,6 +29,16 @@ class MediaObjectRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findOneByFilePath(string $filePath): ?MediaObject
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.filePath = :val1')
+            ->setParameter('val1', $filePath)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return MediaObject[] Returns an array of MediaObject objects
 //     */
