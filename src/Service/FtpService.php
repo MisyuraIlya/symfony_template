@@ -23,7 +23,7 @@ class FtpService
         $this->ftpPassword = $_ENV['VPS_1_PASSWORD'];
 
         $this->publicPath = 'https://'.$projectFolder.'/'.$entireProjectFolder;
-        $this->projectFolder = 'www/'.$projectFolder.'/'.$entireProjectFolder;
+        $this->projectFolder = 'www/'.$projectFolder;
         $this->connect();
     }
 

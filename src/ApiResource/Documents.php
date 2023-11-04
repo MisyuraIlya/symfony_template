@@ -22,22 +22,6 @@ use App\State\RestoreCartStateProvider;
     provider: DocumentsProvider::class,
 )]
 
-#[ApiResource(
-    shortName: 'RestoreCart',
-    operations: [
-        new GetCollection(
-            uriTemplate: '/restoreCart/{documentType}/{userExtId}/{orderNumber}',
-            description: 'restore cart by userExtId and sku',
-            normalizationContext: [
-                'groups' => ['restoreCart:read'],
-            ],
-            denormalizationContext: [
-                'groups' => ['restoreCart:write'],
-            ],
-            provider: RestoreCartStateProvider::class,
-        ),
-    ],
-)]
 class Documents
 {
     public ?string $documentNumber;

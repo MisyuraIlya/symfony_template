@@ -36,7 +36,6 @@ class Product extends \App\Entity\Product implements \Doctrine\ORM\Proxy\Interna
         "\0".parent::class."\0".'productAttributes' => [parent::class, 'productAttributes', null],
         "\0".parent::class."\0".'sku' => [parent::class, 'sku', null],
         "\0".parent::class."\0".'stock' => [parent::class, 'stock', null],
-        "\0".parent::class."\0".'subProducts' => [parent::class, 'subProducts', null],
         "\0".parent::class."\0".'title' => [parent::class, 'title', null],
         "\0".parent::class."\0".'updatedAt' => [parent::class, 'updatedAt', null],
         'barcode' => [parent::class, 'barcode', null],
@@ -59,7 +58,6 @@ class Product extends \App\Entity\Product implements \Doctrine\ORM\Proxy\Interna
         'productAttributes' => [parent::class, 'productAttributes', null],
         'sku' => [parent::class, 'sku', null],
         'stock' => [parent::class, 'stock', null],
-        'subProducts' => [parent::class, 'subProducts', null],
         'title' => [parent::class, 'title', null],
         'updatedAt' => [parent::class, 'updatedAt', null],
     ];

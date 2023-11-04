@@ -4,7 +4,9 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\ApiResource\Dto\CartItemDto;
 use App\ApiResource\Dto\CartsDto;
+use App\ApiResource\RestoreCart;
 use App\Entity\User;
 use App\Erp\ErpManager;
 use App\Repository\HistoryRepository;
@@ -50,7 +52,15 @@ class RestoreCartStateProvider implements ProviderInterface
             $skus[] = $itemRec->sku;
             $product = $this->productRepository->findOneBySku($itemRec->sku);
             if($product && $product->isIsPublished()){
-                $result->cart[] = $product;
+                $obj = new RestoreCart();
+                $obj->total = 0;
+                $obj->sku = $product->getSku();
+                $obj->discount = 0;
+                $obj->stock = 0;
+                $obj->price = $product->getBasePrice();
+                $obj->quantity = $itemRec->quantity;
+                $obj->product = $product;
+                $result->cart[] = $obj;
             }
         }
 
@@ -59,19 +69,15 @@ class RestoreCartStateProvider implements ProviderInterface
             $prices = $this->ErpManager->GetPricesOnline($skus, $user->getPriceList()->getExtId());
             foreach ($result->cart as $itemRec){
                 foreach ($prices->prices as $priceRec){
-                    if($itemRec->getSku() === $priceRec->sku){
-                        $itemRec->setFinalPrice($priceRec->price);
+                    if($itemRec->sku === $priceRec->sku){
+                        $itemRec->price = $priceRec->price;
                         if($priceRec->discountPrecent){
-                            $itemRec->setDiscount($priceRec->discountPrecent);
+                            $itemRec->discount = $priceRec->discountPrecent;
                         } else {
-                            $itemRec->setDiscount(0);
+                            $itemRec->discount = 0;
                         }
                     }
                 }
-            }
-        } else {
-            foreach ($result->cart as $itemRec){
-                $itemRec->setFinalPrice($itemRec->getBasePrice());
             }
         }
 
@@ -80,17 +86,17 @@ class RestoreCartStateProvider implements ProviderInterface
         $stocks = $this->ErpManager->GetStocksOnline($skus);
         foreach ($result->cart as $itemRec){
             foreach ($stocks->stocks as $stockRec){
-                if($itemRec->getSku() === $stockRec->sku){
+                if($itemRec->sku === $stockRec->sku){
                     if($stockRec->stock > 0){
-                        $itemRec->setStock($stockRec->stock);
+                        $itemRec->stock = $stockRec->stock;
                         $inStockProducts->cart[] = $itemRec;
+
                     }
                 }
             }
         }
 
         return $inStockProducts;
-
     }
 
     private function handleHistory($orderNumber, User $user): CartsDto
