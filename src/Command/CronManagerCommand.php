@@ -79,72 +79,72 @@ class CronManagerCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        (new GetPriceList(
-            $this->httpClient,
-            $this->priceListRepository,
-            $this->errorRepository
-        ))->sync();
-        (new GetUsers(
-            $this->httpClient,
-            $this->userRepository,
-            $this->priceListRepository,
-            $this->errorRepository
-        ))->sync();
-        (new GetCategories(
-            $this->httpClient,
-            $this->categoryRepository,
-            $this->errorRepository
-        ))->sync();
-        (new GetProducts(
-            $this->httpClient,
-            $this->categoryRepository,
-            $this->productRepository,
-            $this->errorRepository
-        ))->sync();
-        (new GetMainAttributes(
-            $this->httpClient,
-            $this->attributeMainRepository,
-            $this->errorRepository
-        ))->sync();
-        (new GetSubAttributes(
-            $this->httpClient,
-            $this->SubAttributeRepository,
-            $this->productRepository,
-            $this->attributeMainRepository,
-            $this->errorRepository,
-            $this->productAttributeRepository,
-        ))->sync();
-        if(!$this->isOnlinePrice && !$this->isOnlineMigvan) {
-            (new GetPriceListDetailed(
-                $this->httpClient,
-                $this->productRepository,
-                $this->priceListRepository,
-                $this->priceListDetailedRepository,
-                $this->errorRepository
-            ))->sync();
-        }
-
-        if(!$this->isUsedMigvan) {
-            (new GetMigvans(
-                $this->httpClient,
-                $this->migvanRepository,
-                $this->userRepository,
-                $this->productRepository,
-                $this->errorRepository
-            ))->sync();
-        }
-
-        (new GetStocks(
-            $this->httpClient,
-            $this->productRepository,
-            $this->errorRepository
-        ))->sync();
-
-        (new GetBasePrice(
-            $this->httpClient,
-            $this->productRepository,
-            $this->errorRepository
-        ))->sync();
+//        (new GetPriceList(
+//            $this->httpClient,
+//            $this->priceListRepository,
+//            $this->errorRepository
+//        ))->sync();
+//        (new GetUsers(
+//            $this->httpClient,
+//            $this->userRepository,
+//            $this->priceListRepository,
+//            $this->errorRepository
+//        ))->sync();
+//        (new GetCategories(
+//            $this->httpClient,
+//            $this->categoryRepository,
+//            $this->errorRepository
+//        ))->sync();
+//        (new GetProducts(
+//            $this->httpClient,
+//            $this->categoryRepository,
+//            $this->productRepository,
+//            $this->errorRepository
+//        ))->sync();
+//        (new GetMainAttributes(
+//            $this->httpClient,
+//            $this->attributeMainRepository,
+//            $this->errorRepository
+//        ))->sync();
+//        (new GetSubAttributes(
+//            $this->httpClient,
+//            $this->SubAttributeRepository,
+//            $this->productRepository,
+//            $this->attributeMainRepository,
+//            $this->errorRepository,
+//            $this->productAttributeRepository,
+//        ))->sync();
+//        if(!$this->isOnlinePrice && !$this->isOnlineMigvan) {
+//            (new GetPriceListDetailed(
+//                $this->httpClient,
+//                $this->productRepository,
+//                $this->priceListRepository,
+//                $this->priceListDetailedRepository,
+//                $this->errorRepository
+//            ))->sync();
+//        }
+//
+//        if(!$this->isUsedMigvan) {
+//            (new GetMigvans(
+//                $this->httpClient,
+//                $this->migvanRepository,
+//                $this->userRepository,
+//                $this->productRepository,
+//                $this->errorRepository
+//            ))->sync();
+//        }
+//
+//        (new GetStocks(
+//            $this->httpClient,
+//            $this->productRepository,
+//            $this->errorRepository
+//        ))->sync();
+//
+//        (new GetBasePrice(
+//            $this->httpClient,
+//            $this->productRepository,
+//            $this->errorRepository
+//        ))->sync();
 
 
         $io->success('All Cron Function Executed');

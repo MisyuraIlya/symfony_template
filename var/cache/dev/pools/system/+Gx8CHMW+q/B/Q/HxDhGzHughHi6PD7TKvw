@@ -116,7 +116,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [],
             ],
             'class' => [
-                3 => 'App\\ApiResource\\Dto\\CartDto',
+                3 => 'App\\ApiResource\\Dto\\CartItemDto',
             ],
         ],
     ],

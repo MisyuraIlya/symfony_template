@@ -146,7 +146,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 null,
             ],
             'paginationClientItemsPerPage' => [
-                null,
+                true,
             ],
             'paginationClientPartial' => [
                 null,
@@ -310,12 +310,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 10 => null,
             ],
             'paginationClientItemsPerPage' => [
-                2 => null,
-                4 => null,
-                null,
-                null,
-                8 => null,
-                10 => null,
+                2 => true,
+                4 => true,
+                true,
+                true,
+                8 => true,
+                10 => true,
             ],
             'paginationClientPartial' => [
                 2 => null,

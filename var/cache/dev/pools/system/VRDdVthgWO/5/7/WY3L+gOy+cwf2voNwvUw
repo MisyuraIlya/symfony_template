@@ -576,14 +576,16 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'identifiers' => [
                 4 => [
                     'id',
+                    'createdAt',
                 ],
                 [
                     'id',
+                    'createdAt',
                 ],
             ],
             'compositeIdentifier' => [
-                4 => null,
-                null,
+                4 => true,
+                true,
             ],
             'expandedValue' => [
                 4 => null,

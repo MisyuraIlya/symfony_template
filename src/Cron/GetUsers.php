@@ -3,6 +3,7 @@
 namespace App\Cron;
 use App\Entity\Error;
 use App\Entity\User;
+use App\Enum\UsersTypes;
 use App\Erp\ErpManager;
 use App\Repository\ErrorRepository;
 use App\Repository\PriceListRepository;
@@ -40,6 +41,8 @@ class GetUsers
                 if($priceList){
                     $user->setPriceList($priceList);
                 }
+                $user->setRoles(UsersTypes::USER);
+
                 $user->setIsBlocked($itemRec->isBlocked);
                 $user->setUpdatedAt(new \DateTimeImmutable());
                 $user->setName($itemRec->name);

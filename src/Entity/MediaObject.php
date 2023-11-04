@@ -75,7 +75,7 @@ class MediaObject
     #[Assert\NotNull(groups: ['media_object_create'])]
     public ?File $file = null;
 
-    #[Groups(['product:read','category:read','productImages:read'])]
+    #[Groups(['product:read','category:read','productImages:read','notification:read'])]
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
@@ -93,12 +93,16 @@ class MediaObject
     #[ORM\OneToMany(mappedBy: 'MediaObject', targetEntity: Category::class, orphanRemoval: true)]
     private Collection $categories;
 
+    #[ORM\OneToMany(mappedBy: 'image', targetEntity: Notification::class)]
+    private Collection $notifications;
+
 
 
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +188,36 @@ class MediaObject
             // set the owning side to null (unless already changed)
             if ($category->getMediaObject() === $this) {
                 $category->setMediaObject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getImage() === $this) {
+                $notification->setImage(null);
             }
         }
 

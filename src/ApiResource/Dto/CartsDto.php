@@ -3,9 +3,11 @@
 namespace App\ApiResource\Dto;
 
 use App\Entity\Product;
+use App\Enum\DocumentTypeHistory;
 
 class CartsDto
 {
-    /** @var Product[] */
+    /** @var CartItemDto[] */
     public array $cart = [];
+
 }

@@ -23,6 +23,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'historyDetaileds',
                     'documentType',
                     'error',
+                    'isAgentOrder',
+                    'isBuyByCreditCard',
                 ],
             ],
         ],

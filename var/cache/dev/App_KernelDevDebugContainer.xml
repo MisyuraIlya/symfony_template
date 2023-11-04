@@ -448,10 +448,12 @@
     <service id="App\ApiResource\Documents" class="App\ApiResource\Documents" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\Documents&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
     </service>
+    <service id="App\ApiResource\Dto\CartItemDto" class="App\ApiResource\Dto\CartItemDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\CartsDto" class="App\ApiResource\Dto\CartsDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\XlxDocumentsDto" class="App\ApiResource\Dto\XlxDocumentsDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\Dto\XlxDto" class="App\ApiResource\Dto\XlxDto" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\PurchaseHistory" class="App\ApiResource\PurchaseHistory" autowire="true" autoconfigure="true"/>
+    <service id="App\ApiResource\SendNotification" class="App\ApiResource\SendNotification" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\SendOrder" class="App\ApiResource\SendOrder" autowire="true" autoconfigure="true"/>
     <service id="App\ApiResource\XlxDocuments" class="App\ApiResource\XlxDocuments" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\ApiResource\XlxDocuments&quot;: argument &quot;$documentNumber&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
@@ -682,6 +684,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\NotificationRepository" class="App\Repository\NotificationRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\PriceListDetailedRepository" class="App\Repository\PriceListDetailedRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -782,6 +788,11 @@
       <argument type="service" id="App\Repository\HistoryRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+    </service>
+    <service id="App\State\SendNotificationProcessor" class="App\State\SendNotificationProcessor" autowire="true" autoconfigure="true">
+      <tag name="api_platform.state_processor"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Repository\NotificationRepository"/>
     </service>
     <service id="App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
@@ -4469,7 +4480,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.BdI0Kn9"/>
+      <argument type="service" id=".service_locator.8thnhw3"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5133,7 +5144,7 @@
       <argument>%api_platform.graphql.collection.pagination%</argument>
     </service>
     <service id="api_platform.state_processor.locator" class="ApiPlatform\State\CallableProcessor">
-      <argument type="service" id=".service_locator.zBXSgam"/>
+      <argument type="service" id=".service_locator.433GNJH"/>
     </service>
     <service id="api_platform.serializer_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -6788,6 +6799,8 @@
     <service id=".abstract.instanceof.App\Repository\MediaObjectRepository" class="App\Repository\MediaObjectRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\MigvanRepository" class="App\Repository\MigvanRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\MigvanRepository" class="App\Repository\MigvanRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\NotificationRepository" class="App\Repository\NotificationRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\NotificationRepository" class="App\Repository\NotificationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PriceListDetailedRepository" class="App\Repository\PriceListDetailedRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\PriceListDetailedRepository" class="App\Repository\PriceListDetailedRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PriceListRepository" class="App\Repository\PriceListRepository" autowire="true" abstract="true"/>
@@ -6824,6 +6837,8 @@
     <service id=".abstract.instanceof.App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProviderInterface.0.App\State\RestoreCartStateProvider" class="App\State\RestoreCartStateProvider" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\RestoreCartStateProvider" class="App\State\RestoreCartStateProvider" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\SendNotificationProcessor" class="App\State\SendNotificationProcessor" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\State\SendNotificationProcessor" class="App\State\SendNotificationProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\State\SendOrderProcessor" class="App\State\SendOrderProcessor" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\State\ProcessorInterface.0.App\State\XlDocumentProcessor" class="App\State\XlDocumentProcessor" autowire="true" abstract="true"/>
@@ -7398,7 +7413,7 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.BdI0Kn9" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.8thnhw3" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AttributeMainRepository" type="service_closure" id="App\Repository\AttributeMainRepository"/>
@@ -7408,6 +7423,7 @@
         <argument key="App\Repository\HistoryRepository" type="service_closure" id="App\Repository\HistoryRepository"/>
         <argument key="App\Repository\MediaObjectRepository" type="service_closure" id="App\Repository\MediaObjectRepository"/>
         <argument key="App\Repository\MigvanRepository" type="service_closure" id="App\Repository\MigvanRepository"/>
+        <argument key="App\Repository\NotificationRepository" type="service_closure" id="App\Repository\NotificationRepository"/>
         <argument key="App\Repository\PriceListDetailedRepository" type="service_closure" id="App\Repository\PriceListDetailedRepository"/>
         <argument key="App\Repository\PriceListRepository" type="service_closure" id="App\Repository\PriceListRepository"/>
         <argument key="App\Repository\ProductAttributeRepository" type="service_closure" id="App\Repository\ProductAttributeRepository"/>
@@ -7776,12 +7792,13 @@
         <argument key="api_platform.state_provider.object" type="service_closure" id="api_platform.state_provider.object"/>
       </argument>
     </service>
-    <service id=".service_locator.zBXSgam" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.433GNJH" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="ApiPlatform\Doctrine\Common\State\PersistProcessor" type="service_closure" id="api_platform.doctrine.orm.state.persist_processor"/>
         <argument key="ApiPlatform\Doctrine\Common\State\RemoveProcessor" type="service_closure" id="api_platform.doctrine.orm.state.remove_processor"/>
         <argument key="App\State\PdfDocumentProcessor" type="service_closure" id="App\State\PdfDocumentProcessor"/>
+        <argument key="App\State\SendNotificationProcessor" type="service_closure" id="App\State\SendNotificationProcessor"/>
         <argument key="App\State\SendOrderProcessor" type="service_closure" id="App\State\SendOrderProcessor"/>
         <argument key="App\State\XlDocumentProcessor" type="service_closure" id="App\State\XlDocumentProcessor"/>
         <argument key="api_platform.doctrine.orm.state.persist_processor" type="service_closure" id="api_platform.doctrine.orm.state.persist_processor"/>
@@ -8884,6 +8901,6 @@
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.BlxN3Cw" alias=".service_locator.LrCXAmX"/>
     <service id=".service_locator.pqQHEAi" alias=".service_locator.MFpCmoT"/>
-    <service id=".service_locator.Qq34ODg" alias=".service_locator.zBXSgam"/>
+    <service id=".service_locator.suaQPL2" alias=".service_locator.433GNJH"/>
   </services>
 </container>

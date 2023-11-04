@@ -68,10 +68,6 @@ class Category
     #[ORM\Column]
     private ?bool $isPublished = null;
 
-    #[Groups(['category:read'])]
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
-
     #[Groups(['category:read','category:write'])]
     #[ORM\Column(nullable: true)]
     private ?int $orden = null;
@@ -158,18 +154,6 @@ class Category
     public function setIsPublished(bool $isPublished): static
     {
         $this->isPublished = $isPublished;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\UsersTypes;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [
         'groups' => ['user:read'],
     ],
+    paginationClientItemsPerPage: true,
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -125,9 +127,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(UsersTypes $roles): static
     {
-        $this->roles = $roles;
+        $this->roles = $roles->getRoles();
 
         return $this;
     }

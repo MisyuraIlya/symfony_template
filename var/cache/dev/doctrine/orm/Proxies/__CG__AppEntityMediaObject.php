@@ -19,6 +19,7 @@ class MediaObject extends \App\Entity\MediaObject implements \Doctrine\ORM\Proxy
         "\0".parent::class."\0".'categories' => [parent::class, 'categories', null],
         "\0".parent::class."\0".'createdAt' => [parent::class, 'createdAt', null],
         "\0".parent::class."\0".'id' => [parent::class, 'id', null],
+        "\0".parent::class."\0".'notifications' => [parent::class, 'notifications', null],
         "\0".parent::class."\0".'productImages' => [parent::class, 'productImages', null],
         "\0".parent::class."\0".'source' => [parent::class, 'source', null],
         'categories' => [parent::class, 'categories', null],
@@ -27,6 +28,7 @@ class MediaObject extends \App\Entity\MediaObject implements \Doctrine\ORM\Proxy
         'file' => [parent::class, 'file', null],
         'filePath' => [parent::class, 'filePath', null],
         'id' => [parent::class, 'id', null],
+        'notifications' => [parent::class, 'notifications', null],
         'productImages' => [parent::class, 'productImages', null],
         'source' => [parent::class, 'source', null],
     ];

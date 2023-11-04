@@ -54,7 +54,7 @@ class History
 
     #[Groups(['history:read'])]
     #[ORM\Column(nullable: true)]
-    private ?int $total = null;
+    private ?float $total = null;
 
     #[Groups(['history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
@@ -86,6 +86,12 @@ class History
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     private ?Error $error = null;
+
+    #[ORM\Column]
+    private ?bool $isAgentOrder = null;
+
+    #[ORM\Column]
+    private ?bool $isBuyByCreditCard = null;
 
     public function __construct()
     {
@@ -267,6 +273,30 @@ class History
     public function setError(?Error $error): static
     {
         $this->error = $error;
+
+        return $this;
+    }
+
+    public function isIsAgentOrder(): ?bool
+    {
+        return $this->isAgentOrder;
+    }
+
+    public function setIsAgentOrder(bool $isAgentOrder): static
+    {
+        $this->isAgentOrder = $isAgentOrder;
+
+        return $this;
+    }
+
+    public function isIsBuyByCreditCard(): ?bool
+    {
+        return $this->isBuyByCreditCard;
+    }
+
+    public function setIsBuyByCreditCard(bool $isBuyByCreditCard): static
+    {
+        $this->isBuyByCreditCard = $isBuyByCreditCard;
 
         return $this;
     }
