@@ -31,15 +31,17 @@ class RestoreCartStateProvider implements ProviderInterface
         $documentType = $uriVariables['documentType'];
         $orderNumber = $uriVariables['orderNumber'];
         $userExtId = $uriVariables['userExtId'];
+
         $user = $this->userRepository->findOneByExtId($userExtId);
+
         if($documentType === 'history' && !empty($user)) {
             $response = $this->handleHistory($orderNumber,$user);
+
         }
 
         if($documentType === 'online' && !empty($user)) {
             $response = $this->handleOnline($orderNumber,$user);
         }
-
         return $response->cart;
     }
 
@@ -112,17 +114,26 @@ class RestoreCartStateProvider implements ProviderInterface
             $skus[] = $itemRec->getProduct()->getSku();
             $product = $this->productRepository->findOneBySku($itemRec->getProduct()->getSku());
             if($product && $product->isIsPublished()){
-                $result->cart[] = $product;
+                $obj = new RestoreCart();
+                $obj->total = $product->getBasePrice() * $itemRec->getQuantity();
+                $obj->sku = $product->getSku();
+                $obj->discount = 0;
+                $obj->stock = 0;
+                $obj->price = $product->getBasePrice();
+                $obj->quantity = $itemRec->getQuantity();
+                $product->setFinalPrice($product->getBasePrice());
+                $obj->product = $product;
+                $result->cart[] = $obj;
             }
-        }
 
+        }
 
         if($user->getPriceList()){
             $prices = $this->ErpManager->GetPricesOnline($skus, $user->getPriceList()->getExtId());
             foreach ($result->cart as $itemRec){
                 foreach ($prices->prices as $priceRec){
                     if($itemRec->getSku() === $priceRec->sku){
-                        $itemRec->setFinalPrice($priceRec->price);
+                        $itemRec->setPrice($priceRec->price);
                         if($priceRec->discountPrecent){
                             $itemRec->setDiscount($priceRec->discountPrecent);
                         } else {
@@ -131,10 +142,6 @@ class RestoreCartStateProvider implements ProviderInterface
                     }
                 }
             }
-        } else {
-            foreach ($result->cart as $itemRec){
-                $itemRec->setFinalPrice($itemRec->getBasePrice());
-            }
         }
 
         $inStockProducts = new CartsDto();
@@ -142,16 +149,17 @@ class RestoreCartStateProvider implements ProviderInterface
         $stocks = $this->ErpManager->GetStocksOnline($skus);
         foreach ($result->cart as $itemRec){
             foreach ($stocks->stocks as $stockRec){
-                if($itemRec->getSku() === $stockRec->sku){
+                if($itemRec->sku === $stockRec->sku){
                     if($stockRec->stock > 0){
-                        $itemRec->setStock($stockRec->stock);
+                        $itemRec->stock =$stockRec->stock;
                         $inStockProducts->cart[] = $itemRec;
                     }
                 }
             }
         }
+        // dd($inStockProducts);
 
-        return $inStockProducts;
+        return $inStockProducts ;
 
     }
 

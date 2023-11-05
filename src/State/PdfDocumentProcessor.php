@@ -22,6 +22,7 @@ class PdfDocumentProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
+
         try {
             assert($data instanceof XlxDocuments);
             $pdfCreate = (new XlxDocumentService())->GetPdfOrder($data);
@@ -32,7 +33,6 @@ class PdfDocumentProcessor implements ProcessorInterface
             $obj = new \stdClass();
             $obj->url = $ftpUplaodFilePath;
             return $obj;
-
         } catch (\Throwable $exception) {
             $error = new Error();
             $error->setDescription($exception->getMessage());

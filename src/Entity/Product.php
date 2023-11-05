@@ -87,7 +87,7 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['product:read','category:read','product:write','restoreCart:read'])]
+    #[Groups(['product:read','category:read','product:write','restoreCart:read','history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $defaultImagePath = null;
 
@@ -95,7 +95,7 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[Groups(['product:read','category:read','restoreCart:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read','history:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $barcode = null;
 

@@ -1,4 +1,4 @@
-<?php //property_name_collection_87b3ba1afb9c733c7c9d17ec2db6f0e4
+<?php //property_name_collection_77de2019b812c40ebd7f206dd351e253
 
 return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     $o = [
@@ -8,7 +8,15 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
     [
         'ApiPlatform\\Metadata\\Property\\PropertyNameCollection' => [
             'properties' => [
-                [],
+                [
+                    'sku',
+                    'quantity',
+                    'price',
+                    'discount',
+                    'total',
+                    'stock',
+                    'product',
+                ],
             ],
         ],
     ],
