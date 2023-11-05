@@ -27,7 +27,7 @@ class SendOrder
 
     public ?float $total = null;
 
-    public ?int $totalBeforeTax = null;
+    public ?float $totalBeforeTax = null;
 
     public ?DocumentTypeHistory $documentType = null;
 
@@ -104,17 +104,17 @@ class SendOrder
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getTotalBeforeTax(): ?int
+    public function getTotalBeforeTax(): ?float
     {
         return $this->totalBeforeTax;
     }
 
     /**
-     * @param int|null $totalBeforeTax
+     * @param float|null $totalBeforeTax
      */
-    public function setTotalBeforeTax(?int $totalBeforeTax): void
+    public function setTotalBeforeTax(?float $totalBeforeTax): void
     {
         $this->totalBeforeTax = $totalBeforeTax;
     }

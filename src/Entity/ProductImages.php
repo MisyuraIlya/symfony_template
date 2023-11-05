@@ -24,17 +24,17 @@ use App\Entity\Product;
 )]
 class ProductImages
 {
-    #[Groups(['product:read','category:read','productImages:read'])]
+    #[Groups(['product:read','category:read','productImages:read','restoreCart:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['product:read','category:read','productImages:read'])]
+    #[Groups(['product:read','category:read','productImages:read','restoreCart:read'])]
     #[ORM\ManyToOne(inversedBy: 'imagePath')]
     private ?Product $product = null;
 
-    #[Groups(['product:read','category:read','productImages:read'])]
+    #[Groups(['product:read','category:read','productImages:read','restoreCart:read'])]
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     private ?MediaObject $mediaObject = null;
 

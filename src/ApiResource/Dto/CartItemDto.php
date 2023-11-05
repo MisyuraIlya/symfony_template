@@ -12,5 +12,4 @@ class CartItemDto
     public ?int $discount;
     public ?float $total;
     public ?int $stock;
-    public ?Product $product;
 }

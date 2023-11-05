@@ -28,19 +28,19 @@ class RestoreCartStateProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-            $documentType = $uriVariables['documentType'];
-            $orderNumber = $uriVariables['orderNumber'];
-            $userExtId = $uriVariables['userExtId'];
-            $user = $this->userRepository->findOneByExtId($userExtId);
-            if($documentType === 'history' && !empty($user)) {
-                $response = $this->handleHistory($orderNumber,$user);
-            }
+        $documentType = $uriVariables['documentType'];
+        $orderNumber = $uriVariables['orderNumber'];
+        $userExtId = $uriVariables['userExtId'];
+        $user = $this->userRepository->findOneByExtId($userExtId);
+        if($documentType === 'history' && !empty($user)) {
+            $response = $this->handleHistory($orderNumber,$user);
+        }
 
-            if($documentType === 'online' && !empty($user)) {
-                $response = $this->handleOnline($orderNumber,$user);
-            }
+        if($documentType === 'online' && !empty($user)) {
+            $response = $this->handleOnline($orderNumber,$user);
+        }
 
-            return $response->cart;
+        return $response->cart;
     }
 
     private function handleOnline($orderNumber, User $user): CartsDto
@@ -53,16 +53,18 @@ class RestoreCartStateProvider implements ProviderInterface
             $product = $this->productRepository->findOneBySku($itemRec->sku);
             if($product && $product->isIsPublished()){
                 $obj = new RestoreCart();
-                $obj->total = 0;
+                $obj->total = $product->getBasePrice() * $itemRec->quantity;
                 $obj->sku = $product->getSku();
                 $obj->discount = 0;
                 $obj->stock = 0;
                 $obj->price = $product->getBasePrice();
                 $obj->quantity = $itemRec->quantity;
+                $product->setFinalPrice($product->getBasePrice());
                 $obj->product = $product;
                 $result->cart[] = $obj;
             }
         }
+
 
 
         if($user->getPriceList()){
@@ -71,6 +73,7 @@ class RestoreCartStateProvider implements ProviderInterface
                 foreach ($prices->prices as $priceRec){
                     if($itemRec->sku === $priceRec->sku){
                         $itemRec->price = $priceRec->price;
+                        $itemRec->total = $priceRec->price * $itemRec->quantity;
                         if($priceRec->discountPrecent){
                             $itemRec->discount = $priceRec->discountPrecent;
                         } else {

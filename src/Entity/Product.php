@@ -124,15 +124,15 @@ class Product
     private Collection $priceListDetaileds;
 
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[Groups(['product:read','category:read'])]
+    #[Groups(['product:read','category:read','restoreCart:read'])]
     #[ORM\Column(nullable: true)]
     private ?int $basePrice = null;
 

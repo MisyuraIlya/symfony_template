@@ -154,10 +154,8 @@ class SendOrderProcessor implements ProcessorInterface
         foreach ($dto->products as $itemRec){
             $total += $itemRec->total;
         }
-
         $tax = $total * 0.17;
         $total += $tax;
-
         if($dto->getDiscount()){
             $total -= $total * ($dto->getDiscount() / 100);
         }
