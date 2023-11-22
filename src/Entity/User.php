@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\UsersTypes;
 use App\Repository\UserRepository;
@@ -20,18 +22,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     paginationClientItemsPerPage: true,
 )]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'partial',
+        'extId' => 'partial',
+        'role' => 'exact'
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true, nullable: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read'])]
     private ?string $email = null;
 
+    #[Groups(['user:read','agentTarget:read'])]
     #[ORM\Column]
     private array $roles = [];
 
@@ -42,31 +53,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
     private ?bool $isRegistered = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read','history:read'])]
+    #[Groups(['user:read','history:read','agentTarget:read','agentObjective:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read','history:read'])]
+    #[Groups(['user:read','history:read','agentTarget:read','agentObjective:read'])]
     private ?string $extId = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
     private ?bool $isBlocked = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -81,10 +92,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?PriceList $priceList = null;
 
+    #[ORM\OneToMany(mappedBy: 'agent', targetEntity: AgentTarget::class)]
+    private Collection $agentTargets;
+
+    #[ORM\OneToMany(mappedBy: 'agent', targetEntity: AgentObjective::class)]
+    private Collection $agentObjectives;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: AgentObjective::class)]
+    private Collection $clientObjectives;
+
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?UsersTypes $role = null;
+
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $passwordUnencrypted = null;
+
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
+    #[ORM\Column]
+    private ?bool $isAllowOrder = null;
+
+    #[Groups(['user:read','agentTarget:read','agentObjective:read'])]
+    #[ORM\Column]
+    private ?bool $isAllowAllClients = null;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
         $this->migvans = new ArrayCollection();
+        $this->agentTargets = new ArrayCollection();
+        $this->agentObjectives = new ArrayCollection();
+        $this->clientObjectives = new ArrayCollection();
     }
 
 
@@ -122,7 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+//        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -142,7 +181,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 
@@ -322,6 +361,144 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPriceList(?PriceList $priceList): static
     {
         $this->priceList = $priceList;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AgentTarget>
+     */
+    public function getAgentTargets(): Collection
+    {
+        return $this->agentTargets;
+    }
+
+    public function addAgentTarget(AgentTarget $agentTarget): static
+    {
+        if (!$this->agentTargets->contains($agentTarget)) {
+            $this->agentTargets->add($agentTarget);
+            $agentTarget->setAgent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgentTarget(AgentTarget $agentTarget): static
+    {
+        if ($this->agentTargets->removeElement($agentTarget)) {
+            // set the owning side to null (unless already changed)
+            if ($agentTarget->getAgent() === $this) {
+                $agentTarget->setAgent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AgentObjective>
+     */
+    public function getAgentObjectives(): Collection
+    {
+        return $this->agentObjectives;
+    }
+
+    public function addAgentObjective(AgentObjective $agentObjective): static
+    {
+        if (!$this->agentObjectives->contains($agentObjective)) {
+            $this->agentObjectives->add($agentObjective);
+            $agentObjective->setAgent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgentObjective(AgentObjective $agentObjective): static
+    {
+        if ($this->agentObjectives->removeElement($agentObjective)) {
+            // set the owning side to null (unless already changed)
+            if ($agentObjective->getAgent() === $this) {
+                $agentObjective->setAgent(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, AgentObjective>
+     */
+    public function getClientObjectives(): Collection
+    {
+        return $this->clientObjectives;
+    }
+
+    public function addClientObjective(AgentObjective $clientObjective): static
+    {
+        if (!$this->clientObjectives->contains($clientObjective)) {
+            $this->clientObjectives->add($clientObjective);
+            $clientObjective->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientObjective(AgentObjective $clientObjective): static
+    {
+        if ($this->agentObjectives->removeElement($clientObjective)) {
+            if ($clientObjective->getClient() === $this) {
+                $clientObjective->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRole(): ?UsersTypes
+    {
+        return $this->role;
+    }
+
+    public function setRole(UsersTypes $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getPasswordUnencrypted(): ?string
+    {
+        return $this->passwordUnencrypted;
+    }
+
+    public function setPasswordUnencrypted(?string $passwordUnencrypted): static
+    {
+        $this->passwordUnencrypted = $passwordUnencrypted;
+
+        return $this;
+    }
+
+    public function isIsAllowOrder(): ?bool
+    {
+        return $this->isAllowOrder;
+    }
+
+    public function setIsAllowOrder(bool $isAllowOrder): static
+    {
+        $this->isAllowOrder = $isAllowOrder;
+
+        return $this;
+    }
+
+    public function isIsAllowAllClients(): ?bool
+    {
+        return $this->isAllowAllClients;
+    }
+
+    public function setIsAllowAllClients(bool $isAllowAllClients): static
+    {
+        $this->isAllowAllClients = $isAllowAllClients;
 
         return $this;
     }

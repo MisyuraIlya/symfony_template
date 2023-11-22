@@ -29,23 +29,24 @@ class RestoreCartStateProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         $documentType = $uriVariables['documentType'];
+        $priceType = $uriVariables['priceType'];
         $orderNumber = $uriVariables['orderNumber'];
         $userExtId = $uriVariables['userExtId'];
 
         $user = $this->userRepository->findOneByExtId($userExtId);
 
         if($documentType === 'history' && !empty($user)) {
-            $response = $this->handleHistory($orderNumber,$user);
+            $response = $this->handleHistory($orderNumber,$user, $priceType);
 
         }
 
         if($documentType === 'online' && !empty($user)) {
-            $response = $this->handleOnline($orderNumber,$user);
+            $response = $this->handleOnline($orderNumber,$user, $priceType);
         }
         return $response->cart;
     }
 
-    private function handleOnline($orderNumber, User $user): CartsDto
+    private function handleOnline($orderNumber, User $user, $priceType): CartsDto
     {
         $result = new CartsDto();
         $data = $this->ErpManager->GetDocumentsItem($orderNumber);
@@ -68,23 +69,37 @@ class RestoreCartStateProvider implements ProviderInterface
         }
 
 
-
-        if($user->getPriceList()){
-            $prices = $this->ErpManager->GetPricesOnline($skus, $user->getPriceList()->getExtId());
-            foreach ($result->cart as $itemRec){
-                foreach ($prices->prices as $priceRec){
-                    if($itemRec->sku === $priceRec->sku){
-                        $itemRec->price = $priceRec->price;
-                        $itemRec->total = $priceRec->price * $itemRec->quantity;
-                        if($priceRec->discountPrecent){
-                            $itemRec->discount = $priceRec->discountPrecent;
-                        } else {
-                            $itemRec->discount = 0;
+        if($priceType == 'updatedPrice') {
+            if($user->getPriceList()){
+                $prices = $this->ErpManager->GetPricesOnline($skus, $user->getPriceList()->getExtId());
+                foreach ($result->cart as $itemRec){
+                    foreach ($prices->prices as $priceRec){
+                        if($itemRec->sku === $priceRec->sku){
+                            $itemRec->price = $priceRec->price;
+                            $itemRec->total = $priceRec->price * $itemRec->quantity;
+                            $itemRec->getProduct()->setFinalPrice($priceRec->price);
+                            if($priceRec->discountPrecent){
+                                $itemRec->discount = $priceRec->discountPrecent;
+                            } else {
+                                $itemRec->discount = 0;
+                            }
                         }
                     }
                 }
             }
+        } else {
+            foreach ($data->products as $itemRec) {
+                foreach ($result->cart as $cartItem) {
+                    if($itemRec->sku === $cartItem->getSku()) {
+                        $cartItem->setPrice($itemRec->priceByOne);
+                        $cartItem->setDiscount($itemRec->discount);
+                        $cartItem->setTotal($itemRec->total);
+                        $cartItem->getProduct()->setFinalPrice($itemRec->priceByOne);
+                    }
+                }
+            }
         }
+
 
         $inStockProducts = new CartsDto();
 
@@ -104,7 +119,7 @@ class RestoreCartStateProvider implements ProviderInterface
         return $inStockProducts;
     }
 
-    private function handleHistory($orderNumber, User $user): CartsDto
+    private function handleHistory($orderNumber, User $user, $priceType): CartsDto
     {
         $result = new CartsDto();
         $data = $this->historyRepository->findOneById($orderNumber);
@@ -128,37 +143,50 @@ class RestoreCartStateProvider implements ProviderInterface
 
         }
 
-        if($user->getPriceList()){
-            $prices = $this->ErpManager->GetPricesOnline($skus, $user->getPriceList()->getExtId());
-            foreach ($result->cart as $itemRec){
-                foreach ($prices->prices as $priceRec){
-                    if($itemRec->getSku() === $priceRec->sku){
-                        $itemRec->setPrice($priceRec->price);
-                        if($priceRec->discountPrecent){
-                            $itemRec->setDiscount($priceRec->discountPrecent);
-                        } else {
-                            $itemRec->setDiscount(0);
+        if($priceType == 'updatedPrice') {
+            if($user->getPriceList()){
+                $prices = $this->ErpManager->GetPricesOnline($skus, $user->getPriceList()->getExtId());
+                foreach ($result->cart as $itemRec){
+                    foreach ($prices->prices as $priceRec){
+                        if($itemRec->getSku() === $priceRec->sku){
+                            $itemRec->setPrice($priceRec->price);
+                            $itemRec->getProduct()->setFinalPrice($priceRec->price);
+                            if($priceRec->discountPrecent){
+                                $itemRec->setDiscount($priceRec->discountPrecent);
+                            } else {
+                                $itemRec->setDiscount(0);
+                            }
                         }
+                    }
+                }
+            }
+        } else {
+            foreach ($data->getHistoryDetaileds() as $itemRec) {
+                foreach ($result->cart as $cartItem) {
+                    if($itemRec->getProduct()->getSku() === $cartItem->getSku()) {
+                        $cartItem->setPrice($itemRec->getSinglePrice());
+                        $cartItem->setDiscount($itemRec->getDiscount());
+                        $cartItem->setTotal($itemRec->getTotal());
+                        $cartItem->getProduct()->setFinalPrice($itemRec->getSinglePrice());
                     }
                 }
             }
         }
 
-        $inStockProducts = new CartsDto();
 
+        $inStockProducts = new CartsDto();
         $stocks = $this->ErpManager->GetStocksOnline($skus);
+        $newStocks = (new ErpManager($this->httpClient))->GetStocksOnline($skus);
         foreach ($result->cart as $itemRec){
-            foreach ($stocks->stocks as $stockRec){
+            foreach ($newStocks->stocks as $stockRec){
                 if($itemRec->sku === $stockRec->sku){
                     if($stockRec->stock > 0){
-                        $itemRec->stock =$stockRec->stock;
+                        $itemRec->setStock($stockRec->stock);
                         $inStockProducts->cart[] = $itemRec;
                     }
                 }
             }
         }
-        // dd($inStockProducts);
-
         return $inStockProducts ;
 
     }

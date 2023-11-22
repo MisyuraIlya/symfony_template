@@ -110,11 +110,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
             ],
             'denormalizationContext' => [
-                [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
+                null,
             ],
             'collectDenormalizationErrors' => [
                 null,
@@ -394,36 +390,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
             ],
             'denormalizationContext' => [
-                2 => [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
-                4 => [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
-                [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
-                [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
-                8 => [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
-                10 => [
-                    'groups' => [
-                        'history:write',
-                    ],
-                ],
+                2 => null,
+                4 => null,
+                null,
+                null,
+                8 => null,
+                10 => null,
             ],
             'collectDenormalizationErrors' => [
                 2 => null,

@@ -8,6 +8,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         clone ($p['ApiPlatform\\Metadata\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Link')),
         clone $p['ApiPlatform\\Metadata\\Link'],
         clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
         clone ($p['ApiPlatform\\Metadata\\NotExposed'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\NotExposed')),
         clone $p['ApiPlatform\\Metadata\\Link'],
     ],
@@ -207,12 +208,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'operations' => [
                 1 => [
                     [
-                        '_api_/restoreCart/{documentType}/{userExtId}/{orderNumber}_get_collection',
+                        '_api_/restoreCart/{documentType}/{priceType}/{userExtId}/{orderNumber}_get_collection',
                         $o[2],
                     ],
                     [
                         '_api_/.well-known/genid/{id}{._format}_get',
-                        $o[6],
+                        $o[7],
                     ],
                 ],
             ],
@@ -220,59 +221,59 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         'ApiPlatform\\Metadata\\Operation' => [
             'shortName' => [
                 2 => 'RestoreCart',
-                6 => 'RestoreCart',
+                7 => 'RestoreCart',
             ],
             'class' => [
                 2 => 'App\\ApiResource\\RestoreCart',
-                6 => 'App\\ApiResource\\RestoreCart',
+                7 => 'App\\ApiResource\\RestoreCart',
             ],
             'paginationEnabled' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationType' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationItemsPerPage' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationMaximumItemsPerPage' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationPartial' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationClientEnabled' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationClientItemsPerPage' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationClientPartial' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationFetchJoinCollection' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'paginationUseOutputWalkers' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'order' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'description' => [
                 2 => 'restore cart by userExtId and sku',
-                6 => null,
+                7 => null,
             ],
             'normalizationContext' => [
                 2 => [
@@ -280,7 +281,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'restoreCart:read',
                     ],
                 ],
-                6 => null,
+                7 => null,
             ],
             'denormalizationContext' => [
                 2 => [
@@ -288,111 +289,111 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'restoreCart:write',
                     ],
                 ],
-                6 => null,
+                7 => null,
             ],
             'collectDenormalizationErrors' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'security' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'securityMessage' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'securityPostDenormalize' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'securityPostDenormalizeMessage' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'securityPostValidation' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'securityPostValidationMessage' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'deprecationReason' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'filters' => [
                 2 => [],
-                6 => [],
+                7 => [],
             ],
             'validationContext' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'elasticsearch' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'urlGenerationStrategy' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'read' => [
                 2 => null,
-                6 => false,
+                7 => false,
             ],
             'deserialize' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'validate' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'write' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'serialize' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'fetchPartial' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'forceEager' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'priority' => [
                 2 => 0,
-                6 => null,
+                7 => null,
             ],
             'name' => [
-                2 => '_api_/restoreCart/{documentType}/{userExtId}/{orderNumber}_get_collection',
-                6 => '_api_/.well-known/genid/{id}{._format}_get',
+                2 => '_api_/restoreCart/{documentType}/{priceType}/{userExtId}/{orderNumber}_get_collection',
+                7 => '_api_/.well-known/genid/{id}{._format}_get',
             ],
             'provider' => [
                 2 => 'App\\State\\RestoreCartStateProvider',
             ],
             'stateOptions' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'extraProperties' => [
                 2 => [
                     'standard_put' => true,
                     'user_defined_uri_template' => true,
                 ],
-                6 => [
+                7 => [
                     'standard_put' => true,
                     'generated_operation' => true,
                 ],
             ],
             'output' => [
-                6 => [
+                7 => [
                     'class' => null,
                 ],
             ],
@@ -400,19 +401,19 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         'ApiPlatform\\Metadata\\HttpOperation' => [
             'paginationViaCursor' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'method' => [
                 2 => 'GET',
-                6 => 'GET',
+                7 => 'GET',
             ],
             'uriTemplate' => [
-                2 => '/restoreCart/{documentType}/{userExtId}/{orderNumber}',
-                6 => '/.well-known/genid/{id}{._format}',
+                2 => '/restoreCart/{documentType}/{priceType}/{userExtId}/{orderNumber}',
+                7 => '/.well-known/genid/{id}{._format}',
             ],
             'types' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'inputFormats' => [
                 2 => [
@@ -426,7 +427,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'text/html',
                     ],
                 ],
-                6 => [
+                7 => [
                     'jsonld' => [
                         'application/ld+json',
                     ],
@@ -450,7 +451,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'text/html',
                     ],
                 ],
-                6 => [
+                7 => [
                     'jsonld' => [
                         'application/ld+json',
                     ],
@@ -465,60 +466,61 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'uriVariables' => [
                 2 => [
                     'documentType' => $o[3],
-                    'userExtId' => $o[4],
-                    'orderNumber' => $o[5],
+                    'priceType' => $o[4],
+                    'userExtId' => $o[5],
+                    'orderNumber' => $o[6],
                 ],
-                6 => [
-                    'id' => $o[7],
+                7 => [
+                    'id' => $o[8],
                 ],
             ],
             'routePrefix' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'routeName' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'defaults' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'requirements' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'options' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'stateless' => [
                 2 => true,
-                6 => true,
+                7 => true,
             ],
             'sunset' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'acceptPatch' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'host' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'schemes' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'condition' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'controller' => [
                 2 => null,
-                6 => 'api_platform.action.not_exposed',
+                7 => 'api_platform.action.not_exposed',
             ],
             'cacheHeaders' => [
                 2 => [
@@ -528,7 +530,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'Origin',
                     ],
                 ],
-                6 => [
+                7 => [
                     'vary' => [
                         'Content-Type',
                         'Authorization',
@@ -538,26 +540,26 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             ],
             'hydraContext' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'openapiContext' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'openapi' => [
                 2 => null,
-                6 => false,
+                7 => false,
             ],
             'exceptionToStatus' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'queryParameterValidationEnabled' => [
                 2 => null,
-                6 => null,
+                7 => null,
             ],
             'status' => [
-                6 => 404,
+                7 => 404,
             ],
         ],
         'ApiPlatform\\Metadata\\GetCollection' => [
@@ -568,33 +570,38 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         'ApiPlatform\\Metadata\\Link' => [
             'parameterName' => [
                 3 => 'documentType',
+                'priceType',
                 'userExtId',
                 'orderNumber',
-                7 => 'id',
+                8 => 'id',
             ],
             'fromProperty' => [
                 3 => null,
                 null,
                 null,
-                7 => null,
+                null,
+                8 => null,
             ],
             'toProperty' => [
                 3 => null,
                 null,
                 null,
-                7 => null,
+                null,
+                8 => null,
             ],
             'fromClass' => [
                 3 => 'App\\ApiResource\\RestoreCart',
                 'App\\ApiResource\\RestoreCart',
                 'App\\ApiResource\\RestoreCart',
-                7 => 'App\\ApiResource\\RestoreCart',
+                'App\\ApiResource\\RestoreCart',
+                8 => 'App\\ApiResource\\RestoreCart',
             ],
             'toClass' => [
                 3 => null,
                 null,
                 null,
-                7 => null,
+                null,
+                8 => null,
             ],
             'identifiers' => [
                 3 => [
@@ -606,7 +613,10 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'id',
                 ],
-                7 => [
+                [
+                    'id',
+                ],
+                8 => [
                     'id',
                 ],
             ],
@@ -614,13 +624,15 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 3 => null,
                 null,
                 null,
-                7 => null,
+                null,
+                8 => null,
             ],
             'expandedValue' => [
                 3 => null,
                 null,
                 null,
-                7 => null,
+                null,
+                8 => null,
             ],
         ],
     ],

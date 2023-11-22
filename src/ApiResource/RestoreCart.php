@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     shortName: 'RestoreCart',
     operations: [
         new GetCollection(
-            uriTemplate: '/restoreCart/{documentType}/{userExtId}/{orderNumber}',
+            uriTemplate: '/restoreCart/{documentType}/{priceType}/{userExtId}/{orderNumber}',
             description: 'restore cart by userExtId and sku',
             normalizationContext: [
                 'groups' => ['restoreCart:read'],

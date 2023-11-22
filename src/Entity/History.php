@@ -19,12 +19,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['history:read']],
-    denormalizationContext: ['groups' => ['history:write']],
 )]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
-        'user.extId' => 'exact',
+        'user.extId' => 'partial',
     ]
 )]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
@@ -84,14 +83,29 @@ class History
     #[ORM\Column(length: 255)]
     private ?DocumentTypeHistory $documentType = null;
 
+    #[Groups(['history:read','historyDetailed:read'])]
     #[ORM\ManyToOne(inversedBy: 'history')]
     private ?Error $error = null;
 
-    #[ORM\Column]
-    private ?bool $isAgentOrder = null;
+    #[Groups(['history:read','historyDetailed:read'])]
+    #[ORM\ManyToOne(inversedBy: 'histories')]
+    private ?User $agent = null;
 
+    #[Groups(['history:read','historyDetailed:read'])]
+    #[ORM\ManyToOne(inversedBy: 'histories')]
+    private ?User $agentApproved = null;
+
+    #[Groups(['history:read','historyDetailed:read'])]
     #[ORM\Column]
     private ?bool $isBuyByCreditCard = null;
+
+    #[Groups(['history:read','historyDetailed:read'])]
+    #[ORM\Column]
+    private ?bool $isSendErp = null;
+
+    #[Groups(['history:read','historyDetailed:read'])]
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $sendErpAt = null;
 
     public function __construct()
     {
@@ -277,14 +291,26 @@ class History
         return $this;
     }
 
-    public function isIsAgentOrder(): ?bool
+    public function getAgent(): ?User
     {
-        return $this->isAgentOrder;
+        return $this->agent;
     }
 
-    public function setIsAgentOrder(bool $isAgentOrder): static
+    public function setAgent(?User $agent): static
     {
-        $this->isAgentOrder = $isAgentOrder;
+        $this->agent = $agent;
+
+        return $this;
+    }
+
+    public function getAgentApproved(): ?User
+    {
+        return $this->agentApproved;
+    }
+
+    public function setAgentApproved(?User $agent): static
+    {
+        $this->agentApproved = $agent;
 
         return $this;
     }
@@ -297,6 +323,30 @@ class History
     public function setIsBuyByCreditCard(bool $isBuyByCreditCard): static
     {
         $this->isBuyByCreditCard = $isBuyByCreditCard;
+
+        return $this;
+    }
+
+    public function isIsSendErp(): ?bool
+    {
+        return $this->isSendErp;
+    }
+
+    public function setIsSendErp(bool $isSendErp): static
+    {
+        $this->isSendErp = $isSendErp;
+
+        return $this;
+    }
+
+    public function getSendErpAt(): ?\DateTimeImmutable
+    {
+        return $this->sendErpAt;
+    }
+
+    public function setSendErpAt(?\DateTimeImmutable $sendErpAt): static
+    {
+        $this->sendErpAt = $sendErpAt;
 
         return $this;
     }

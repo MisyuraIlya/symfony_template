@@ -31,7 +31,7 @@ class SendOrder
 
     public ?DocumentTypeHistory $documentType = null;
 
-    public ?bool $isAgentOrder = null;
+    public ?int $agentId = null;
 
     public ?bool $isBuyByCreditCard = null;
 
@@ -136,19 +136,19 @@ class SendOrder
     }
 
     /**
-     * @return bool|null
+     * @return int|null
      */
-    public function getIsAgentOrder(): ?bool
+    public function getAgent(): ?int
     {
-        return $this->isAgentOrder;
+        return $this->agentId;
     }
 
     /**
-     * @param bool|null $isAgentOrder
+     * @param int|null $agentId
      */
-    public function setIsAgentOrder(?bool $isAgentOrder): void
+    public function setAgent(?int $agentId): void
     {
-        $this->isAgentOrder = $isAgentOrder;
+        $this->agentId = $agentId;
     }
 
     /**

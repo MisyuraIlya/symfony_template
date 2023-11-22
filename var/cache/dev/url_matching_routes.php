@@ -17,6 +17,9 @@ return [
         '/auth/validation' => [[['_route' => 'app_auth_validation', '_controller' => 'App\\Controller\\AuthController::validation'], null, ['POST' => 0], null, false, false, null]],
         '/auth/restorePasswordStepOne' => [[['_route' => 'app_auth_restorePasswordStepOne', '_controller' => 'App\\Controller\\AuthController::restorePasswordStepOne'], null, ['POST' => 0], null, false, false, null]],
         '/auth/restorePasswordStepTwo' => [[['_route' => 'app_auth_restorePasswordStepTwo', '_controller' => 'App\\Controller\\AuthController::restorePasswordStepTwo'], null, ['POST' => 0], null, false, false, null]],
+        '/auth/createUser' => [[['_route' => 'app_auth_createUser', '_controller' => 'App\\Controller\\AuthController::createUser'], null, ['POST' => 0], null, false, false, null]],
+        '/auth/createAgent' => [[['_route' => 'app_auth_createAgent', '_controller' => 'App\\Controller\\AuthController::createAgent'], null, ['POST' => 0], null, false, false, null]],
+        '/auth/updateUser' => [[['_route' => 'app_auth_updateUser', '_controller' => 'App\\Controller\\AuthController::updateUser'], null, ['POST' => 0], null, false, false, null]],
         '/excel' => [[['_route' => 'app_excel', '_controller' => 'App\\Controller\\ExcelController::index'], null, null, null, false, false, null]],
         '/ftpFileUploader' => [[['_route' => 'ftp_uploader', '_controller' => 'App\\Controller\\FtpFileUploader::ftp'], null, ['POST' => 0], null, false, false, null]],
         '/api/auth' => [[['_route' => 'jwt_auth'], null, ['POST' => 0], null, false, false, null]],
@@ -51,155 +54,181 @@ return [
                                     .')'
                                     .'|alog/([^/]++)/([^/]++)/([^/]++)(*:420)'
                                 .')'
+                                .'|lendar/([^/]++)/([^/]++)/([^/]++)(*:462)'
                             .')'
-                            .'|reate_documents/([^/\\.]++)(?:\\.([^/]++))?(*:471)'
+                            .'|reate_documents/([^/\\.]++)(?:\\.([^/]++))?(*:512)'
                         .')'
                         .'|p(?'
-                            .'|urchaseHistory/([^/]++)/([^/]++)(*:516)'
+                            .'|urchaseHistory/([^/]++)/([^/]++)(*:557)'
                             .'|r(?'
                                 .'|ice_list(?'
                                     .'|s(?'
-                                        .'|/([^/\\.]++)(?:\\.([^/]++))?(*:569)'
+                                        .'|/([^/\\.]++)(?:\\.([^/]++))?(*:610)'
                                         .'|(?:\\.([^/]++))?(?'
-                                            .'|(*:595)'
+                                            .'|(*:636)'
                                         .')'
                                         .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                            .'|(*:633)'
+                                            .'|(*:674)'
                                         .')'
                                     .')'
                                     .'|_detaileds(?'
-                                        .'|/([^/\\.]++)(?:\\.([^/]++))?(*:682)'
+                                        .'|/([^/\\.]++)(?:\\.([^/]++))?(*:723)'
                                         .'|(?:\\.([^/]++))?(?'
-                                            .'|(*:708)'
+                                            .'|(*:749)'
                                         .')'
                                         .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                            .'|(*:746)'
+                                            .'|(*:787)'
                                         .')'
                                     .')'
                                 .')'
                                 .'|oduct(?'
                                     .'|s(?'
-                                        .'|/([^/\\.]++)(?:\\.([^/]++))?(*:795)'
+                                        .'|/([^/\\.]++)(?:\\.([^/]++))?(*:836)'
                                         .'|(?:\\.([^/]++))?(?'
-                                            .'|(*:821)'
+                                            .'|(*:862)'
                                         .')'
                                         .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                            .'|(*:859)'
+                                            .'|(*:900)'
                                         .')'
                                     .')'
                                     .'|_i(?'
                                         .'|mages(?'
-                                            .'|/([^/\\.]++)(?:\\.([^/]++))?(*:908)'
+                                            .'|/([^/\\.]++)(?:\\.([^/]++))?(*:949)'
                                             .'|(?:\\.([^/]++))?(?'
-                                                .'|(*:934)'
+                                                .'|(*:975)'
                                             .')'
                                             .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                                .'|(*:972)'
+                                                .'|(*:1013)'
                                             .')'
                                         .')'
                                         .'|nfos(?'
-                                            .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1015)'
+                                            .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1057)'
                                             .'|(?:\\.([^/]++))?(?'
-                                                .'|(*:1042)'
+                                                .'|(*:1084)'
                                             .')'
                                             .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                                .'|(*:1081)'
+                                                .'|(*:1123)'
                                             .')'
                                         .')'
                                     .')'
                                 .')'
                             .')'
                         .')'
-                        .'|restoreCart/([^/]++)/([^/]++)/([^/]++)(*:1134)'
-                        .'|\\.well\\-known/genid/([^/\\.]++)(?:\\.([^/]++))?(*:1188)'
+                        .'|restoreCart/([^/]++)/([^/]++)/([^/]++)/([^/]++)(*:1185)'
                         .'|s(?'
-                            .'|end_orders(?'
-                                .'|(?:\\.([^/]++))?(*:1229)'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1264)'
+                            .'|end_(?'
+                                .'|history_orders(?:\\.([^/]++))?(*:1234)'
+                                .'|orders(?'
+                                    .'|(?:\\.([^/]++))?(*:1267)'
+                                    .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1302)'
+                                .')'
                             .')'
                             .'|ub_attributes(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1316)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1355)'
                                 .'|(?:\\.([^/]++))?(?'
-                                    .'|(*:1343)'
+                                    .'|(*:1382)'
                                 .')'
                                 .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                    .'|(*:1382)'
+                                    .'|(*:1421)'
                                 .')'
                             .')'
                         .')'
-                        .'|attribute(?'
-                            .'|/([^/]++)/([^/]++)/([^/]++)(*:1433)'
-                            .'|_mains/([^/\\.]++)(?:\\.([^/]++))?(*:1474)'
+                        .'|\\.well\\-known/genid/([^/\\.]++)(?:\\.([^/]++))?(*:1478)'
+                        .'|a(?'
+                            .'|gent_(?'
+                                .'|objectives(?'
+                                    .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1538)'
+                                    .'|(?:\\.([^/]++))?(?'
+                                        .'|(*:1565)'
+                                    .')'
+                                    .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
+                                        .'|(*:1604)'
+                                    .')'
+                                .')'
+                                .'|targets(?'
+                                    .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1651)'
+                                    .'|(?:\\.([^/]++))?(?'
+                                        .'|(*:1678)'
+                                    .')'
+                                    .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
+                                        .'|(*:1717)'
+                                    .')'
+                                .')'
+                            .')'
+                            .'|ttribute(?'
+                                .'|/([^/]++)/([^/]++)/([^/]++)(*:1767)'
+                                .'|_mains/([^/\\.]++)(?:\\.([^/]++))?(*:1808)'
+                            .')'
                         .')'
                         .'|histor(?'
                             .'|ies(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1525)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1860)'
                                 .'|(?:\\.([^/]++))?(?'
-                                    .'|(*:1552)'
+                                    .'|(*:1887)'
                                 .')'
                                 .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                    .'|(*:1591)'
+                                    .'|(*:1926)'
                                 .')'
                             .')'
                             .'|y_detaileds(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1642)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1977)'
                                 .'|(?:\\.([^/]++))?(?'
-                                    .'|(*:1669)'
+                                    .'|(*:2004)'
                                 .')'
                                 .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                    .'|(*:1708)'
+                                    .'|(*:2043)'
                                 .')'
                             .')'
                         .')'
                         .'|m(?'
                             .'|edia_objects(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1765)'
-                                .'|(?:\\.([^/]++))?(*:1789)'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1824)'
-                                .'|(?:\\.([^/]++))?(*:1848)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2100)'
+                                .'|(?:\\.([^/]++))?(*:2124)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2159)'
+                                .'|(?:\\.([^/]++))?(*:2183)'
                             .')'
                             .'|igvans(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:1893)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2228)'
                                 .'|(?:\\.([^/]++))?(?'
-                                    .'|(*:1920)'
+                                    .'|(*:2255)'
                                 .')'
                                 .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                    .'|(*:1959)'
+                                    .'|(*:2294)'
                                 .')'
                             .')'
                         .')'
                         .'|notifications(?'
-                            .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2013)'
+                            .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2348)'
                             .'|(?:\\.([^/]++))?(?'
-                                .'|(*:2040)'
+                                .'|(*:2375)'
                             .')'
                             .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                .'|(*:2079)'
+                                .'|(*:2414)'
                             .')'
                         .')'
                         .'|user(?'
                             .'|s(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2127)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2462)'
                                 .'|(?:\\.([^/]++))?(?'
-                                    .'|(*:2154)'
+                                    .'|(*:2489)'
                                 .')'
                                 .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                    .'|(*:2193)'
+                                    .'|(*:2528)'
                                 .')'
                             .')'
                             .'|_infos(?'
-                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2239)'
+                                .'|/([^/\\.]++)(?:\\.([^/]++))?(*:2574)'
                                 .'|(?:\\.([^/]++))?(?'
-                                    .'|(*:2266)'
+                                    .'|(*:2601)'
                                 .')'
                                 .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
-                                    .'|(*:2305)'
+                                    .'|(*:2640)'
                                 .')'
                             .')'
                         .')'
                     .')'
                 .')'
-                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:2347)'
+                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:2682)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -221,137 +250,159 @@ return [
             [['_route' => '_api_/categories/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Category', '_api_operation_name' => '_api_/categories/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
         420 => [[['_route' => '_api_/catalog/{lvl1}/{lvl2}/{lvl3}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/catalog/{lvl1}/{lvl2}/{lvl3}_get_collection'], ['lvl1', 'lvl2', 'lvl3'], ['GET' => 0], null, false, true, null]],
-        471 => [[['_route' => '_api_/create_documents/{documentNumber}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\XlxDocuments', '_api_operation_name' => '_api_/create_documents/{documentNumber}{._format}_get'], ['documentNumber', '_format'], ['GET' => 0], null, false, true, null]],
-        516 => [[['_route' => '_api_/purchaseHistory/{userExtId}/{sku}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\PurchaseHistory', '_api_operation_name' => '_api_/purchaseHistory/{userExtId}/{sku}_get_collection'], ['userExtId', 'sku'], ['GET' => 0], null, false, true, null]],
-        569 => [[['_route' => '_api_/price_lists/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        595 => [
+        462 => [[['_route' => 'app_my_schedule_calendar', '_controller' => 'App\\Controller\\MyScheduleCalendarController::calendarInfo'], ['agentId', 'weekFrom', 'weekTo'], null, null, false, true, null]],
+        512 => [[['_route' => '_api_/create_documents/{documentNumber}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\XlxDocuments', '_api_operation_name' => '_api_/create_documents/{documentNumber}{._format}_get'], ['documentNumber', '_format'], ['GET' => 0], null, false, true, null]],
+        557 => [[['_route' => '_api_/purchaseHistory/{userExtId}/{sku}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\PurchaseHistory', '_api_operation_name' => '_api_/purchaseHistory/{userExtId}/{sku}_get_collection'], ['userExtId', 'sku'], ['GET' => 0], null, false, true, null]],
+        610 => [[['_route' => '_api_/price_lists/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        636 => [
             [['_route' => '_api_/price_lists{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/price_lists{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        633 => [
+        674 => [
             [['_route' => '_api_/price_lists/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/price_lists/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/price_lists/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceList', '_api_operation_name' => '_api_/price_lists/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        682 => [[['_route' => '_api_/price_list_detaileds/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceListDetailed', '_api_operation_name' => '_api_/price_list_detaileds/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        708 => [
+        723 => [[['_route' => '_api_/price_list_detaileds/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceListDetailed', '_api_operation_name' => '_api_/price_list_detaileds/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        749 => [
             [['_route' => '_api_/price_list_detaileds{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceListDetailed', '_api_operation_name' => '_api_/price_list_detaileds{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/price_list_detaileds{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceListDetailed', '_api_operation_name' => '_api_/price_list_detaileds{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        746 => [
+        787 => [
             [['_route' => '_api_/price_list_detaileds/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceListDetailed', '_api_operation_name' => '_api_/price_list_detaileds/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/price_list_detaileds/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\PriceListDetailed', '_api_operation_name' => '_api_/price_list_detaileds/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
         ],
-        795 => [[['_route' => '_api_/products/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/products/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        821 => [
+        836 => [[['_route' => '_api_/products/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/products/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        862 => [
             [['_route' => '_api_/products{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/products{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/products{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/products{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        859 => [
+        900 => [
             [['_route' => '_api_/products/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/products/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/products/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Product', '_api_operation_name' => '_api_/products/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
         ],
-        908 => [[['_route' => '_api_/product_images/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        934 => [
+        949 => [[['_route' => '_api_/product_images/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        975 => [
             [['_route' => '_api_/product_images{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/product_images{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        972 => [
+        1013 => [
             [['_route' => '_api_/product_images/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/product_images/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/product_images/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductImages', '_api_operation_name' => '_api_/product_images/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        1015 => [[['_route' => '_api_/product_infos/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1042 => [
+        1057 => [[['_route' => '_api_/product_infos/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1084 => [
             [['_route' => '_api_/product_infos{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/product_infos{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        1081 => [
+        1123 => [
             [['_route' => '_api_/product_infos/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/product_infos/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/product_infos/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\ProductInfo', '_api_operation_name' => '_api_/product_infos/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        1134 => [[['_route' => '_api_/restoreCart/{documentType}/{userExtId}/{orderNumber}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\RestoreCart', '_api_operation_name' => '_api_/restoreCart/{documentType}/{userExtId}/{orderNumber}_get_collection'], ['documentType', 'userExtId', 'orderNumber'], ['GET' => 0], null, false, true, null]],
-        1188 => [[['_route' => '_api_/.well-known/genid/{id}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendNotification', '_api_operation_name' => '_api_/.well-known/genid/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1229 => [[['_route' => '_api_/send_orders{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendOrder', '_api_operation_name' => '_api_/send_orders{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null]],
-        1264 => [[['_route' => '_api_/send_orders/{id}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendOrder', '_api_operation_name' => '_api_/send_orders/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1316 => [[['_route' => '_api_/sub_attributes/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1343 => [
+        1185 => [[['_route' => '_api_/restoreCart/{documentType}/{priceType}/{userExtId}/{orderNumber}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\RestoreCart', '_api_operation_name' => '_api_/restoreCart/{documentType}/{priceType}/{userExtId}/{orderNumber}_get_collection'], ['documentType', 'priceType', 'userExtId', 'orderNumber'], ['GET' => 0], null, false, true, null]],
+        1234 => [[['_route' => '_api_/send_history_orders{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendHistoryOrder', '_api_operation_name' => '_api_/send_history_orders{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null]],
+        1267 => [[['_route' => '_api_/send_orders{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendOrder', '_api_operation_name' => '_api_/send_orders{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null]],
+        1302 => [[['_route' => '_api_/send_orders/{id}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendOrder', '_api_operation_name' => '_api_/send_orders/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1355 => [[['_route' => '_api_/sub_attributes/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1382 => [
             [['_route' => '_api_/sub_attributes{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/sub_attributes{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        1382 => [
+        1421 => [
             [['_route' => '_api_/sub_attributes/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/sub_attributes/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/sub_attributes/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\SubAttribute', '_api_operation_name' => '_api_/sub_attributes/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        1433 => [[['_route' => '_api_/attribute/{lvl1}/{lvl2}/{lvl3}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AttributeMain', '_api_operation_name' => '_api_/attribute/{lvl1}/{lvl2}/{lvl3}_get_collection'], ['lvl1', 'lvl2', 'lvl3'], ['GET' => 0], null, false, true, null]],
-        1474 => [[['_route' => '_api_/attribute_mains/{id}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AttributeMain', '_api_operation_name' => '_api_/attribute_mains/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1525 => [[['_route' => '_api_/histories/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1552 => [
+        1478 => [[['_route' => '_api_/.well-known/genid/{id}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\ApiResource\\SendNotification', '_api_operation_name' => '_api_/.well-known/genid/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1538 => [[['_route' => '_api_/agent_objectives/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentObjective', '_api_operation_name' => '_api_/agent_objectives/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1565 => [
+            [['_route' => '_api_/agent_objectives{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentObjective', '_api_operation_name' => '_api_/agent_objectives{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
+            [['_route' => '_api_/agent_objectives{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentObjective', '_api_operation_name' => '_api_/agent_objectives{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
+        ],
+        1604 => [
+            [['_route' => '_api_/agent_objectives/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentObjective', '_api_operation_name' => '_api_/agent_objectives/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
+            [['_route' => '_api_/agent_objectives/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentObjective', '_api_operation_name' => '_api_/agent_objectives/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
+            [['_route' => '_api_/agent_objectives/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentObjective', '_api_operation_name' => '_api_/agent_objectives/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
+        ],
+        1651 => [[['_route' => '_api_/agent_targets/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentTarget', '_api_operation_name' => '_api_/agent_targets/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1678 => [
+            [['_route' => '_api_/agent_targets{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentTarget', '_api_operation_name' => '_api_/agent_targets{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
+            [['_route' => '_api_/agent_targets{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentTarget', '_api_operation_name' => '_api_/agent_targets{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
+        ],
+        1717 => [
+            [['_route' => '_api_/agent_targets/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentTarget', '_api_operation_name' => '_api_/agent_targets/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
+            [['_route' => '_api_/agent_targets/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentTarget', '_api_operation_name' => '_api_/agent_targets/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
+            [['_route' => '_api_/agent_targets/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AgentTarget', '_api_operation_name' => '_api_/agent_targets/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
+        ],
+        1767 => [[['_route' => '_api_/attribute/{lvl1}/{lvl2}/{lvl3}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AttributeMain', '_api_operation_name' => '_api_/attribute/{lvl1}/{lvl2}/{lvl3}_get_collection'], ['lvl1', 'lvl2', 'lvl3'], ['GET' => 0], null, false, true, null]],
+        1808 => [[['_route' => '_api_/attribute_mains/{id}{._format}_get', '_controller' => 'api_platform.action.not_exposed', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\AttributeMain', '_api_operation_name' => '_api_/attribute_mains/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1860 => [[['_route' => '_api_/histories/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        1887 => [
             [['_route' => '_api_/histories{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/histories{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        1591 => [
+        1926 => [
             [['_route' => '_api_/histories/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/histories/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/histories/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\History', '_api_operation_name' => '_api_/histories/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        1642 => [[['_route' => '_api_/history_detaileds/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1669 => [
+        1977 => [[['_route' => '_api_/history_detaileds/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        2004 => [
             [['_route' => '_api_/history_detaileds{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/history_detaileds{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        1708 => [
+        2043 => [
             [['_route' => '_api_/history_detaileds/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/history_detaileds/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/history_detaileds/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\HistoryDetailed', '_api_operation_name' => '_api_/history_detaileds/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        1765 => [[['_route' => '_api_/media_objects/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1789 => [[['_route' => '_api_/media_objects{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null]],
-        1824 => [[['_route' => '_api_/media_objects/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null]],
-        1848 => [[['_route' => '_api_/media_objects{._format}_post', '_controller' => 'App\\Controller\\CreateMediaObjectAction', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null]],
-        1893 => [[['_route' => '_api_/migvans/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        1920 => [
+        2100 => [[['_route' => '_api_/media_objects/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        2124 => [[['_route' => '_api_/media_objects{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null]],
+        2159 => [[['_route' => '_api_/media_objects/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null]],
+        2183 => [[['_route' => '_api_/media_objects{._format}_post', '_controller' => 'App\\Controller\\CreateMediaObjectAction', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\MediaObject', '_api_operation_name' => '_api_/media_objects{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null]],
+        2228 => [[['_route' => '_api_/migvans/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        2255 => [
             [['_route' => '_api_/migvans{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/migvans{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        1959 => [
+        2294 => [
             [['_route' => '_api_/migvans/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/migvans/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/migvans/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Migvan', '_api_operation_name' => '_api_/migvans/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        2013 => [[['_route' => '_api_/notifications/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        2040 => [
+        2348 => [[['_route' => '_api_/notifications/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        2375 => [
             [['_route' => '_api_/notifications{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/notifications{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        2079 => [
+        2414 => [
             [['_route' => '_api_/notifications/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/notifications/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/notifications/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\Notification', '_api_operation_name' => '_api_/notifications/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        2127 => [[['_route' => '_api_/users/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        2154 => [
+        2462 => [[['_route' => '_api_/users/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        2489 => [
             [['_route' => '_api_/users{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/users{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        2193 => [
+        2528 => [
             [['_route' => '_api_/users/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/users/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/users/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\User', '_api_operation_name' => '_api_/users/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        2239 => [[['_route' => '_api_/user_infos/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        2266 => [
+        2574 => [[['_route' => '_api_/user_infos/{id}{._format}_get', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos/{id}{._format}_get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        2601 => [
             [['_route' => '_api_/user_infos{._format}_get_collection', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos{._format}_get_collection'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => '_api_/user_infos{._format}_post', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos{._format}_post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        2305 => [
+        2640 => [
             [['_route' => '_api_/user_infos/{id}{._format}_put', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos/{id}{._format}_put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => '_api_/user_infos/{id}{._format}_patch', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos/{id}{._format}_patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
             [['_route' => '_api_/user_infos/{id}{._format}_delete', '_controller' => 'api_platform.action.placeholder', '_format' => null, '_stateless' => true, '_api_resource_class' => 'App\\Entity\\UserInfo', '_api_operation_name' => '_api_/user_infos/{id}{._format}_delete'], ['id', '_format'], ['DELETE' => 0], null, false, true, null],
         ],
-        2347 => [
+        2682 => [
             [['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

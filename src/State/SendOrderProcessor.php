@@ -45,17 +45,17 @@ class SendOrderProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        try {
+//        try {
             $entity = $this->HandlerSaveOrder($data);
             return $entity;
-        } catch (\Exception $exception) {
-            $error = new Error();
-            $error->setDescription($exception->getMessage());
-            $error->setFunctionName('send order processor state');
-            $error->setCreatedAt(new \DateTimeImmutable());
-            $this->errorRepository->createError($error,true);
-            throw new \Exception($exception->getMessage());
-        }
+//        } catch (\Exception $exception) {
+//            $error = new Error();
+//            $error->setDescription($exception->getMessage());
+//            $error->setFunctionName('send order processor state');
+//            $error->setCreatedAt(new \DateTimeImmutable());
+//            $this->errorRepository->createError($error,true);
+//            throw new \Exception($exception->getMessage());
+//        }
 
     }
 
@@ -65,46 +65,55 @@ class SendOrderProcessor implements ProcessorInterface
         $findUser = $this->userRepository->findOneByExtId($dto->userExtId);
         if(!$findUser) throw new \Exception('לא נמצא לקוח כזה');
         if($findUser->getIsBlocked()) throw new \Exception('לקוח חסום אנא פנה לתמיכה');
-        if($dto->isAgentOrder === null) throw new \Exception('שדה חובה isAgentOrder אם זה סוכן ביצע הזמנה או לקוח');
         if(!$dto->isBuyByCreditCard === null) throw new \Exception('שדה isButByCreditCard חובה אם זאת הזמנה עם כרטיס אשראי או הזמנה רגילה');
         if(!$dto->documentType === null) throw new \Exception('documentType שדה חובה order|quote|return');
         if(count($dto->products) == 0) throw new \Exception('לא בחר שום מוצר');
         if($this->isMustDeliveryPrice) {
             if(!$dto->deliveryPrice)  throw  new \Exception('לא נכנס מחיר משלוח');
         }
-        $history = $this->HandleHistory($dto, $findUser);
-
+        $findAgent = $this->userRepository->findOneById($dto->getAgent());
+        $history = $this->HandleHistory($dto, $findUser,$findAgent);
         foreach ($dto->products as $productRec){
             $this->HandleHistoryDetailed($productRec, $history);
         }
 
-        try {
+        $orderNumber = null;
+
+        if($dto->agentId && $findAgent && $findAgent->isIsAllowOrder()){
 //            $orderNumber = (new ErpManager($this->httpClient))->SendOrder($history->getId(), $this->historyRepository, $this->historyDetailedRepository);
-            sleep(5);
             $orderNumber = '123123';
-            if(!$orderNumber){
+        }
+
+        if(!$dto->agentId){
+//            $orderNumber = (new ErpManager($this->httpClient))->SendOrder($history->getId(), $this->historyRepository, $this->historyDetailedRepository);
+            $orderNumber = '123123';
+        }
+        sleep(5);
+        if(!$orderNumber){
+            if($findAgent && $dto->agentId && !$findAgent->isIsAllowOrder()){
+                $res = new \stdClass();
+                $res->orderNumber = $history->getId();
+                $res->message = 'הזמנה נשמרה, ממתין לאישור מנהל';
+                return $res;
+            } else {
                 $history->setOrderStatus(PurchaseStatus::FAILED);
                 $history->setUpdatedAt(new \DateTimeImmutable());
-                $this->historyRepository->createHistory($history, true);
+                $this->historyRepository->save($history, true);
                 $this->SaveError('שגיאה בשידור הזמנה', $history);
                 throw  new \Exception('שגיאה בשידור הזמנה');
-            } else {
-                $this->SaveOrderNumber($orderNumber, $history);
-                $res = new \stdClass();
-                $res->orderNumber = $orderNumber;
-                return $res;
             }
-
-        } catch (\Exception $e) {
-            $this->SaveError($e->getMessage(), $history);
-            throw  new \Exception($e->getMessage());
+        } else {
+            $this->SaveOrderNumber($orderNumber, $history,$findAgent);
+            $res = new \stdClass();
+            $res->orderNumber = $orderNumber;
+            $res->message = 'הזמנה שודרה בהצלחה';
+            return $res;
         }
 
     }
 
-    private function HandleHistory(object $dto, User $user)
+    private function HandleHistory(object $dto, User $user, ?User $agent)
     {
-        try {
             assert($dto instanceof  SendOrder);
             $newHistory = new History();
             $newHistory->setUser($user);
@@ -117,13 +126,15 @@ class SendOrderProcessor implements ProcessorInterface
             $newHistory->setTotal($this->CalculateTotal($dto));
             $newHistory->setOrderStatus(PurchaseStatus::PENDING);
             $newHistory->setDocumentType($dto->documentType);
-            $newHistory->setIsAgentOrder($dto->isAgentOrder);
+            if($agent){
+                $newHistory->setAgent($agent);
+                $newHistory->setIsSendErp($agent->isIsAllowOrder());
+            } else {
+                $newHistory->setIsSendErp(true);
+            }
             $newHistory->setIsBuyByCreditCard($dto->isBuyByCreditCard);
-            $historyId = $this->historyRepository->createHistory($newHistory, true);
+            $historyId = $this->historyRepository->save($newHistory, true);
             return $historyId;
-        } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
-        }
 
     }
 
@@ -151,29 +162,30 @@ class SendOrderProcessor implements ProcessorInterface
     {
         $total = 0;
         assert($dto instanceof SendOrder);
-        foreach ($dto->products as $itemRec){
-            $total += $itemRec->total;
-        }
-        $tax = $total * 0.17;
-        $total += $tax;
-        if($dto->getDiscount()){
-            $total -= $total * ($dto->getDiscount() / 100);
-        }
+//        foreach ($dto->products as $itemRec){
+//            $total += $itemRec->total;
+//        }
+//
+//        $tax = $total * 0.17;
+//        $total += $tax;
+//        if($dto->getDiscount()){
+//            $total -= $total * ($dto->getDiscount() / 100);
+//        }
+//
+//        if($this->isMustDeliveryPrice){
+//            $total += $this->minimumDeliveryPrice;
+//        }
+//
+//        if($this->isMaxOrderDiscount && $total >= $this->maxPriceForDiscount){
+//            $total -= $total * ($this->discountPrecentForMaxPrice / 100);
+//        }
+//
+//
+//        if( (int) $dto->getTotal() != (int) $total) {
+//            throw new \Exception('הסכום לא תואם התקבל ' . $dto->getTotal(). ' במוקם ' . $total);
+//        }
 
-        if($this->isMustDeliveryPrice){
-            $total += $this->minimumDeliveryPrice;
-        }
-
-        if($this->isMaxOrderDiscount && $total >= $this->maxPriceForDiscount){
-            $total -= $total * ($this->discountPrecentForMaxPrice / 100);
-        }
-
-
-        if( (int) $dto->getTotal() != (int) $total) {
-            throw new \Exception('הסכום לא תואם התקבל ' . $dto->getTotal(). ' במוקם ' . $total);
-        }
-
-        return $total;
+        return $dto->total;
     }
 
     private function CalculateTotalDetailed($productDto): float
@@ -191,12 +203,15 @@ class SendOrderProcessor implements ProcessorInterface
         return $total;
     }
 
-    private function SaveOrderNumber(string $orderNumber, History $history)
+    private function SaveOrderNumber(string $orderNumber, History $history, ?User $agent = null)
     {
         $history->setOrderExtId($orderNumber);
+        $history->setIsSendErp(true);
+        $history->setAgentApproved($agent);
+        $history->setSendErpAt(new \DateTimeImmutable());
         $history->setOrderStatus(PurchaseStatus::PAID);
         $history->setUpdatedAt(new \DateTimeImmutable());
-        $this->historyRepository->createHistory($history, true);
+        $this->historyRepository->save($history, true);
     }
 
     private function SaveError($message, History $history){
@@ -208,6 +223,6 @@ class SendOrderProcessor implements ProcessorInterface
         $this->errorRepository->createError($error,true);
         $history->setError($error);
         $history->setUpdatedAt(new \DateTimeImmutable());
-        $this->historyRepository->createHistory($history,true);
+        $this->historyRepository->save($history,true);
     }
 }

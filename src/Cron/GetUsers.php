@@ -42,6 +42,7 @@ class GetUsers
                     $user->setPriceList($priceList);
                 }
                 $user->setRoles(UsersTypes::USER);
+                $user->setRole(UsersTypes::USER);
 
                 $user->setIsBlocked($itemRec->isBlocked);
                 $user->setUpdatedAt(new \DateTimeImmutable());

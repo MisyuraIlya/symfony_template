@@ -21,11 +21,11 @@ class HistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, History::class);
     }
 
-    public function createHistory(History $entity, bool $flush = false): ?History
+    public function save(History $entity, bool $flush = false): ?History
     {
         $this->getEntityManager()->persist($entity);
 
-        if($flush) {
+        if ($flush) {
             $this->getEntityManager()->flush();
         }
 

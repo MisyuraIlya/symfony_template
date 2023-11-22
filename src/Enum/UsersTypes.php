@@ -7,6 +7,7 @@ enum UsersTypes: string
     case USER = 'ROLE_USER';
     case AGENT = 'ROLE_AGENT';
     case ADMIN = 'ROLE_ADMIN';
+    case SUPER_AGENT = 'ROLE_SUPER_AGENT';
 
     public function getRoles(): array {
         // Define roles as an array

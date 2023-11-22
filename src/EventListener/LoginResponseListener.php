@@ -34,6 +34,8 @@ class LoginResponseListener
                         'name' => $user->getName(),
                         'email' => $user->getEmail(),
                         'phone' => $user->getPhone(),
+                        'roles' => $user->getRoles(),
+                        'role' => $user->getRole(),
                         'createdAt' => $user->getCreatedAt(),
                         'updatedAt' => $user->getUpdatedAt(),
                     ];
