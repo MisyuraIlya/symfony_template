@@ -23,49 +23,19 @@ class GetCategories
     {
 
         try {
-            $response = (new ErpManager($this->httpClient))->GetProducts();
-
-            foreach ($response->products as $itemRec){
-                if ($itemRec->Extra18) {
-                    $categoryLvl1 = $this->categoryRepository->findOneByExtId($itemRec->Extra18);
-                    if(!$categoryLvl1){
-                        $categoryLvl1 = new Category();
-                        $categoryLvl1->setExtId($itemRec->Extra18);
-                        $categoryLvl1->setIsPublished(true);
-                        $categoryLvl1->setLvlNumber(1);
-                        $categoryLvl1->setTitle($itemRec->Extra18);
-                        $this->categoryRepository->createCategory($categoryLvl1, true);
-                    }
-
+            $response = (new ErpManager($this->httpClient,$this->errorRepository))->GetCategories();
+            foreach ($response->categories as $catRec) {
+                $category = $this->categoryRepository->findOneByExtId($catRec->categoryId);
+                if(!$category){
+                    $category = new Category();
+                    $category->setExtId($catRec->categoryId);
                 }
-
-                if ($itemRec->Extra18 && $itemRec->Extra2) {
-                    $categoryLvl2 = $this->categoryRepository->findOneByExtId($itemRec->Extra2);
-                    if(!$categoryLvl2){
-                        $categoryLvl2 = new Category();
-                        $categoryLvl2->setExtId($itemRec->Extra2);
-                        $categoryLvl2->setIsPublished(true);
-                        $categoryLvl2->setLvlNumber(2);
-                        $categoryLvl2->setTitle($itemRec->Extra2);
-                        $categoryLvl2->setParent($categoryLvl1);
-                        $this->categoryRepository->createCategory($categoryLvl2, true);
-                    }
-                }
-
-                if ($itemRec->Extra18 && $itemRec->Extra2 && $itemRec->Extra6) {
-                    $categoryLvl3 = $this->categoryRepository->findOneByExtId($itemRec->Extra6);
-                    if(!$categoryLvl3){
-                        $categoryLvl3 = new Category();
-                        $categoryLvl3->setExtId($itemRec->Extra6);
-                        $categoryLvl3->setIsPublished(true);
-                        $categoryLvl3->setLvlNumber(3);
-                        $categoryLvl3->setTitle($itemRec->Extra6);
-                        $categoryLvl3->setParent($categoryLvl2);
-                        $this->categoryRepository->createCategory($categoryLvl3, true);
-                    }
-                }
-
+                $category->setIsPublished(true);
+                $category->setLvlNumber(1);
+                $category->setTitle($catRec->categoryName);
+                $this->categoryRepository->createCategory($category, true);
             }
+
         } catch (\Exception $e) {
             $error = new Error();
             $error->setFunctionName('cron categories');

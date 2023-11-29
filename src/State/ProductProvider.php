@@ -32,7 +32,7 @@ class ProductProvider implements ProviderInterface
         private readonly ErrorRepository $errorRepository,
     )
     {
-        $this->ErpManager = new ErpManager($httpClient);
+        $this->ErpManager = new ErpManager($httpClient,$this->errorRepository);
         $this->isOnlinePrice = $_ENV['IS_ONLINE_PRICE'] === "true";
         $this->isOnlineStock = $_ENV['IS_ONLINE_STOCK'] === "true";
         $this->isOnlineMigvan = $_ENV['IS_ONLINE_MIGVAN'] === "true";

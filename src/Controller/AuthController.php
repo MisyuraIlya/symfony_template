@@ -148,12 +148,12 @@ class AuthController extends AbstractController
             $newUser->setPassword($this->hasher->hashPassword($newUser,$password));
             $this->repository->createUser($newUser,true);
 
-            $userInfo = new UserInfo();
-            $userInfo->setHp($hp);
-            $userInfo->setAddress($address);
-            $userInfo->setTown($town);
-            $userInfo->setUser($newUser);
-            $this->userInfoRepository->save($userInfo,true);
+//            $userInfo = new UserInfo();
+//            $userInfo->setHp($hp);
+//            $userInfo->setAddress($address);
+//            $userInfo->setTown($town);
+//            $userInfo->setUser($newUser);
+//            $this->userInfoRepository->save($userInfo,true);
             return $this->json((new ApiResponse(null,"לקוח נוצר בהצלחה!"))->OnSuccess());
         } catch (\Exception $e) {
             return $this->json((new ApiResponse(null, $e->getMessage()))->OnError());

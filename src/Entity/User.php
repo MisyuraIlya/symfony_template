@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Entity\PriceList;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -89,9 +88,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Migvan::class)]
     private Collection $migvans;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?PriceList $priceList = null;
-
     #[ORM\OneToMany(mappedBy: 'agent', targetEntity: AgentTarget::class)]
     private Collection $agentTargets;
 
@@ -117,6 +113,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isAllowAllClients = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PriceListUser::class)]
+    private Collection $priceListUsers;
+
     public function __construct()
     {
         $this->histories = new ArrayCollection();
@@ -124,6 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->agentTargets = new ArrayCollection();
         $this->agentObjectives = new ArrayCollection();
         $this->clientObjectives = new ArrayCollection();
+        $this->priceListUsers = new ArrayCollection();
     }
 
 
@@ -353,17 +353,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPriceList(): ?PriceList
-    {
-        return $this->priceList;
-    }
-
-    public function setPriceList(?PriceList $priceList): static
-    {
-        $this->priceList = $priceList;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, AgentTarget>
@@ -499,6 +488,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsAllowAllClients(bool $isAllowAllClients): static
     {
         $this->isAllowAllClients = $isAllowAllClients;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PriceListUser>
+     */
+    public function getPriceListUsers(): Collection
+    {
+        return $this->priceListUsers;
+    }
+
+    public function addPriceListUser(PriceListUser $priceListUser): static
+    {
+        if (!$this->priceListUsers->contains($priceListUser)) {
+            $this->priceListUsers->add($priceListUser);
+            $priceListUser->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePriceListUser(PriceListUser $priceListUser): static
+    {
+        if ($this->priceListUsers->removeElement($priceListUser)) {
+            // set the owning side to null (unless already changed)
+            if ($priceListUser->getUserId() === $this) {
+                $priceListUser->setUserId(null);
+            }
+        }
 
         return $this;
     }

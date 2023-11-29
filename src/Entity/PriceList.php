@@ -29,13 +29,14 @@ class PriceList
     #[ORM\OneToMany(mappedBy: 'priceList', targetEntity: PriceListDetailed::class)]
     private Collection $priceListDetaileds;
 
-    #[ORM\OneToMany(mappedBy: 'priceList', targetEntity: User::class)]
-    private Collection $users;
+    #[ORM\OneToMany(mappedBy: 'priceList', targetEntity: PriceListUser::class)]
+    private Collection $priceListUsers;
 
     public function __construct()
     {
         $this->priceListDetaileds = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->priceListUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,29 +111,29 @@ class PriceList
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, PriceListUser>
      */
-    public function getUsers(): Collection
+    public function getPriceListUsers(): Collection
     {
-        return $this->users;
+        return $this->priceListUsers;
     }
 
-    public function addUser(User $user): static
+    public function addPriceListUser(PriceListUser $priceListUser): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setPriceList($this);
+        if (!$this->priceListUsers->contains($priceListUser)) {
+            $this->priceListUsers->add($priceListUser);
+            $priceListUser->setPriceListId($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): static
+    public function removePriceListUser(PriceListUser $priceListUser): static
     {
-        if ($this->users->removeElement($user)) {
+        if ($this->priceListUsers->removeElement($priceListUser)) {
             // set the owning side to null (unless already changed)
-            if ($user->getPriceList() === $this) {
-                $user->setPriceList(null);
+            if ($priceListUser->getPriceListId() === $this) {
+                $priceListUser->setPriceListId(null);
             }
         }
 

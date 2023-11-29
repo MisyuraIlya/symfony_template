@@ -2,6 +2,7 @@
 
 namespace App\Erp;
 
+use App\Entity\Error;
 use App\Entity\User;
 use App\Erp\Dto\CartessetDto;
 use App\Erp\Dto\CategoriesDto;
@@ -10,12 +11,14 @@ use App\Erp\Dto\DocumentsDto;
 use App\Erp\Dto\MigvansDto;
 use App\Erp\Dto\PriceListsDetailedDto;
 use App\Erp\Dto\PriceListsDto;
+use App\Erp\Dto\PriceListsUserDto;
 use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\ProductsDto;
 use App\Erp\Dto\PurchaseHistory;
 use App\Erp\Dto\StocksDto;
 use App\Erp\Dto\UsersDto;
 use App\Erp\Priority\Priority;
+use App\Repository\ErrorRepository;
 use App\Repository\HistoryDetailedRepository;
 use App\Repository\HistoryRepository;
 use Lcobucci\JWT\Exception;
@@ -28,6 +31,7 @@ class ErpManager implements ErpInterface
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
+        private readonly ErrorRepository $errorRepository,
     )
     {
         $erpType =  $_ENV['ERP_TYPE'];
@@ -44,7 +48,14 @@ class ErpManager implements ErpInterface
 
     public function GetRequest(?string $query)
     {
-        return $this->erp->GetRequest($query);
+        try {
+            return $this->erp->GetRequest($query);
+        } catch (\Throwable $e){
+            $error = new Error();
+            $error->setFunctionName('[ERP MANAGER] Get Request');
+            $error->setDescription($e->getMessage());
+            $this->errorRepository->createError($error, true);
+        }
     }
 
     public function PostRequest(object $object, string $table)
@@ -92,9 +103,9 @@ class ErpManager implements ErpInterface
     }
 
     /** FOR CRON */
-    public function GetProducts(): ProductsDto
+    public function GetProducts(?int $pageSize, ?int $skip): ProductsDto
     {
-        return $this->erp->GetProducts();
+        return $this->erp->GetProducts($pageSize,$skip);
     }
 
     public function GetSubProducts(): ProductsDto
@@ -106,6 +117,7 @@ class ErpManager implements ErpInterface
     {
         return $this->erp->GetUsers();
     }
+
     public function GetMigvan():MigvansDto
     {
         return $this->erp->GetMigvan();
@@ -134,6 +146,12 @@ class ErpManager implements ErpInterface
     {
         return $this->erp->GetPriceList();
     }
+
+    public function GetPriceListUser(): PriceListsUserDto
+    {
+        return $this->erp->GetPriceListUser();
+    }
+
 
     public function GetPriceListDetailed(): PriceListsDetailedDto
     {

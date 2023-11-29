@@ -25,7 +25,7 @@ class CategoriesStateProvider implements ProviderInterface
         private readonly ErrorRepository $errorRepository,
     )
     {
-        $this->ErpManager = new ErpManager($httpClient);
+        $this->ErpManager = new ErpManager($httpClient, $this->errorRepository);
         $this->isOnlineMigvan = $_ENV['IS_ONLINE_MIGVAN'] === "true";
         $this->isUsedMigvan = $_ENV['IS_USED_MIGVAN'] === "true";
     }

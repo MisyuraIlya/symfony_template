@@ -22,6 +22,8 @@ use App\Erp\Dto\PriceListDetailedDto;
 use App\Erp\Dto\PriceListDto;
 use App\Erp\Dto\PriceListsDetailedDto;
 use App\Erp\Dto\PriceListsDto;
+use App\Erp\Dto\PriceListsUserDto;
+use App\Erp\Dto\PriceListUserDto;
 use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\ProductDto;
 use App\Erp\Dto\ProductsDto;
@@ -53,19 +55,19 @@ class Priority implements ErpInterface
 
     public function GetRequest($query)
     {
-            $response = $this->httpClient->request(
-                'GET',
-                $this->url.$query,
-                [
-                    'auth_basic' => [$this->username, $this->password],
-                    'http_version' => '1.1',
-                    'timeout' => 600
-                ]
-            );
-            $statusCode = $response->getStatusCode();
-            $contentType = $response->getHeaders()['content-type'][0];
-            $content = $response->getContent();
-            $content = $response->toArray();
+        $response = $this->httpClient->request(
+            'GET',
+            $this->url.$query,
+            [
+                'auth_basic' => [$this->username, $this->password],
+                'http_version' => '1.1',
+                'timeout' => 600
+            ]
+        );
+        $statusCode = $response->getStatusCode();
+        $contentType = $response->getHeaders()['content-type'][0];
+        $content = $response->getContent();
+        $content = $response->toArray();
 
         return $content['value'];
     }
@@ -386,17 +388,29 @@ class Priority implements ErpInterface
 
 
     /** FOR CRON */
-    public function GetProducts(): ProductsDto
+    public function GetProducts(?int $pageSize, ?int $skip): ProductsDto
     {
         $endpoint = "/LOGPART";
-        $queryExtras = [
-            '$expand' => "PARTARC_SUBFORM"
-        ];
+        if($pageSize) {
+            $queryExtras = [
+                '$select' => "STATDES,SHOWINWEB,FAMILYNAME,FAMILYDES,INVFLAG,BASEPLPRICE,PARTNAME,CONV,BARCODE,PARTDES,ELEL_HUMANE,ELEL_VETRINARY,ELIT_PHARMACIES,ELIT_MEDICALCENTER,ELIT_ISHOSPITAL,ELIT_DRUGNOTINBASKET,SPEC18,PRICE,EPARTDES,UNSPSCDES,SHOWINWEB,ELMM_HELTHEMINSITE,ELMM_HIPERCON,EXTFILENAME,MPARTNAME",
+                '$expand' => "PARTARC_SUBFORM",
+                '$top' => $pageSize,
+                '$skip' => $skip,
+            ];
+        } else {
+            $queryExtras = [
+                '$select' => "STATDES,SHOWINWEB,FAMILYNAME,FAMILYDES,INVFLAG,BASEPLPRICE,PARTNAME,CONV,BARCODE,PARTDES,ELEL_HUMANE,ELEL_VETRINARY,ELIT_PHARMACIES,ELIT_MEDICALCENTER,ELIT_ISHOSPITAL,ELIT_DRUGNOTINBASKET,SPEC18,PRICE,EPARTDES,UNSPSCDES,SHOWINWEB,ELMM_HELTHEMINSITE,ELMM_HIPERCON,EXTFILENAME,MPARTNAME",
+                '$expand' => "PARTARC_SUBFORM",
+            ];
+        }
+
         $queryString = http_build_query($queryExtras);
         $urlQuery = $endpoint . '?' . $queryString;
 
         $dtoRes = new ProductsDto();
         $response = $this->GetRequest($urlQuery);
+
         foreach ($response as $itemRec){
             $dto = new ProductDto();
             $dto->sku = $itemRec['PARTNAME'];
@@ -410,26 +424,26 @@ class Priority implements ErpInterface
             } else {
                 $dto->status = false;
             }
-            $dto->Extra1 = $itemRec['SPEC1'];
-            $dto->Extra2 = $itemRec['SPEC2'];
-            $dto->Extra3 = $itemRec['SPEC3'];
-            $dto->Extra4 = $itemRec['SPEC4'];
-            $dto->Extra5 = $itemRec['SPEC5'];
-            $dto->Extra6 = $itemRec['SPEC6'];
-            $dto->Extra7 = $itemRec['SPEC7'];
-            $dto->Extra8 = $itemRec['SPEC8'];
-            $dto->Extra9 = $itemRec['SPEC9'];
-            $dto->Extra10 = $itemRec['SPEC10'];
-            $dto->Extra11 = $itemRec['SPEC11'];
-            $dto->Extra12 = $itemRec['SPEC12'];
-            $dto->Extra13 = $itemRec['SPEC13'];
-            $dto->Extra14 = $itemRec['SPEC14'];
-            $dto->Extra15 = $itemRec['SPEC15'];
-            $dto->Extra16 = $itemRec['SPEC16'];
-            $dto->Extra17 = $itemRec['SPEC17'];
-            $dto->Extra18 = $itemRec['SPEC18'];
-            $dto->Extra19 = $itemRec['SPEC19'];
-            $dto->Extra20 = $itemRec['SPEC20'];
+//            $dto->Extra1 = $itemRec['SPEC1'];
+//            $dto->Extra2 = $itemRec['SPEC2'];
+//            $dto->Extra3 = $itemRec['SPEC3'];
+//            $dto->Extra4 = $itemRec['SPEC4'];
+//            $dto->Extra5 = $itemRec['SPEC5'];
+//            $dto->Extra6 = $itemRec['SPEC6'];
+//            $dto->Extra7 = $itemRec['SPEC7'];
+//            $dto->Extra8 = $itemRec['SPEC8'];
+//            $dto->Extra9 = $itemRec['SPEC9'];
+//            $dto->Extra10 = $itemRec['SPEC10'];
+//            $dto->Extra11 = $itemRec['SPEC11'];
+//            $dto->Extra12 = $itemRec['SPEC12'];
+//            $dto->Extra13 = $itemRec['SPEC13'];
+//            $dto->Extra14 = $itemRec['SPEC14'];
+//            $dto->Extra15 = $itemRec['SPEC15'];
+//            $dto->Extra16 = $itemRec['SPEC16'];
+//            $dto->Extra17 = $itemRec['SPEC17'];
+//            $dto->Extra18 = $itemRec['SPEC18'];
+//            $dto->Extra19 = $itemRec['SPEC19'];
+//            $dto->Extra20 = $itemRec['SPEC20'];
             $dto->baseprice = $itemRec['BASEPLPRICE'];
             if(isset($itemRec['PARTTEXT_SUBFORM']['TEXT'])) {
                 $dto->innerHtml = $itemRec['PARTTEXT_SUBFORM']['TEXT'];
@@ -466,43 +480,19 @@ class Priority implements ErpInterface
     }
     public function GetUsers(): UsersDto
     {
-        $response = $this->GetRequest('/CUSTOMERS?$expand=CUSTDISCOUNT_SUBFORM,CUSTPLIST_SUBFORM');
+//        $response = $this->GetRequest('/CUSTOMERS?$expand=CUSTDISCOUNT_SUBFORM');
+        $response = $this->GetRequest('/PHONEBOOK');
         $usersDto = new UsersDto();
 
         foreach ($response as $userRec) {
             if ($userRec['INACTIVEFLAG'] === null) {
-                $globalDiscount = null;
-                $priceList = null;
-                foreach ($userRec['CUSTDISCOUNT_SUBFORM'] as $discountRec){
-                    $expiryDate = new \DateTime($discountRec['EXPIRYDATE']);
-                    $currentDate = new \DateTime();
-                    if($expiryDate > $currentDate){
-                        $globalDiscount = $discountRec['DISCOUNT'];
-                    }
-                }
-
-                foreach ($userRec['CUSTPLIST_SUBFORM'] as $priceRec) {
-                    $expiryDate = new \DateTime($priceRec['PLDATE']);
-                    $currentDate = new \DateTime();
-                    if($expiryDate > $currentDate){
-                        $priceList = $priceRec['PLNAME'];
-                    }
-                }
-
                 $userDto = new UserDto();
                 $userDto->userExId = $userRec['CUSTNAME'];
                 $userDto->userDescription = $userRec['CUSTDES'];
-                $userDto->name = $userRec['CUSTDES'];
+                $userDto->name = $userRec['NAME'];
                 $userDto->isBlocked = $userRec['INACTIVEFLAG'] === 'Y' ? true : false;
-                $userDto->maxObligo = $userRec['MAX_OBLIGO'];
-                $userDto->maxCredit = $userRec['MAX_CREDIT'];
                 $userDto->phone = $userRec['PHONE'];
-                $userDto->address = $userRec['ADDRESS'];
-                $userDto->town = $userRec['STATE'];
-                $userDto->globalDiscount = $globalDiscount;
-                $userDto->priceList = $priceList;
                 $usersDto->users[] = $userDto;
-
             }
         }
 
@@ -598,6 +588,32 @@ class Priority implements ErpInterface
         return $dto;
 
     }
+
+    public function GetPriceListUser(): PriceListsUserDto
+    {
+        $endpoint = "/CUSTOMERS";
+        $queryExtras = [
+            '$expand' => "CUSTPLIST_SUBFORM"
+        ];
+        $queryString = http_build_query($queryExtras);
+        $urlQuery = $endpoint . '?' . $queryString;
+        $response = $this->GetRequest($urlQuery);
+        $dto = new PriceListsUserDto();
+
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['CUSTPLIST_SUBFORM'] as $subRec) {
+                if ($itemRec['CUSTNAME']) {
+                    $userDto = new PriceListUserDto();
+                    $userDto->userExId = $itemRec['CUSTNAME'];
+                    $userDto->priceListExId = $subRec['PLNAME'];
+                    $dto->priceLists[] = $userDto;
+                }
+            }
+        }
+
+        return $dto;
+    }
+
     public function GetPrices():PricesDto
     {
 
@@ -630,14 +646,16 @@ class Priority implements ErpInterface
     }
     public function GetCategories(): CategoriesDto
     {
-        $data = $this->GetRequest('/FAMILY_LOG');
+        $data = $this->GetRequest('/FAMILYTYPES');
         $categoryResult = new CategoriesDto();
 
         foreach ($data as $itemRec){
-            $obj = new CategoryDto();
-            $obj->categoryId = $itemRec['FAMILYNAME'];
-            $obj->categoryName = $itemRec['FAMILYDESC'];
-            $categoryResult->categories[] = $obj;
+            if($itemRec['FTNAME']){
+                $obj = new CategoryDto();
+                $obj->categoryId = $itemRec['FTCODE'];
+                $obj->categoryName = $itemRec['FTNAME'];
+                $categoryResult->categories[] = $obj;
+            }
         }
 
         return  $categoryResult;

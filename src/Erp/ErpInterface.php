@@ -10,6 +10,7 @@ use App\Erp\Dto\DocumentsDto;
 use App\Erp\Dto\MigvansDto;
 use App\Erp\Dto\PriceListsDetailedDto;
 use App\Erp\Dto\PriceListsDto;
+use App\Erp\Dto\PriceListsUserDto;
 use App\Erp\Dto\PricesDto;
 use App\Erp\Dto\PurchaseHistory;
 use App\Erp\Dto\StocksDto;
@@ -37,12 +38,13 @@ interface ErpInterface
 
     /** FOR CRON */
     public function GetCategories(): CategoriesDto;
-    public function GetProducts(): ProductsDto;
+    public function GetProducts(?int $pageSize, ?int $skip): ProductsDto;
     public function GetSubProducts(): ProductsDto;
     public function GetUsers(): UsersDto;
     public function GetSubUsers(): UsersDto;
     public function GetMigvan(): MigvansDto;
     public function GetPriceList(): PriceListsDto;
+    public function GetPriceListUser(): PriceListsUserDto;
     public function GetPriceListDetailed(): PriceListsDetailedDto;
     public function GetStocks(): StocksDto;
 

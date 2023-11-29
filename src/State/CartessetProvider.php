@@ -45,7 +45,7 @@ class CartessetProvider implements ProviderInterface
         $dateFrom = \DateTimeImmutable::createFromFormat($format, $this->fromDate);
         $dateTo = \DateTimeImmutable::createFromFormat($format, $this->toDate);
 
-        $response = (new ErpManager($this->httpClient))->GetCartesset(
+        $response = (new ErpManager($this->httpClient,$this->errorRepository))->GetCartesset(
             $uriVariables['userExtId'],
             $dateFrom,
             $dateTo,

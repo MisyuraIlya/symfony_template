@@ -5,12 +5,14 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Erp\ErpManager;
+use App\Repository\ErrorRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PurchaseHistoryProvider implements ProviderInterface
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,
+        private readonly ErrorRepository $errorRepository,
     )
     {
     }
@@ -19,7 +21,7 @@ class PurchaseHistoryProvider implements ProviderInterface
     {
         $userExtId = $uriVariables['userExtId'];
         $sku = $uriVariables['sku'];
-        $ErpManager = (new ErpManager($this->httpClient))->PurchaseHistoryByUserAndSku($userExtId,$sku)->items;
+        $ErpManager = (new ErpManager($this->httpClient,$this->errorRepository))->PurchaseHistoryByUserAndSku($userExtId,$sku)->items;
         return $ErpManager;
     }
 }

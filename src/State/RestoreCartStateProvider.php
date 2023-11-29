@@ -9,6 +9,7 @@ use App\ApiResource\Dto\CartsDto;
 use App\ApiResource\RestoreCart;
 use App\Entity\User;
 use App\Erp\ErpManager;
+use App\Repository\ErrorRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
@@ -21,9 +22,10 @@ class RestoreCartStateProvider implements ProviderInterface
         private readonly HistoryRepository $historyRepository,
         private readonly UserRepository $userRepository,
         private readonly ProductRepository $productRepository,
+        private readonly ErrorRepository $errorRepository,
     )
     {
-        $this->ErpManager = new ErpManager($this->httpClient);
+        $this->ErpManager = new ErpManager($this->httpClient,$this->errorRepository);
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null

@@ -16,44 +16,39 @@ class GetUsers
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly UserRepository $repository,
-        private readonly PriceListRepository $priceListRepository,
         private readonly ErrorRepository $errorRepository,
     )
     {}
 
     public function sync()
     {
-        try {
-            $response = (new ErpManager($this->httpClient))->GetUsers();
+//        try {
+            $response = (new ErpManager($this->httpClient, $this->errorRepository))->GetUsers();
             foreach ($response->users as $itemRec) {
                 $user = $this->repository->findOneByExIdAndPhone($itemRec->userExId, $itemRec->phone);
-                $priceList = null;
-                if($itemRec->priceList){
-                    $priceList = $this->priceListRepository->findOneByExtId($itemRec->priceList);
+                if($itemRec->userExId) {
+                    if(empty($user)){
+                        $user = new User();
+                        $user->setExtId($itemRec->userExId);
+                        $user->setPhone($itemRec->phone);
+                        $user->setCreatedAt(new \DateTimeImmutable());
+                        $user->setIsRegistered(false);
+                    }
+                    $user->setRoles(UsersTypes::USER);
+                    $user->setRole(UsersTypes::USER);
+                    $user->setIsBlocked($itemRec->isBlocked);
+                    $user->setUpdatedAt(new \DateTimeImmutable());
+                    $user->setName($itemRec->name);
+                    $user->setIsAllowOrder(true);
+                    $user->setIsAllowAllClients(false);
+                    $this->repository->createUser($user, true);
                 }
-                if(empty($user)){
-                    $user = new User();
-                    $user->setExtId($itemRec->userExId);
-                    $user->setPhone($itemRec->phone);
-                    $user->setCreatedAt(new \DateTimeImmutable());
-                    $user->setIsRegistered(false);
-                }
-                if($priceList){
-                    $user->setPriceList($priceList);
-                }
-                $user->setRoles(UsersTypes::USER);
-                $user->setRole(UsersTypes::USER);
-
-                $user->setIsBlocked($itemRec->isBlocked);
-                $user->setUpdatedAt(new \DateTimeImmutable());
-                $user->setName($itemRec->name);
-                $this->repository->createUser($user, true);
             }
-        } catch (\Exception $e) {
-            $error = new Error();
-            $error->setFunctionName('cron users');
-            $error->setDescription($e->getMessage());
-            $this->errorRepository->createError($error, true);
-        }
+//        } catch (\Exception $e) {
+//            $error = new Error();
+//            $error->setFunctionName('cron users');
+//            $error->setDescription($e->getMessage());
+//            $this->errorRepository->createError($error, true);
+//        }
     }
 }

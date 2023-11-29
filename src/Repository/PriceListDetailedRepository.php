@@ -41,6 +41,7 @@ class PriceListDetailedRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
 //    /**
 //     * @return PriceListDetailed[] Returns an array of PriceListDetailed objects
 //     */

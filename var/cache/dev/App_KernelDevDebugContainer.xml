@@ -487,6 +487,7 @@
       <argument type="service" id="App\Repository\SubAttributeRepository"/>
       <argument type="service" id="App\Repository\ErrorRepository"/>
       <argument type="service" id="App\Repository\ProductAttributeRepository"/>
+      <argument type="service" id="App\Repository\PriceListUserRepository"/>
       <call method="setName">
         <argument>CronManager</argument>
       </call>
@@ -566,6 +567,13 @@
       <argument type="service" id="App\Repository\PriceListDetailedRepository"/>
       <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
+    <service id="App\Cron\GetPriceListUser" class="App\Cron\GetPriceListUser" autowire="true" autoconfigure="true">
+      <argument type="service" id="http_client.uri_template"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
+      <argument type="service" id="App\Repository\UserRepository"/>
+      <argument type="service" id="App\Repository\PriceListRepository"/>
+      <argument type="service" id="App\Repository\PriceListUserRepository"/>
+    </service>
     <service id="App\Cron\GetProducts" class="App\Cron\GetProducts" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\CategoryRepository"/>
@@ -588,7 +596,6 @@
     <service id="App\Cron\GetUsers" class="App\Cron\GetUsers" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
       <argument type="service" id="App\Repository\UserRepository"/>
-      <argument type="service" id="App\Repository\PriceListRepository"/>
       <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
@@ -607,8 +614,10 @@
     <service id="App\Erp\Dto\PriceDto" class="App\Erp\Dto\PriceDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\PriceListDetailedDto" class="App\Erp\Dto\PriceListDetailedDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\PriceListDto" class="App\Erp\Dto\PriceListDto" autowire="true" autoconfigure="true"/>
+    <service id="App\Erp\Dto\PriceListUserDto" class="App\Erp\Dto\PriceListUserDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\PriceListsDetailedDto" class="App\Erp\Dto\PriceListsDetailedDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\PriceListsDto" class="App\Erp\Dto\PriceListsDto" autowire="true" autoconfigure="true"/>
+    <service id="App\Erp\Dto\PriceListsUserDto" class="App\Erp\Dto\PriceListsUserDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\PricesDto" class="App\Erp\Dto\PricesDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\ProductDto" class="App\Erp\Dto\ProductDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\Dto\ProductsDto" class="App\Erp\Dto\ProductsDto" autowire="true" autoconfigure="true"/>
@@ -620,6 +629,7 @@
     <service id="App\Erp\Dto\UsersDto" class="App\Erp\Dto\UsersDto" autowire="true" autoconfigure="true"/>
     <service id="App\Erp\ErpManager" class="App\Erp\ErpManager" autowire="true" autoconfigure="true">
       <argument type="service" id="http_client.uri_template"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\Erp\Priority\Priority" class="App\Erp\Priority\Priority" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\Erp\Priority\Priority&quot;: argument &quot;$url&quot; of method &quot;__construct()&quot; is type-hinted &quot;string&quot;, you should configure its value explicitly."/>
@@ -722,6 +732,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\PriceListUserRepository" class="App\Repository\PriceListUserRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\ProductAttributeRepository" class="App\Repository\ProductAttributeRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -807,6 +821,7 @@
     <service id="App\State\PurchaseHistoryProvider" class="App\State\PurchaseHistoryProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
       <argument type="service" id="http_client.uri_template"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\RestoreCartStateProvider" class="App\State\RestoreCartStateProvider" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_provider"/>
@@ -814,6 +829,7 @@
       <argument type="service" id="App\Repository\HistoryRepository"/>
       <argument type="service" id="App\Repository\UserRepository"/>
       <argument type="service" id="App\Repository\ProductRepository"/>
+      <argument type="service" id="App\Repository\ErrorRepository"/>
     </service>
     <service id="App\State\SendHistoryOrderProcessor" class="App\State\SendHistoryOrderProcessor" autowire="true" autoconfigure="true">
       <tag name="api_platform.state_processor"/>
@@ -4513,7 +4529,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.iH4JHXM"/>
+      <argument type="service" id=".service_locator.FDDA7gS"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -6902,6 +6918,8 @@
     <service id=".abstract.instanceof.App\Repository\PriceListDetailedRepository" class="App\Repository\PriceListDetailedRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PriceListRepository" class="App\Repository\PriceListRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\PriceListRepository" class="App\Repository\PriceListRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PriceListUserRepository" class="App\Repository\PriceListUserRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\PriceListUserRepository" class="App\Repository\PriceListUserRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProductAttributeRepository" class="App\Repository\ProductAttributeRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\ProductAttributeRepository" class="App\Repository\ProductAttributeRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProductImagesRepository" class="App\Repository\ProductImagesRepository" autowire="true" abstract="true"/>
@@ -7512,7 +7530,7 @@
         <argument key="vich_uploader.listener.upload.media_object" type="service_closure" id="vich_uploader.listener.upload.media_object"/>
       </argument>
     </service>
-    <service id=".service_locator.iH4JHXM" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.FDDA7gS" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AgentObjectiveRepository" type="service_closure" id="App\Repository\AgentObjectiveRepository"/>
@@ -7527,6 +7545,7 @@
         <argument key="App\Repository\NotificationRepository" type="service_closure" id="App\Repository\NotificationRepository"/>
         <argument key="App\Repository\PriceListDetailedRepository" type="service_closure" id="App\Repository\PriceListDetailedRepository"/>
         <argument key="App\Repository\PriceListRepository" type="service_closure" id="App\Repository\PriceListRepository"/>
+        <argument key="App\Repository\PriceListUserRepository" type="service_closure" id="App\Repository\PriceListUserRepository"/>
         <argument key="App\Repository\ProductAttributeRepository" type="service_closure" id="App\Repository\ProductAttributeRepository"/>
         <argument key="App\Repository\ProductImagesRepository" type="service_closure" id="App\Repository\ProductImagesRepository"/>
         <argument key="App\Repository\ProductInfoRepository" type="service_closure" id="App\Repository\ProductInfoRepository"/>

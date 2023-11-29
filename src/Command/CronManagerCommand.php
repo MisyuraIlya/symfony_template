@@ -8,6 +8,7 @@ use App\Cron\GetMainAttributes;
 use App\Cron\GetMigvans;
 use App\Cron\GetPriceList;
 use App\Cron\GetPriceListDetailed;
+use App\Cron\GetPriceListUser;
 use App\Cron\GetProducts;
 use App\Cron\GetStocks;
 use App\Cron\GetSubAttributes;
@@ -16,6 +17,7 @@ use App\Cron\GetSubUsers;
 use App\Cron\GetUsers;
 use App\Repository\AttributeMainRepository;
 use App\Repository\ErrorRepository;
+use App\Repository\PriceListUserRepository;
 use App\Repository\ProductAttributeRepository;
 use App\Repository\SubAttributeRepository;
 use App\Repository\CategoryRepository;
@@ -59,6 +61,7 @@ class CronManagerCommand extends Command
         private readonly SubAttributeRepository      $SubAttributeRepository,
         private readonly ErrorRepository $errorRepository,
         private readonly ProductAttributeRepository $productAttributeRepository,
+        private readonly PriceListUserRepository $priceListUserRepository,
     )
     {
         parent::__construct();
@@ -84,12 +87,22 @@ class CronManagerCommand extends Command
 //            $this->priceListRepository,
 //            $this->errorRepository
 //        ))->sync();
-        (new GetUsers(
+
+
+//        (new GetUsers(
+//            $this->httpClient,
+//            $this->userRepository,
+//            $this->errorRepository
+//        ))->sync();
+
+        (new GetPriceListUser(
             $this->httpClient,
+            $this->errorRepository,
             $this->userRepository,
             $this->priceListRepository,
-            $this->errorRepository
+            $this->priceListUserRepository,
         ))->sync();
+
 //        (new GetCategories(
 //            $this->httpClient,
 //            $this->categoryRepository,
@@ -101,6 +114,15 @@ class CronManagerCommand extends Command
 //            $this->productRepository,
 //            $this->errorRepository
 //        ))->sync();
+
+
+
+
+
+
+
+
+
 //        (new GetMainAttributes(
 //            $this->httpClient,
 //            $this->attributeMainRepository,

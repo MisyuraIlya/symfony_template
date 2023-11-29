@@ -22,7 +22,7 @@ class GetPriceList
     public function sync()
     {
         try {
-            $response = (new ErpManager($this->httpClient))->GetPriceList();
+            $response = (new ErpManager($this->httpClient,$this->errorRepository))->GetPriceList();
             foreach ($response->priceLists as $itemRec){
                 $priceList = $this->priceListRepository->findOneByExtId($itemRec->priceListExtId);
                 if(!$priceList){

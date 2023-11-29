@@ -15,6 +15,5 @@ class UserDto
     public ?int $maxObligo;
     public ?int $maxCredit;
     public ?int $globalDiscount;
-    public ?string $priceList;
     public ?bool $isBlocked;
 }

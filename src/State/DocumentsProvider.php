@@ -69,7 +69,7 @@ class DocumentsProvider implements ProviderInterface
         $dateFrom = \DateTimeImmutable::createFromFormat($format, $this->fromDate);
         $dateTo = \DateTimeImmutable::createFromFormat($format, $this->toDate);
 
-        $response = (new ErpManager($this->httpClient))->GetDocuments(
+        $response = (new ErpManager($this->httpClient,$this->errorRepository))->GetDocuments(
             $this->userExId,
             $dateFrom,
             $dateTo,
