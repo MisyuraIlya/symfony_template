@@ -9,6 +9,8 @@ use App\Erp\Dto\CategoriesDto;
 use App\Erp\Dto\DocumentItemsDto;
 use App\Erp\Dto\DocumentsDto;
 use App\Erp\Dto\MigvansDto;
+use App\Erp\Dto\PacksMainDto;
+use App\Erp\Dto\PacksProductDto;
 use App\Erp\Dto\PriceListsDetailedDto;
 use App\Erp\Dto\PriceListsDto;
 use App\Erp\Dto\PriceListsUserDto;
@@ -63,7 +65,7 @@ class ErpManager implements ErpInterface
         return $this->erp->PostRequest($object, $table);
     }
 
-    public function GetPricesOnline(?array $skus, ?string $priceList):PricesDto
+    public function GetPricesOnline(?array $skus, ?array $priceList):PricesDto
     {
         return $this->erp->GetPricesOnline($skus, $priceList);
     }
@@ -74,7 +76,7 @@ class ErpManager implements ErpInterface
 
     public function GetOnlineUser(string $userExtId):User
     {
-        return $this->erp->GetOnlineUser();
+        return $this->erp->GetOnlineUser($userExtId);
     }
     public function SendOrder(int $historyId, HistoryRepository $historyRepository, HistoryDetailedRepository $historyDetailedRepository)
     {
@@ -161,5 +163,15 @@ class ErpManager implements ErpInterface
     public function GetSubUsers(): UsersDto
     {
         return $this->erp->GetSubUsers();
+    }
+
+    public function GetPackMain(): PacksMainDto
+    {
+        return $this->erp->GetPackMain();
+    }
+
+    public function GetPackProducts(): PacksProductDto
+    {
+        return $this->erp->GetPackProducts();
     }
 }

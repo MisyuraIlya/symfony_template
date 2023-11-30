@@ -8,10 +8,13 @@ use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use App\Entity\Error;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Erp\Dto\PricesDto;
 use App\Erp\ErpManager;
 use App\Repository\ErrorRepository;
+use App\Repository\PriceListUserRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Doctrine\Orm\Paginator;
@@ -28,6 +31,8 @@ class ProductProvider implements ProviderInterface
         private readonly RequestStack $requestStack,
         #[Autowire(service: CollectionProvider::class)] private ProviderInterface $collectionProvider,
         #[Autowire(service: ItemProvider::class)] private ProviderInterface $itemProvider,
+        private readonly PriceListUserRepository $priceListUserRepository,
+        private readonly UserRepository $userRepository,
         private readonly ProductRepository $productRepository,
         private readonly ErrorRepository $errorRepository,
     )
@@ -45,6 +50,7 @@ class ProductProvider implements ProviderInterface
         try {
             $migvanOnline = null;
             $userExtId =  $this->requestStack->getCurrentRequest()->get('userExtId');
+            $userDb = $this->userRepository->findFirstExtId($userExtId);
 
             if($this->isOnlineMigvan && $userExtId && $this->isUsedMigvan){
                 $migvanOnline = ($this->ErpManager->GetMigvanOnline($userExtId))->migvans;
@@ -54,7 +60,7 @@ class ProductProvider implements ProviderInterface
             assert($data instanceof Paginator);
 
             if($this->isOnlinePrice && count($data) >0) {
-                $this->GetOnlinePrice($data);
+                $this->GetOnlinePrice($data,$userDb);
             } else {
                 $this->GetDbPrice($data);
             }
@@ -103,12 +109,18 @@ class ProductProvider implements ProviderInterface
         return $data;
     }
 
-    private function GetOnlinePrice(Paginator $data)
+    private function GetOnlinePrice(Paginator $data, User $userDb)
     {
-        $priceList = $this->requestStack->getCurrentRequest()->query->get('priceList');
+//        $priceList = $this->requestStack->getCurrentRequest()->query->get('priceList');
+
+        $prices = $userDb->getPriceListUsers();
+        $priceListsArr = [];
+        foreach ($prices as $itemRec){
+            $priceListsArr[] =  $itemRec->getPriceListId()->getExtId();
+        }
         //IF THERE NO PRICE LIST GO TO DB BASE PRICE
-        if($priceList){
-            $response = $this->ErpManager->GetPricesOnline($this->skus,$priceList);
+        if(!empty($priceListsArr)){
+            $response = $this->ErpManager->GetPricesOnline($this->skus,$priceListsArr);
             foreach ($response->prices as $priceRec){
                 foreach ($data as $dataRec){
                     assert($dataRec instanceof Product);
@@ -122,8 +134,9 @@ class ProductProvider implements ProviderInterface
                     }
                 }
             }
+        } else {
+            $this->GetDbPrice($data);
         }
-        $this->GetDbPrice($data);
     }
 
     private function GetDbPrice(Paginator $data)

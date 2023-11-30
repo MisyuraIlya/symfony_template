@@ -32,8 +32,9 @@ class AuthController extends AbstractController
             $exId = $data['extId'];
             $username = $data['username'];
             $password = $data['password'];
+            $phone = $data['phone'];
 
-            $findUser = $this->repository->findOneByExtId($exId);
+            $findUser = $this->repository->findOneByExIdAndPhone($exId, $phone);
             if($findUser->getIsBlocked()) throw new \Exception('לקוח חסום');
             if($findUser->getIsRegistered()) throw new \Exception('לקוח רשום');
 

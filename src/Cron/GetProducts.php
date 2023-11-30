@@ -24,7 +24,7 @@ class GetProducts
     public function sync()
     {
         $skip = 0;
-        $pageSize = 50;
+        $pageSize = 30;
         do {
             $res = (new ErpManager($this->httpClient,$this->errorRepository))->GetProducts($pageSize, $skip);
             if (!empty($res->products)) {

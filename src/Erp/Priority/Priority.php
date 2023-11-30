@@ -4,6 +4,7 @@ namespace App\Erp\Priority;
 
 use App\Entity\History;
 use App\Entity\HistoryDetailed;
+use App\Entity\PackMain;
 use App\Entity\User;
 use App\Enum\DocumentsType;
 use App\Enum\DocumentTypeHistory;
@@ -17,6 +18,10 @@ use App\Erp\Dto\DocumentItemsDto;
 use App\Erp\Dto\DocumentsDto;
 use App\Erp\Dto\MigvanDto;
 use App\Erp\Dto\MigvansDto;
+use App\Erp\Dto\PackMainDto;
+use App\Erp\Dto\PackProductDto;
+use App\Erp\Dto\PacksMainDto;
+use App\Erp\Dto\PacksProductDto;
 use App\Erp\Dto\PriceDto;
 use App\Erp\Dto\PriceListDetailedDto;
 use App\Erp\Dto\PriceListDto;
@@ -91,15 +96,15 @@ class Priority implements ErpInterface
         return '123';
     }
 
-    public function GetPricesOnline(?array $skus, ?string $priceList):PricesDto
+    public function GetPricesOnline(?array $skus, ?array $priceList):PricesDto
     {
         $result = new PricesDto();
         $queryFilter = $this->ImplodeQueryByMakats($skus);
-
+        $queryFilterPriceList = $this->ImplodeQueryByPlname($priceList);
         $endpoint2 = "/PRICELIST";
         $queryParameters2 = [
-            '$filter' => "PLNAME eq '$priceList'",
-            '$expand' => 'PARTPRICE2_SUBFORM($filter='. $queryFilter .' )',
+            '$filter' => $queryFilterPriceList,
+            '$expand' => 'PARTPRICE2_SUBFORM($select=PARTNAME,QUANT,UNITNAME,DVATPRICE,PRICE,PERCENT,DPRICE,VATPRICE,BASEPRICE;$filter='. $queryFilter .')',
         ];
         $queryString2 = http_build_query($queryParameters2);
         $urlQuery2 = $endpoint2 . '?' . $queryString2;
@@ -125,12 +130,12 @@ class Priority implements ErpInterface
 
         $endpoint = "/LOGPART";
         $queryParameters = [
+            '$select' => "PARTNAME",
             '$filter' => "$queryFilter",
             '$expand' => 'LOGCOUNTERS_SUBFORM',
         ];
         $queryString = http_build_query($queryParameters);
         $urlQuery = $endpoint . '?' . $queryString;
-
         $response = $this->GetRequest($urlQuery);
         $stocks = new StocksDto();
         foreach ($response as $itemRec) {
@@ -393,14 +398,14 @@ class Priority implements ErpInterface
         $endpoint = "/LOGPART";
         if($pageSize) {
             $queryExtras = [
-                '$select' => "STATDES,SHOWINWEB,FAMILYNAME,FAMILYDES,INVFLAG,BASEPLPRICE,PARTNAME,CONV,BARCODE,PARTDES,ELEL_HUMANE,ELEL_VETRINARY,ELIT_PHARMACIES,ELIT_MEDICALCENTER,ELIT_ISHOSPITAL,ELIT_DRUGNOTINBASKET,SPEC18,PRICE,EPARTDES,UNSPSCDES,SHOWINWEB,ELMM_HELTHEMINSITE,ELMM_HIPERCON,EXTFILENAME,MPARTNAME",
+                '$select' => "STATDES,SHOWINWEB,WSPLPRICE,FTCODE,FTNAME,FAMILYNAME,FAMILYDES,INVFLAG,BASEPLPRICE,PARTNAME,CONV,BARCODE,PARTDES,ELEL_HUMANE,ELEL_VETRINARY,ELIT_PHARMACIES,ELIT_MEDICALCENTER,ELIT_ISHOSPITAL,ELIT_DRUGNOTINBASKET,SPEC18,PRICE,EPARTDES,UNSPSCDES,SHOWINWEB,ELMM_HELTHEMINSITE,ELMM_HIPERCON,EXTFILENAME,MPARTNAME",
                 '$expand' => "PARTARC_SUBFORM",
                 '$top' => $pageSize,
                 '$skip' => $skip,
             ];
         } else {
             $queryExtras = [
-                '$select' => "STATDES,SHOWINWEB,FAMILYNAME,FAMILYDES,INVFLAG,BASEPLPRICE,PARTNAME,CONV,BARCODE,PARTDES,ELEL_HUMANE,ELEL_VETRINARY,ELIT_PHARMACIES,ELIT_MEDICALCENTER,ELIT_ISHOSPITAL,ELIT_DRUGNOTINBASKET,SPEC18,PRICE,EPARTDES,UNSPSCDES,SHOWINWEB,ELMM_HELTHEMINSITE,ELMM_HIPERCON,EXTFILENAME,MPARTNAME",
+                '$select' => "STATDES,SHOWINWEB,FAMILYNAME,FTCODE,FTNAME,FAMILYDES,INVFLAG,BASEPLPRICE,PARTNAME,CONV,BARCODE,PARTDES,ELEL_HUMANE,ELEL_VETRINARY,ELIT_PHARMACIES,ELIT_MEDICALCENTER,ELIT_ISHOSPITAL,ELIT_DRUGNOTINBASKET,SPEC18,PRICE,EPARTDES,UNSPSCDES,SHOWINWEB,ELMM_HELTHEMINSITE,ELMM_HIPERCON,EXTFILENAME,MPARTNAME",
                 '$expand' => "PARTARC_SUBFORM",
             ];
         }
@@ -414,8 +419,8 @@ class Priority implements ErpInterface
         foreach ($response as $itemRec){
             $dto = new ProductDto();
             $dto->sku = $itemRec['PARTNAME'];
-            $dto->categoryId = $itemRec['FAMILYNAME'];
-            $dto->categoryDescription = $itemRec['FAMILYDES'];
+            $dto->categoryId = $itemRec['FTCODE'];
+            $dto->categoryDescription = $itemRec['FTNAME'];
             $dto->barcode = $itemRec['BARCODE'];
             $dto->title = $itemRec['PARTDES'];
             $dto->packQuantity = $itemRec['CONV'];
@@ -444,7 +449,8 @@ class Priority implements ErpInterface
 //            $dto->Extra18 = $itemRec['SPEC18'];
 //            $dto->Extra19 = $itemRec['SPEC19'];
 //            $dto->Extra20 = $itemRec['SPEC20'];
-            $dto->baseprice = $itemRec['BASEPLPRICE'];
+//            $dto->baseprice = $itemRec['BASEPLPRICE'];
+            $dto->baseprice = $itemRec['WSPLPRICE']; //CUSTOM MEDI
             if(isset($itemRec['PARTTEXT_SUBFORM']['TEXT'])) {
                 $dto->innerHtml = $itemRec['PARTTEXT_SUBFORM']['TEXT'];
             } else {
@@ -697,4 +703,60 @@ class Priority implements ErpInterface
         return $filterString;
     }
 
+    private function ImplodeQueryByPlname(array $priceList)
+    {
+        $filterParts = [];
+        foreach ($priceList as $pricePlname) {
+            $filterParts[] = "PLNAME eq '$pricePlname'";
+        }
+
+        $filterString = implode(' or ', $filterParts);
+        return $filterString;
+    }
+
+    public function GetPackMain(): PacksMainDto
+    {
+        $endpoint = "/PARTPARAM";
+        $queryExtras = [
+            '$expand' => "PARTPACK_SUBFORM"
+        ];
+        $queryString = http_build_query($queryExtras);
+        $urlQuery = $endpoint . '?' . $queryString;
+
+        $response = $this->GetRequest($urlQuery);
+        $result = new PacksMainDto();
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['PARTPACK_SUBFORM'] as $subRec) {
+                $obj = new PackMainDto();
+                $obj->name = $subRec['PACKNAME'];
+                $obj->extId = $subRec['PACKCODE'];
+                $obj->barcode = $subRec['BARCODE'];
+                $obj->quantity = $subRec['PACKQUANT'];
+                $result->packs[] = $obj;
+            }
+        }
+        return $result;
+    }
+
+    public function GetPackProducts(): PacksProductDto
+    {
+        $endpoint = "/PARTPARAM";
+        $queryExtras = [
+            '$expand' => "PARTPACK_SUBFORM"
+        ];
+        $queryString = http_build_query($queryExtras);
+        $urlQuery = $endpoint . '?' . $queryString;
+
+        $response = $this->GetRequest($urlQuery);
+        $result = new PacksProductDto();
+        foreach ($response as $itemRec) {
+            foreach ($itemRec['PARTPACK_SUBFORM'] as $subRec) {
+                $obj = new PackProductDto();
+                $obj->sku = $itemRec['PARTNAME'];
+                $obj->packExtId = $subRec['PACKCODE'];
+                $result->packs[] = $obj;
+            }
+        }
+        return $result;
+    }
 }

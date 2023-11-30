@@ -8,6 +8,8 @@ use App\Erp\Dto\CategoriesDto;
 use App\Erp\Dto\DocumentItemsDto;
 use App\Erp\Dto\DocumentsDto;
 use App\Erp\Dto\MigvansDto;
+use App\Erp\Dto\PacksMainDto;
+use App\Erp\Dto\PacksProductDto;
 use App\Erp\Dto\PriceListsDetailedDto;
 use App\Erp\Dto\PriceListsDto;
 use App\Erp\Dto\PriceListsUserDto;
@@ -26,7 +28,7 @@ interface ErpInterface
     public function PostRequest(object $object, string $table);
 
     /** ONLINE */
-    public function GetPricesOnline(?array $skus, ?string $priceList): PricesDto;
+    public function GetPricesOnline(?array $skus, ?array $priceList): PricesDto;
     public function GetStocksOnline(?array $skus): StocksDto;
     public function GetOnlineUser(string $userExtId): User;
     public function SendOrder(int $historyId, HistoryRepository $historyRepository, HistoryDetailedRepository $historyDetailedRepository);
@@ -48,8 +50,9 @@ interface ErpInterface
     public function GetPriceListDetailed(): PriceListsDetailedDto;
     public function GetStocks(): StocksDto;
 
-//    public function GetPrices(): PricesDto;
+    public function GetPackMain(): PacksMainDto;
 
+    public function GetPackProducts(): PacksProductDto;
 
 
 

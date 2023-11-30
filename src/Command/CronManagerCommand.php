@@ -6,9 +6,11 @@ use App\Cron\GetBasePrice;
 use App\Cron\GetCategories;
 use App\Cron\GetMainAttributes;
 use App\Cron\GetMigvans;
+use App\Cron\GetPacks;
 use App\Cron\GetPriceList;
 use App\Cron\GetPriceListDetailed;
 use App\Cron\GetPriceListUser;
+use App\Cron\GetProductPacks;
 use App\Cron\GetProducts;
 use App\Cron\GetStocks;
 use App\Cron\GetSubAttributes;
@@ -17,6 +19,8 @@ use App\Cron\GetSubUsers;
 use App\Cron\GetUsers;
 use App\Repository\AttributeMainRepository;
 use App\Repository\ErrorRepository;
+use App\Repository\PackMainRepository;
+use App\Repository\PackProductsRepository;
 use App\Repository\PriceListUserRepository;
 use App\Repository\ProductAttributeRepository;
 use App\Repository\SubAttributeRepository;
@@ -62,6 +66,8 @@ class CronManagerCommand extends Command
         private readonly ErrorRepository $errorRepository,
         private readonly ProductAttributeRepository $productAttributeRepository,
         private readonly PriceListUserRepository $priceListUserRepository,
+        private readonly PackMainRepository $packMainRepository,
+        private readonly PackProductsRepository $packProductsRepository
     )
     {
         parent::__construct();
@@ -88,32 +94,46 @@ class CronManagerCommand extends Command
 //            $this->errorRepository
 //        ))->sync();
 
-
 //        (new GetUsers(
 //            $this->httpClient,
 //            $this->userRepository,
 //            $this->errorRepository
 //        ))->sync();
 
-        (new GetPriceListUser(
-            $this->httpClient,
-            $this->errorRepository,
-            $this->userRepository,
-            $this->priceListRepository,
-            $this->priceListUserRepository,
-        ))->sync();
+//        (new GetPriceListUser(
+//            $this->httpClient,
+//            $this->errorRepository,
+//            $this->userRepository,
+//            $this->priceListRepository,
+//            $this->priceListUserRepository,
+//        ))->sync();
 
 //        (new GetCategories(
 //            $this->httpClient,
 //            $this->categoryRepository,
 //            $this->errorRepository
 //        ))->sync();
+//
 //        (new GetProducts(
 //            $this->httpClient,
 //            $this->categoryRepository,
 //            $this->productRepository,
 //            $this->errorRepository
 //        ))->sync();
+
+        (new GetPacks(
+            $this->httpClient,
+            $this->packMainRepository,
+            $this->errorRepository
+        ))->sync();
+
+        (new GetProductPacks(
+            $this->httpClient,
+            $this->packMainRepository,
+            $this->packProductsRepository,
+            $this->errorRepository,
+            $this->productRepository
+        ))->sync();
 
 
 
@@ -136,6 +156,8 @@ class CronManagerCommand extends Command
 //            $this->errorRepository,
 //            $this->productAttributeRepository,
 //        ))->sync();
+
+
 //        if(!$this->isOnlinePrice && !$this->isOnlineMigvan) {
 //            (new GetPriceListDetailed(
 //                $this->httpClient,
