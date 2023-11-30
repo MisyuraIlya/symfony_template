@@ -30,7 +30,7 @@ class GetProductPacks
             $findProduct = $this->productRepository->findOneBySku($itemRec->sku);
             $findMainPack = $this->packMainRepository->findOneByExtId($itemRec->packExtId);
             if(!empty($findMainPack) && !empty($findProduct)) {
-                $PackProd = $this->packProductsRepository->findOneByProductIdAndPackId($findProduct, $findMainPack);
+                $PackProd = $this->packProductsRepository->findOneByProductIdAndPackId($findProduct->getId(), $findMainPack->getId());
                 if(empty($findPackProd)){
                     $PackProd = new PackProducts();
                     $PackProd->setPack($findMainPack);
